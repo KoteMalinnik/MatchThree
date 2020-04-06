@@ -2,7 +2,7 @@
 
 public class TileNode
 {
-	readonly int ID;
+	public readonly int ID;
 	readonly int posX;
 	readonly int posY;
 	readonly float size;
@@ -13,13 +13,6 @@ public class TileNode
 		this.posY = posY;
 		this.size = size;
 		this.ID = ID;
-		Debug.Log($"ID: {this.ID}. Position: ({this.posX}, {this.posY}). Size: {this.size}");
-	}
-
-	public void setTileObject(TileObject tileObject)
-	{
-		tileObject.setSizeAndPosition(size, posX, posY);
-		tileObject.setParentTileNode(this);
 	}
 
 	public Vector2 getPosition()

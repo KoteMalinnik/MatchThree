@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TileObjectMovement : MonoBehaviour
+public static class TileObjectMovement
 {
 	static TileObject targetObject;
 	static TileObject currentObject;
@@ -13,7 +13,7 @@ public class TileObjectMovement : MonoBehaviour
 			return;
 		}
 
-		if(obj == currentObject)
+		if (obj == currentObject)
 		{
 			Debug.Log("Один и тот же объект");
 			return;
@@ -21,30 +21,37 @@ public class TileObjectMovement : MonoBehaviour
 
 		setTargetTileObject(obj);
 
+		currentObject.transform.localScale /= 0.8f;
 		MoveTileObjects();
 	}
 
 	//Нажатие на второй узел
 	static void setTargetTileObject(TileObject obj)
 	{
-		Debug.Log("Установка целевого узла");
+		Debug.Log("Установка целевого узла. ID = " + obj.getParentNode().ID);
 		targetObject = obj;
 	}
 
 	//Нажатие на первый узел
 	static void setCurrentTileObject(TileObject obj)
 	{
-		Debug.Log("Установка текущего узла");
+		Debug.Log("Установка текущего узла. ID = "+ obj.getParentNode().ID);
 		currentObject = obj;
+		currentObject.transform.localScale *= 0.8f;
 	}
 
 	static void MoveTileObjects()
 	{
 		bool canMoveTileObjects = ValidateObjectsInRawAndColumn.canMoveTileObjects(currentObject, targetObject);
-		if(canMoveTileObjects)
+		if (canMoveTileObjects)
 		{
 			Debug.Log("<color=green>Перемещение объектов разрешено</color>");
-			//Меняю объект currentObject местами с объектом targetObject
+
+			var newTargetParentTileNode = currentObject.getParentNode();
+
+			currentObject.setTileObjectParametrs(targetObject.getParentNode(), currentObject.color);
+			targetObject.setTileObjectParametrs(newTargetParentTileNode, targetObject.color);
+
 			//Вызываю функцию проверки совпадений по всему ряду/столбцу
 		}
 		else
@@ -55,6 +62,4 @@ public class TileObjectMovement : MonoBehaviour
 		targetObject = null;
 		currentObject = null;
 	}
-
-
 }

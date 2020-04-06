@@ -12,8 +12,6 @@ public class TileObjectInteractivity : MonoBehaviour
 	void OnMouseDown()
 	{
 		var position = tileObject.getParentNode().getPosition();
-		Debug.Log($"Нажатие на объект {position}. Цвет: {tileObject.color.ToString()}");
-
 		TileObjectMovement.setObject(tileObject);
 	}
 }

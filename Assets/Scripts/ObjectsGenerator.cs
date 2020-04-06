@@ -38,18 +38,19 @@ public class ObjectsGenerator : MonoBehaviour
 				temp.transform.parent = transform;
 
 				var color = colors[Random.Range(0, colors.Length)];
-				temp.setColor(color);
+				var parentTileNode = tileMap.getTileNodeByIndex(count);
+
+				temp.setTileObjectParametrs(parentTileNode, color);
 
 				objects[count] = temp;
-				tileMap.getTileNodeByIndex(count).setTileObject(temp);
 			}
 		}
 	}
 
 	public TileObject getTileObjectByPosition(Vector2 position)
 	{
-		if (position.x > tileMap.getWidth()) return null;
-		if (position.y > tileMap.getHeight()) return null;
+		if (position.x > tileMap.getWidth() || position.x < 0) return null;
+		if (position.y > tileMap.getHeight() || position.y < 0) return null;
 
 		for (int i = 0; i < objects.Length; i++)
 			if (objects[i].getParentNode().getPosition() == position)

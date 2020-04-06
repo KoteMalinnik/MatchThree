@@ -4,11 +4,15 @@ public class TileMap : MonoBehaviour
 {
 	[SerializeField]
 	int mapWidht = 10;
-	[SerializeField]
-	int mapHeight = 10;
+	public int getWidth() { return mapWidht; }
 
 	[SerializeField]
-	float tileSize = 1f;
+	int mapHeight = 10;
+	public int getHeight() { return mapHeight; }
+
+	[SerializeField]
+	float _tileSize = 6f;
+	public static float tileSize { get; private set;} = 6f;
 
 	TileNode[] nodes;
 
@@ -17,11 +21,13 @@ public class TileMap : MonoBehaviour
 		if (mapWidht < 5) mapWidht = 5;
 		if (mapHeight < 5) mapHeight = 5;
 
-		if (tileSize < 1f) tileSize = 1f;
+		if (_tileSize < 1f) _tileSize = 1f;
 	}
 
 	void Awake()
 	{
+		tileSize = _tileSize;
+
 		InstanciateTileNodes();
 	}
 
@@ -40,15 +46,6 @@ public class TileMap : MonoBehaviour
 		}
 	}
 
-	public int getWidth()
-	{
-		return mapWidht;
-	}
-
-	public int getHeight()
-	{
-		return mapHeight;
-	}
 
 	/// <summary>
 	/// Тайлы нумеруются снизу вверх слева направо

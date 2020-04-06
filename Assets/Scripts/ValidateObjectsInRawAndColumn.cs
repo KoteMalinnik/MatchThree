@@ -22,45 +22,55 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 		bool areNotSimilarColors = first.color != second.color;
 		if (!areNotSimilarColors) return false;
 
-		bool haveMatches = checkRawAndColumnForMatches(first, secondPos);
+		bool haveMatches =
+			checkLineForMatches(first.color, secondPos, true)  ||
+			checkLineForMatches(second.color, firstPos, true)  ||
+			checkLineForMatches(first.color, secondPos, false) ||
+			checkLineForMatches(second.color, firstPos, false);
 		if (!haveMatches) return false;
 
 		return true;
 	}
 
-	static bool checkRawAndColumnForMatches(TileObject firstObject, Vector2 secondPosition)
+	static int delta = -2;
+	static int lineCounter;
+
+	static bool checkLineForMatches(Color targetObjectColor, Vector2 anotherObjectPosition, bool horizontalLineCheck)
 	{
-		Debug.Log("<color=yellow>Проверка совпадений в столбце</color>");
+		Debug.Log("<color=yellow>Проверка совпадений на линии</color>");
 
-		//if(secondPosition.y < tileMap.getHeight())
-		//TileObject upperObjectAtSecondPosition = objectsGenerator.getTileObjectByPosition(secondPosition + Vector2.up);
-		//if(upperObjectAtSecondPosition.color == firstObject.color)
-		//{
-		//	TileObject downerObjectAtSecondPosition = objectsGenerator.getTileObjectByPosition(secondPosition + Vector2.down);
-		//	if (downerObjectAtSecondPosition.color == firstObject.color)
-		//	{
-		//		Debug.Log("<color=green>Проверка совпадений в столбце пройдена</color>");
-		//		return true;
-		//	}
+		delta = -2;
+		lineCounter = 0;
 
-		//	return false;
-		//}
+		while (delta <= 2)
+		{
+			var newPosition = horizontalLineCheck ?
+				new Vector2(anotherObjectPosition.x + delta, anotherObjectPosition.y) :
+				new Vector2(anotherObjectPosition.x, anotherObjectPosition.y + delta);
 
+			var checkingObject = objectsGenerator.getTileObjectByPosition(newPosition);
 
-		return false;
-		//return true;
-	}
+			if(checkingObject == null)
+			{
+				delta++;
+				if (delta == 0) delta++;
+				continue;
+			}
 
-	//Задавать дельту как Vector2(0, -2)
-	//Если в позиции delta возвращает null, то delta += Vector2.up
-	//Инкремент возможен, пока delta <= Vector2(0, 2);
-	//Исключить delta = Vector2.zero
+			if (checkingObject.color == targetObjectColor) lineCounter++;
+			else lineCounter = 0;
 
-	//Додумать
-	static bool objectMatchesAtRange(TileObject Object, Vector2 position, Vector2 Range)
-	{
-		TileObject rangedObjectAtPosition = objectsGenerator.getTileObjectByPosition(position + Range);
-		if (rangedObjectAtPosition.color == Object.color) return true;
+			if (lineCounter == 2)
+			{
+				Debug.Log("Совпадение есть!");
+				return true;
+			}
+
+			delta++;
+			if (delta == 0) delta++;
+		}
+
+		Debug.Log("Совпадений нет");
 		return false;
 	}
 }

@@ -3,9 +3,7 @@
 public class TileObject : MonoBehaviour
 {
 	public Color color { get; private set; }
-	TileNode parentTileNode;
 	SpriteRenderer spriteRenderer;
-
 
 	void Awake()
 	{
@@ -13,25 +11,20 @@ public class TileObject : MonoBehaviour
 		gameObject.AddComponent<BoxCollider2D>();
 	}
 
-	public void setParentTileNode(TileNode newParentNode)
-	{
-		parentTileNode = newParentNode;
-	}
-
+	TileNode parentTileNode;
 	public TileNode getParentNode()
 	{
 		return parentTileNode;
 	}
 
-	public void setColor(Color color)
+	public void setTileObjectParametrs(TileNode newParentTileNode, Color newColor)
 	{
-		this.color = color;
-		if (spriteRenderer != null) spriteRenderer.color = color;
-	}
+		parentTileNode = newParentTileNode;
 
-	public void setSizeAndPosition(float newSize, float posX, float posY)
-	{
-		transform.position = new Vector2(posX, posY);
-		transform.localScale = transform.localScale * newSize;
+		color = newColor;
+		if (spriteRenderer != null) spriteRenderer.color = color;
+
+		transform.position = parentTileNode.getPosition();
+		transform.localScale = Vector3.one * TileMap.tileSize;
 	}
 }
