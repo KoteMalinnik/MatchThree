@@ -1,22 +1,25 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Узел сетки. Содержит позицию.
+/// </summary>
 public class TileNode
 {
-	public readonly int ID;
-	readonly int posX;
-	readonly int posY;
-	readonly float size;
+	readonly int idX;
+	readonly int idY;
 
-	public TileNode(int posX, int posY, float size, int ID)
+	public TileNode(int idX, int idY)
 	{
-		this.posX = posX;
-		this.posY = posY;
-		this.size = size;
-		this.ID = ID;
+		this.idX = idX;
+		this.idY = idY;
 	}
 
+	/// <summary>
+	/// Возвращает позицию узла в сетке
+	/// </summary>
+	/// <returns>The position.</returns>
 	public Vector2 getPosition()
 	{
-		return new Vector2(posX, posY);
+		return new Vector2(idX, idY);
 	}
 }

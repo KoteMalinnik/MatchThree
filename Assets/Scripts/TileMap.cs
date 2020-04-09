@@ -3,23 +3,35 @@
 public class TileMap : MonoBehaviour
 {
 	[SerializeField]
+	/// <summary>
+	/// Ширина сетки тайлов
+	/// </summary>
 	int mapWidht = 10;
 	public int getWidth() { return mapWidht; }
 
 	[SerializeField]
+	/// <summary>
+	/// Высота сетки тайлов
+	/// </summary>
 	int mapHeight = 10;
 	public int getHeight() { return mapHeight; }
 
 	[SerializeField]
+	/// <summary>
+	/// Размер тайла
+	/// </summary>
 	float _tileSize = 6f;
 	public static float tileSize { get; private set;} = 6f;
 
-	TileNode[] nodes;
+	/// <summary>
+	/// Узлы сетки
+	/// </summary>
+	TileNode[,] nodes;
 
 	void OnValidate()
 	{
-		if (mapWidht < 5) mapWidht = 5;
-		if (mapHeight < 5) mapHeight = 5;
+		if (mapWidht < 3) mapWidht = 3;
+		if (mapHeight < 3) mapHeight = 3;
 
 		if (_tileSize < 1f) _tileSize = 1f;
 	}
@@ -31,31 +43,36 @@ public class TileMap : MonoBehaviour
 		InstanciateTileNodes();
 	}
 
+	/// <summary>
+	/// Создание постоянных узлов сетки
+	/// </summary>
 	void InstanciateTileNodes()
 	{
-		var objectsCount = mapWidht * mapHeight;
-		nodes = new TileNode[objectsCount];
+		nodes = new TileNode[mapWidht, mapHeight];
 
-		for (int posX = 0, count = 0; posX < mapWidht; posX++)
+		for (int posX = 0; posX < mapWidht; posX++)
 		{
-			for (int posY = 0; posY < mapHeight; posY++, count++)
+			for (int posY = 0; posY < mapHeight; posY++)
 			{
-				var temp = new TileNode(posX, posY, tileSize, count);
-				nodes[count] = temp;
+				var temp = new TileNode(posX, posY);
+				nodes[posX, posY] = temp;
 			}
 		}
 	}
 
-
 	/// <summary>
-	/// Тайлы нумеруются снизу вверх слева направо
+	/// Возвращает TileNode по позиции в сетке карты. Левый нижний угол карты - (0, 0), правый верхний - (mapWidth, mapHeight)
 	/// </summary>
 	/// <returns>The tile node.</returns>
-	/// <param name="index">Index.</param>
-	public TileNode getTileNodeByIndex(int index)
+	public TileNode getTileNodeByPosition(int index_X, int index_Y)
 	{
-		if(index<=nodes.Length-1) return nodes[index];
-
-		return null;
+		try
+		{
+			return nodes[index_X, index_Y];
+		}
+		catch
+		{
+			return null;
+		}
 	}
 }
