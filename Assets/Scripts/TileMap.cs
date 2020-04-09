@@ -48,8 +48,10 @@ public class TileMap : MonoBehaviour
 	/// </summary>
 	void InstanciateTileNodes()
 	{
+		//создание сетки узлов по размерам карты
 		nodes = new TileNode[mapWidht, mapHeight];
 
+		//заполнение сетки узлами по позиции в сетке
 		for (int posX = 0; posX < mapWidht; posX++)
 		{
 			for (int posY = 0; posY < mapHeight; posY++)

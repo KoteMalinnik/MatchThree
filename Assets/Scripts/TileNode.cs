@@ -5,13 +5,13 @@
 /// </summary>
 public class TileNode
 {
-	readonly int idX;
-	readonly int idY;
+	readonly int posX;
+	readonly int posY;
 
-	public TileNode(int idX, int idY)
+	public TileNode(int posX, int posY)
 	{
-		this.idX = idX;
-		this.idY = idY;
+		this.posX = posX;
+		this.posY = posY;
 	}
 
 	/// <summary>
@@ -20,6 +20,6 @@ public class TileNode
 	/// <returns>The position.</returns>
 	public Vector2 getPosition()
 	{
-		return new Vector2(idX, idY);
+		return new Vector2(posX, posY);
 	}
 }

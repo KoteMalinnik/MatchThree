@@ -25,12 +25,15 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 		Vector2 firstPos = first.getParentNode().getPosition();
 		Vector2 secondPos = second.getParentNode().getPosition();
 
+		//Нет необходимости что-либо проверять, если второй объект на в пределах одного объекта по горизонтали или вертикали
 		bool inRangeOfOneUnit = (firstPos - secondPos).magnitude.Equals(1.0f);
 		if (!inRangeOfOneUnit) return false;
 
+		//Нет необходимости проверять, если они одного цвета
 		bool areNotSimilarColors = first.color != second.color;
 		if (!areNotSimilarColors) return false;
 
+		//Если у нас будет хотя бы одно совпадение в одном из трех случаев, то будет возвращено true, а иначе будет возвращено false
 		bool haveMatches = checkLineForMatches(first, true);
 		if (!haveMatches) haveMatches = checkLineForMatches(first, false);
 		if (!haveMatches)
@@ -51,62 +54,48 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 	/// <param name="checkHorizontalLine">Если <c>true</c> то проверка будет производиться в строке, иначе - в столбце.</param>
 	static bool checkLineForMatches(TileObject obj, bool checkHorizontalLine)
 	{
-		//Debug.Log($"<color=yellow>Проверка совпадений на линии. Цвет {colorToString(obj.color)}</color>");
-
+		//Получаю позицию объекта, столбец или строку которого надо проверить
 		Vector2 objPosition = obj.getParentNode().getPosition();
-		Vector2 checkPosition = checkHorizontalLine ? new Vector2(0, objPosition.y) : new Vector2(objPosition.x, 0);
 
-		//Debug.Log(horizontalLineCheck ? $"Строка {checkPosition.y + 1}" : $"Столбец {checkPosition.x + 1}");
+		//Достаточно трех совпадений, поэтому будет начинать за 2 объекта от исходного
+		float newX = objPosition.x - 2 >= 0 ? objPosition.x - 2 : 0;
+		float newY = objPosition.y - 2 >= 0 ? objPosition.y - 2 : 0;
+		//Позиция проверяемого объекта
+		Vector2 checkPosition = checkHorizontalLine ? new Vector2(newX, objPosition.y) : new Vector2(objPosition.x, newY);
 
+		//Количество объектов в линии
 		int objectsInLineCount = checkHorizontalLine ? tileMap.getWidth() : tileMap.getHeight();
+		//Инкремент для цикла
 		Vector2 delta = checkHorizontalLine ? Vector2.right : Vector2.up;
 
-		TileObject[] matchedObjects = new TileObject[0];
-		bool matchedObjectsContainsObj = false;
+		//Счетчик объектов, которые совпали по цвету с исходным
+		int matchedCounter = 0;
+		//Результат проверки
+		bool result = false;
 
-		for (int i = 0; i < objectsInLineCount; i++)
+		for (int i = 0; i < objectsInLineCount; i++, checkPosition += delta)
 		{
 			TileObject checkingObject = objectsGenerator.getTileObjectByPosition(checkPosition);
 			if (checkingObject == null) continue;
 
-			//string debug = $"Позиция: {checkingObject.getParentNode().getID()}. " +
-			//		  $"Цвет: {colorToString(checkingObject.color)}. " +
-			//		  $"Является исходным: {checkingObject == obj}.";
-
 			if (checkingObject.color == obj.color)
 			{
-				var temp = matchedObjects;
-				matchedObjects = new TileObject[matchedObjects.Length + 1];
-				for (int k = 0; k < temp.Length; k++) matchedObjects[k] = temp[k];
+				matchedCounter++;
+				result |= checkingObject == obj;
 
-				matchedObjects[matchedObjects.Length - 1] = checkingObject;
-
-				if(matchedObjectsContainsObj == false) matchedObjectsContainsObj = checkingObject == obj;
-
-				//debug += $" <color=green>Совпадение объектов. Количество совпадений: {matchedObjects.Length}. Содержит исходный: {matchedObjectsContainsObj}</color>";
-
-				//Заканчиваем проверку, если есть достаточно совпадений
-				if (matchedObjects.Length > 2 && matchedObjectsContainsObj)
-				{
-					//Debug.Log("Проверка закончена. " + debug);
-					break;
-				}
+				//Заканчиваем проверку, если есть достаточно совпадений и в них содержиться исходный объект
+				if (matchedCounter > 2 && result) break;
 			}
 			else
 			{
-				matchedObjects = new TileObject[0];
-				matchedObjectsContainsObj = false;
-				//debug += $"<color=red>Объекты не совпали. Количество совпадений: {matchedObjects.Length}</color>";
+				matchedCounter = 0;
+				result = false;
 			}
-
-			//Debug.Log(debug);
-			checkPosition += delta;
 		}
 
-		matchedObjectsContainsObj = matchedObjects.Length > 2;
-
-		//Debug.Log($"<color=yellow>Возврат {matchedObjectsContainsObj}</color>");
-		return matchedObjectsContainsObj;
+		//Проверка провалена, если количество объектов меньше трех и они не содержат исходный объект
+		result &= matchedCounter >= 3;
+		return result;
 	}
 
 	/// <summary>
