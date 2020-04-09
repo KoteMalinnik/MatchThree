@@ -228,7 +228,7 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
   - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 0.89106715, g: 1, b: 0, a: 1}
+  - {r: 1, g: 1, b: 0, a: 1}
 --- !u!114 &1936032326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,12 +321,12 @@ PrefabInstance:
     - target: {fileID: 1097477367159461951, guid: cfcda84048679d54cb5fc6522e04f494,
         type: 3}
       propertyPath: mapWidht
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1097477367159461951, guid: cfcda84048679d54cb5fc6522e04f494,
         type: 3}
       propertyPath: mapHeight
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1097477367159461951, guid: cfcda84048679d54cb5fc6522e04f494,
         type: 3}
