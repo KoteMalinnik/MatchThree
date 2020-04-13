@@ -45,7 +45,7 @@ public static class TileObjectMovement
 	/// <param name="obj">Object.</param>
 	static void setCurrentTileObject(TileObject obj)
 	{
-		Debug.Log($"Установка текущего узла. Позиция: ({obj.position.x}, {obj.position.y})");
+		Debug.Log("Установка текущего узла. Позиция: " + obj.position);
 		currentObject = obj;
 		currentObject.transform.localScale *= 0.8f;
 	}
@@ -57,7 +57,7 @@ public static class TileObjectMovement
 	/// <param name="obj">Object.</param>
 	static void setTargetTileObject(TileObject obj)
 	{
-		Debug.Log($"Установка целевого узла. Позиция: ({obj.position.x}, {obj.position.y})");
+		Debug.Log("Установка целевого узла. Позиция: " + obj.position);
 		targetObject = obj;
 	}
 
