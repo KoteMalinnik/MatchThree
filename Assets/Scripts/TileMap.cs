@@ -6,15 +6,15 @@ public class TileMap : MonoBehaviour
 	/// <summary>
 	/// Ширина сетки тайлов
 	/// </summary>
-	int mapWidht = 10;
-	public int getWidth() { return mapWidht; }
+	int _mapWidht = 10;
+	public static int mapWidht { get; private set; } = 6;
 
 	[SerializeField]
 	/// <summary>
 	/// Высота сетки тайлов
 	/// </summary>
-	int mapHeight = 10;
-	public int getHeight() { return mapHeight; }
+	int _mapHeight = 10;
+	public static int mapHeight { get; private set; } = 6;
 
 	[SerializeField]
 	/// <summary>
@@ -34,5 +34,7 @@ public class TileMap : MonoBehaviour
 	void Awake()
 	{
 		tileSize = _tileSize;
+		mapWidht = _mapWidht;
+		mapHeight = _mapHeight;
 	}
 }

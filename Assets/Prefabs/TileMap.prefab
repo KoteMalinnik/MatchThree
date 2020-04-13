@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1097477367159461944}
   - component: {fileID: 1097477367159461951}
+  - component: {fileID: 1936032325}
+  - component: {fileID: 1936032326}
   m_Layer: 0
   m_Name: TileMap
   m_TagString: Untagged
@@ -43,6 +45,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c3e8795f16b4b74bbcc7f422aa1d3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapWidht: 3
-  mapHeight: 3
-  tileSize: 1
+  mapWidht: 6
+  mapHeight: 6
+  _tileSize: 6
+--- !u!114 &1936032325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097477367159461950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37676c30ab8a934aa9b55d57cbac388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileObjectPrefab: {fileID: -5382547251341648874, guid: 230c4a889e23c2b479087de14462b23f,
+    type: 3}
+  colors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 1, g: 1, b: 0, a: 1}
+--- !u!114 &1936032326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097477367159461950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d49ac775173e93d46b87cc04ae551246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

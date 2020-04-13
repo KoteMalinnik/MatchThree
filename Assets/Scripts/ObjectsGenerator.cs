@@ -11,10 +11,6 @@ public class ObjectsGenerator : MonoBehaviour
 	TileObject tileObjectPrefab;
 
 	/// <summary>
-	/// Сетка
-	/// </summary>
-	TileMap tileMap;
-	/// <summary>
 	/// Двумерный массив объектов в сетке. Нумерация по позиции в сетке
 	/// </summary>
 	TileObject[,] objects;
@@ -25,9 +21,13 @@ public class ObjectsGenerator : MonoBehaviour
 	/// </summary>
 	Color[] colors;
 
+	int mapHeight;
+	int mapWidth;
+
 	void Awake()
 	{
-		tileMap = GetComponent<TileMap>();
+		mapHeight = TileMap.mapHeight;
+		mapWidth = TileMap.mapWidht;
 	}
 
 	void Start()
@@ -40,13 +40,12 @@ public class ObjectsGenerator : MonoBehaviour
 	/// </summary>
 	void spawnObjects()
 	{
-		int height = tileMap.getHeight();
-		int width = tileMap.getWidth();
-		objects = new TileObject[width, height];
+		
+		objects = new TileObject[mapWidth, mapHeight];
 
-		for (int i = 0; i < width; i++)
+		for (int i = 0; i < mapWidth; i++)
 		{
-			for (int j = 0; j < height; j++)
+			for (int j = 0; j < mapHeight; j++)
 			{
 				TileObject temp = Instantiate(tileObjectPrefab, Vector3.zero, Quaternion.identity);
 				temp.transform.parent = transform;
@@ -67,11 +66,11 @@ public class ObjectsGenerator : MonoBehaviour
 	/// <param name="position">Position.</param>
 	public TileObject getTileObjectByPosition(Vector2 position)
 	{
-		if (position.x > tileMap.getWidth() || position.x < 0) return null;
-		if (position.y > tileMap.getHeight() || position.y < 0) return null;
+		if (position.x > mapWidth || position.x < 0) return null;
+		if (position.y > mapHeight || position.y < 0) return null;
 
-		for (int i = 0; i < tileMap.getWidth(); i++)
-			for (int j = 0; j < tileMap.getWidth(); j++)
+		for (int i = 0; i < mapWidth; i++)
+			for (int j = 0; j < mapHeight; j++)
 				if (objects[i, j].position == position)
 					return objects[i, j];
 

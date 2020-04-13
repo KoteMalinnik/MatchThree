@@ -5,12 +5,10 @@
 /// </summary>
 public class ValidateObjectsInRawAndColumn : MonoBehaviour
 {
-	static TileMap tileMap;
 	static ObjectsGenerator objectsGenerator;
 
 	void Awake()
 	{
-		tileMap = GetComponent<TileMap>();
 		objectsGenerator = GetComponent<ObjectsGenerator>();
 	}
 
@@ -61,7 +59,7 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 		Vector2 checkPosition = checkHorizontalLine ? new Vector2(newX, objPosition.y) : new Vector2(objPosition.x, newY);
 
 		//Количество объектов в линии
-		int objectsInLineCount = checkHorizontalLine ? tileMap.getWidth() : tileMap.getHeight();
+		int objectsInLineCount = checkHorizontalLine ? TileMap.mapWidht : TileMap.mapHeight;
 		//Инкремент для цикла
 		Vector2 delta = checkHorizontalLine ? Vector2.right : Vector2.up;
 
