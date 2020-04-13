@@ -21,11 +21,16 @@ public class ObjectsGenerator : MonoBehaviour
 	/// </summary>
 	Color[] colors;
 
+	//!!!!!!!!!!!!!!!!!!!!!
+	//Переписать генерацию объектов с учетом размера тайла
 	int mapHeight;
 	int mapWidth;
+	float tileDeltaPosition;
 
 	void Awake()
 	{
+		tileDeltaPosition = TileMap.tileDeltaPosition;
+
 		mapHeight = TileMap.mapHeight;
 		mapWidth = TileMap.mapWidht;
 	}

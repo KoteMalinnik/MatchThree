@@ -23,6 +23,11 @@ public class TileMap : MonoBehaviour
 	float _tileSize = 6f;
 	public static float tileSize { get; private set;} = 6f;
 
+	/// <summary>
+	/// Разница позиций соседних тайлов. При tileSize = 1 => tileDeltaPosition = 0.16
+	/// </summary>
+	public static float tileDeltaPosition { get; private set; } = 0.16f;
+
 	void OnValidate()
 	{
 		if (mapWidht < 3) mapWidht = 3;
@@ -34,6 +39,8 @@ public class TileMap : MonoBehaviour
 	void Awake()
 	{
 		tileSize = _tileSize;
+		tileDeltaPosition = tileSize / 6.25f;
+
 		mapWidht = _mapWidht;
 		mapHeight = _mapHeight;
 	}
