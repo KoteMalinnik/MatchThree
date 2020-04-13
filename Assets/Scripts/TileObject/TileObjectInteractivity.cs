@@ -11,7 +11,7 @@ public class TileObjectInteractivity : MonoBehaviour
 
 	void OnMouseDown()
 	{
-		var position = tileObject.getParentNode().getPosition();
+		var position = tileObject.position;
 		TileObjectMovement.setObject(tileObject);
 	}
 }

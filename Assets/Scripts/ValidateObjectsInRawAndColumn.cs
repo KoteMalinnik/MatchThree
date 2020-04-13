@@ -22,8 +22,8 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 	/// <param name="second">Second.</param>
 	public static bool canReplaceTileObjects(TileObject first, TileObject second)
 	{
-		Vector2 firstPos = first.getParentNode().getPosition();
-		Vector2 secondPos = second.getParentNode().getPosition();
+		Vector2 firstPos = first.position;
+		Vector2 secondPos = second.position;
 
 		//Нет необходимости что-либо проверять, если второй объект на в пределах одного объекта по горизонтали или вертикали
 		bool inRangeOfOneUnit = (firstPos - secondPos).magnitude.Equals(1.0f);
@@ -36,12 +36,9 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 		//Если у нас будет хотя бы одно совпадение в одном из трех случаев, то будет возвращено true, а иначе будет возвращено false
 		bool haveMatches = checkLineForMatches(first, true);
 		if (!haveMatches) haveMatches = checkLineForMatches(first, false);
-		if (!haveMatches)
-		{
-			if (Equals(firstPos.x, secondPos.x)) checkLineForMatches(second, true);
-			else if (Equals(firstPos.y, secondPos.y)) checkLineForMatches(second, false);
-			else Debug.Log("<color=red>!!!ERROR!!! Условие неверно считало позиции");
-		}
+		if (!haveMatches) haveMatches = checkLineForMatches(first, true);
+		if (!haveMatches) haveMatches = checkLineForMatches(second, false);
+		if (!haveMatches) haveMatches = checkLineForMatches(second, true);
 
 		return haveMatches;
 	}
@@ -55,7 +52,7 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 	static bool checkLineForMatches(TileObject obj, bool checkHorizontalLine)
 	{
 		//Получаю позицию объекта, столбец или строку которого надо проверить
-		Vector2 objPosition = obj.getParentNode().getPosition();
+		Vector2 objPosition = obj.position;
 
 		//Достаточно трех совпадений, поэтому будет начинать за 2 объекта от исходного
 		float newX = objPosition.x - 2 >= 0 ? objPosition.x - 2 : 0;

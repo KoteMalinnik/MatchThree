@@ -52,9 +52,8 @@ public class ObjectsGenerator : MonoBehaviour
 				temp.transform.parent = transform;
 
 				var color = colors[Random.Range(0, colors.Length)];
-				var parentTileNode = tileMap.getTileNodeByPosition(i, j);
-
-				temp.setTileObjectParametrs(parentTileNode, color);
+				var position = new Vector2(i, j);
+				temp.setTileObjectParametrs(position, color);
 
 				objects[i, j] = temp;
 			}
@@ -73,7 +72,7 @@ public class ObjectsGenerator : MonoBehaviour
 
 		for (int i = 0; i < tileMap.getWidth(); i++)
 			for (int j = 0; j < tileMap.getWidth(); j++)
-				if (objects[i, j].getParentNode().getPosition() == position)
+				if (objects[i, j].position == position)
 					return objects[i, j];
 
 		return null;

@@ -45,7 +45,7 @@ public static class TileObjectMovement
 	/// <param name="obj">Object.</param>
 	static void setCurrentTileObject(TileObject obj)
 	{
-		Debug.Log("Установка текущего узла. ID = " + obj.getParentNode().getPosition());
+		Debug.Log($"Установка текущего узла. Позиция: ({obj.position.x}, {obj.position.y})");
 		currentObject = obj;
 		currentObject.transform.localScale *= 0.8f;
 	}
@@ -57,7 +57,7 @@ public static class TileObjectMovement
 	/// <param name="obj">Object.</param>
 	static void setTargetTileObject(TileObject obj)
 	{
-		Debug.Log("Установка целевого узла. ID = " + obj.getParentNode().getPosition());
+		Debug.Log($"Установка целевого узла. Позиция: ({obj.position.x}, {obj.position.y})");
 		targetObject = obj;
 	}
 
@@ -91,8 +91,8 @@ public static class TileObjectMovement
 	/// </summary>
 	static void replaceObjects()
 	{
-		var newTargetParentTileNode = currentObject.getParentNode();
-		currentObject.setTileObjectParametrs(targetObject.getParentNode(), currentObject.color);
-		targetObject.setTileObjectParametrs(newTargetParentTileNode, targetObject.color);
+		var newTargetPosition = currentObject.position;
+		currentObject.setTileObjectParametrs(targetObject.position, currentObject.color);
+		targetObject.setTileObjectParametrs(newTargetPosition, targetObject.color);
 	}
 }
