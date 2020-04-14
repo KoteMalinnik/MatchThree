@@ -46,14 +46,50 @@ public class ObjectsGenerator : MonoBehaviour
 				TileObject temp = Instantiate(tileObjectPrefab, Vector3.zero, Quaternion.identity);
 				temp.transform.parent = transform;
 
-				var color = colors[Random.Range(0, colors.Length)];
 				var position = new Vector2(posX, posY);
-				temp.setTileObjectParametrs(position, color);
+				var color = setTileObjectColor(position, tileDeltaPosition);
 
+				temp.setTileObjectParametrs(position, color);
 				objects[i, j] = temp;
 			}
 		}
 	}
+
+	/// <summary>
+	/// Возвращает цвет, который не имеют соседние тайлы
+	/// </summary>
+	/// <returns>The nearest tile objects for color match.</returns>
+	Color setTileObjectColor(Vector2 sourceObjectPosition, float tileDeltaPosition)
+	{
+		//Надо анализировать цвет объектов, которые находятся левее и ниже исходного
+		int index = Random.Range(0, colors.Length);
+		Color resultColor = colors[index];
+
+		var availableColors = new List<Color>(colors.Length);
+		for (int i = 0; i < colors.Length; i++) availableColors.Add(colors[i]);
+
+		checkTileColor(ref availableColors, ref resultColor, sourceObjectPosition, deltaPositionX: tileDeltaPosition);
+		checkTileColor(ref availableColors, ref resultColor, sourceObjectPosition, deltaPositionY: tileDeltaPosition);
+
+		return resultColor;
+	}
+
+	void checkTileColor(ref List<Color> availableColors, ref Color resultColor, Vector2 sourceObjectPosition, float deltaPositionX = 0, float deltaPositionY = 0)
+	{
+		var checkPosition = new Vector2(sourceObjectPosition.x - deltaPositionX, sourceObjectPosition.y - deltaPositionY);
+
+		if (getTileObjectByPosition(checkPosition) != null)
+		{
+			Color tileColor = getTileObjectByPosition(checkPosition).color;
+
+			if (tileColor == resultColor)
+			{
+				availableColors.Remove(tileColor);
+				resultColor = availableColors[Random.Range(0, availableColors.Count)];
+			}
+		}
+	}
+
 
 	/// <summary>
 	/// Возвращает TileObject в позиции position. Если в этой позиции нет объекта, возвращает null

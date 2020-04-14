@@ -103,8 +103,8 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 		if (color == Color.red) return "red";
 		if (color == Color.green) return "green";
 		if (color == Color.blue) return "blue";
+		if (color == new Color(1, 1, 0, 1)) return "yellow";
 
 		return "null";
 	}
-
 }

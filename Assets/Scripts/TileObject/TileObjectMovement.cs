@@ -8,7 +8,7 @@ public static class TileObjectMovement
 	/// <summary>
 	/// Объект, который надо поменять местами
 	/// </summary>
-	static TileObject currentObject;
+	static TileObject sourceObject;
 	/// <summary>
 	/// Объект, с которым надо поменять местами
 	/// </summary>
@@ -21,13 +21,13 @@ public static class TileObjectMovement
 	/// <param name="obj">Object.</param>
 	public static void setObject(TileObject obj)
 	{
-		if (currentObject == null)
+		if (sourceObject == null)
 		{
-			setCurrentTileObject(obj);
+			setSourceTileObject(obj);
 			return;
 		}
 
-		if (obj == currentObject)
+		if (obj == sourceObject)
 		{
 			Debug.Log("Один и тот же объект");
 			return;
@@ -35,7 +35,7 @@ public static class TileObjectMovement
 
 		setTargetTileObject(obj);
 
-		currentObject.transform.localScale /= 0.8f;
+		sourceObject.transform.localScale /= 0.8f;
 		ReplaceTileObjects();
 	}
 
@@ -43,11 +43,11 @@ public static class TileObjectMovement
 	/// Установка перемещаемого объекта
 	/// </summary>
 	/// <param name="obj">Object.</param>
-	static void setCurrentTileObject(TileObject obj)
+	static void setSourceTileObject(TileObject obj)
 	{
-		Debug.Log("Установка текущего узла. Позиция: " + obj.position);
-		currentObject = obj;
-		currentObject.transform.localScale *= 0.8f;
+		Debug.Log("Установка исходного узла. Позиция: " + obj.position);
+		sourceObject = obj;
+		sourceObject.transform.localScale *= 0.8f;
 	}
 
 
@@ -70,7 +70,7 @@ public static class TileObjectMovement
 
 		replaceObjects();
 
-		bool canReplaceTileObjects = ValidateObjectsInRawAndColumn.canReplaceTileObjects(currentObject, targetObject);
+		bool canReplaceTileObjects = ValidateObjectsInRawAndColumn.canReplaceTileObjects(sourceObject, targetObject);
 		if (canReplaceTileObjects)
 		{
 			Debug.Log("<color=green>Перемещение объектов разрешено</color>");
@@ -83,7 +83,7 @@ public static class TileObjectMovement
 		}
 
 		targetObject = null;
-		currentObject = null;
+		sourceObject = null;
 	}
 
 	/// <summary>
@@ -91,8 +91,8 @@ public static class TileObjectMovement
 	/// </summary>
 	static void replaceObjects()
 	{
-		var newTargetPosition = currentObject.position;
-		currentObject.setTileObjectParametrs(targetObject.position, currentObject.color);
+		var newTargetPosition = sourceObject.position;
+		sourceObject.setTileObjectParametrs(targetObject.position, sourceObject.color);
 		targetObject.setTileObjectParametrs(newTargetPosition, targetObject.color);
 	}
 }
