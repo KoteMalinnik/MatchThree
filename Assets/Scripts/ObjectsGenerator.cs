@@ -74,6 +74,14 @@ public class ObjectsGenerator : MonoBehaviour
 		return resultColor;
 	}
 
+	/// <summary>
+	/// Проверка на совпадение цвета с соседним объектом
+	/// </summary>
+	/// <param name="availableColors">Available colors.</param>
+	/// <param name="resultColor">Result color.</param>
+	/// <param name="sourceObjectPosition">Source object position.</param>
+	/// <param name="deltaPositionX">Delta position x. tileDeltaPosition</param>
+	/// <param name="deltaPositionY">Delta position y. tileDeltaPosition</param>
 	void checkTileColor(ref List<Color> availableColors, ref Color resultColor, Vector2 sourceObjectPosition, float deltaPositionX = 0, float deltaPositionY = 0)
 	{
 		var checkPosition = new Vector2(sourceObjectPosition.x - deltaPositionX, sourceObjectPosition.y - deltaPositionY);

@@ -45,7 +45,7 @@ public static class TileObjectMovement
 	/// <param name="obj">Object.</param>
 	static void setSourceTileObject(TileObject obj)
 	{
-		Debug.Log("Установка исходного узла. Позиция: " + obj.position);
+		Debug.Log($"Исходный объект. Позиция: {obj.position}. Цвет: {colorToString(obj.color)}");
 		sourceObject = obj;
 		sourceObject.transform.localScale *= 0.8f;
 	}
@@ -57,7 +57,7 @@ public static class TileObjectMovement
 	/// <param name="obj">Object.</param>
 	static void setTargetTileObject(TileObject obj)
 	{
-		Debug.Log("Установка целевого узла. Позиция: " + obj.position);
+		Debug.Log($"Целевой объект. Позиция: {obj.position}. Цвет: {colorToString(obj.color)}");
 		targetObject = obj;
 	}
 
@@ -94,5 +94,15 @@ public static class TileObjectMovement
 		var newTargetPosition = sourceObject.position;
 		sourceObject.setTileObjectParametrs(targetObject.position, sourceObject.color);
 		targetObject.setTileObjectParametrs(newTargetPosition, targetObject.color);
+	}
+
+	static string colorToString(Color color)
+	{
+		if (color == Color.red) return "red";
+		if (color == Color.green) return "green";
+		if (color == Color.blue) return "blue";
+		if (color == new Color(1, 1, 0, 1)) return "yellow";
+
+		return "null";
 	}
 }

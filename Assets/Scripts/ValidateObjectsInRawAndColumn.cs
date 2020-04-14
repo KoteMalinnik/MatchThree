@@ -6,9 +6,15 @@
 public class ValidateObjectsInRawAndColumn : MonoBehaviour
 {
 	static ObjectsGenerator objectsGenerator;
+	static float tileDeltaPosition;
+	static int mapWidht = TileMap.mapWidht;
+	static int mapHeight = TileMap.mapHeight;
 
-	void Awake()
+	void Start()
 	{
+		tileDeltaPosition = TileMap.tileDeltaPosition;
+		mapWidht = TileMap.mapWidht;
+		mapHeight = TileMap.mapHeight;
 		objectsGenerator = GetComponent<ObjectsGenerator>();
 	}
 
@@ -24,19 +30,22 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 		Vector2 secondPos = second.position;
 
 		//Нет необходимости что-либо проверять, если второй объект на в пределах одного объекта по горизонтали или вертикали
-		bool inRangeOfOneUnit = (firstPos - secondPos).magnitude.Equals(1.0f);
+		bool inRangeOfOneUnit = (firstPos - secondPos).magnitude < tileDeltaPosition + 0.1f;
 		if (!inRangeOfOneUnit) return false;
+		Debug.Log("В пределах одного тайла");
 
 		//Нет необходимости проверять, если они одного цвета
 		bool areNotSimilarColors = first.color != second.color;
 		if (!areNotSimilarColors) return false;
+		Debug.Log("Разные цвета тайлов");
 
-		//Если у нас будет хотя бы одно совпадение в одном из трех случаев, то будет возвращено true, а иначе будет возвращено false
+		//Если у нас будет хотя бы одно совпадение в одном из четырех случаев, то будет возвращено true, а иначе будет возвращено false
 		bool haveMatches = checkLineForMatches(first, true);
 		if (!haveMatches) haveMatches = checkLineForMatches(first, false);
 		if (!haveMatches) haveMatches = checkLineForMatches(first, true);
 		if (!haveMatches) haveMatches = checkLineForMatches(second, false);
 		if (!haveMatches) haveMatches = checkLineForMatches(second, true);
+		Debug.Log("Проверка на совпадения завершена с результатом: " + haveMatches);
 
 		return haveMatches;
 	}
@@ -53,15 +62,16 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 		Vector2 objPosition = obj.position;
 
 		//Достаточно трех совпадений, поэтому будет начинать за 2 объекта от исходного
-		float newX = objPosition.x - 2 >= 0 ? objPosition.x - 2 : 0;
-		float newY = objPosition.y - 2 >= 0 ? objPosition.y - 2 : 0;
+		float newX = objPosition.x - 2 * tileDeltaPosition >= 0 ? objPosition.x - 2 * tileDeltaPosition : 0;
+		float newY = objPosition.y - 2 * tileDeltaPosition >= 0 ? objPosition.y - 2 * tileDeltaPosition : 0;
 		//Позиция проверяемого объекта
 		Vector2 checkPosition = checkHorizontalLine ? new Vector2(newX, objPosition.y) : new Vector2(objPosition.x, newY);
 
 		//Количество объектов в линии
-		int objectsInLineCount = checkHorizontalLine ? TileMap.mapWidht : TileMap.mapHeight;
+		int objectsInLineCount = checkHorizontalLine ? mapWidht : mapHeight;
 		//Инкремент для цикла
 		Vector2 delta = checkHorizontalLine ? Vector2.right : Vector2.up;
+		delta *= tileDeltaPosition;
 
 		//Счетчик объектов, которые совпали по цвету с исходным
 		int matchedCounter = 0;
