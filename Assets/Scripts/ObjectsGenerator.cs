@@ -21,25 +21,19 @@ public class ObjectsGenerator : MonoBehaviour
 	/// </summary>
 	Color[] colors;
 
-	//!!!!!!!!!!!!!!!!!!!!!
-	//Переписать генерацию объектов с учетом размера тайла
-	int mapHeight;
-	int mapWidth;
-	float tileDeltaPosition;
-
 	void Start()
 	{
-		tileDeltaPosition = TileMap.tileDeltaPosition;
-		mapHeight = TileMap.mapHeight;
-		mapWidth = TileMap.mapWidht;
+		float tileDeltaPosition = TileMap.tileDeltaPosition;
+		int mapHeight = TileMap.mapHeight;
+		int mapWidth = TileMap.mapWidht;
 
-		spawnObjects();
+		spawnObjects(mapHeight, mapWidth, tileDeltaPosition);
 	}
 
 	/// <summary>
 	/// Создание объектов в узлах сетки
 	/// </summary>
-	void spawnObjects()
+	void spawnObjects(int mapHeight, int mapWidth, float tileDeltaPosition)
 	{
 		objects = new TileObject[mapWidth, mapHeight];
 
@@ -68,6 +62,9 @@ public class ObjectsGenerator : MonoBehaviour
 	/// <param name="position">Position.</param>
 	public TileObject getTileObjectByPosition(Vector2 position)
 	{
+		int mapHeight = TileMap.mapHeight;
+		int mapWidth = TileMap.mapWidht;
+
 		if (position.x > mapWidth || position.x < 0) return null;
 		if (position.y > mapHeight || position.y < 0) return null;
 
