@@ -1,28 +1,46 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// Центрирование камеры относительно игрового поля
-/// </summary>
 public class CameraCentering : MonoBehaviour
 {
-	[SerializeField]
-	float deltaPositionYForGUI = 0f;
-
-	float width;
-	float height;
-
     void Start()
-	{
-		width = TileMap.mapWidht;
-		height = TileMap.mapHeight;
+    {
+		float tileDeltaPosition = TileMap.tileDeltaPosition;
+		float width = TileMap.mapWidht * tileDeltaPosition;
+		float height = TileMap.mapHeight * tileDeltaPosition;
 
-		setCenteredPosition();
+		Camera mainCamera = Camera.main;
+
+		setCenter(width, height, tileDeltaPosition, mainCamera);
+		setOrthographicSize(width, height, tileDeltaPosition, mainCamera);
+    }
+
+	/// <summary>
+	/// Установка позиции камеры по центру игрового поля
+	/// </summary>
+	/// <param name="width">Width.</param>
+	/// <param name="height">Height.</param>
+	/// <param name="tileDeltaPosition">Tile delta position.</param>
+	/// <param name="mainCamera">Main camera.</param>
+	void setCenter(float width, float height, float tileDeltaPosition, Camera mainCamera)
+	{
+		float newCameraPosX = width / 2 - tileDeltaPosition / 2;
+		float newCameraPosY = height / 2 - tileDeltaPosition / 2;
+
+		mainCamera.transform.position = new Vector3(newCameraPosX, newCameraPosY, -1);
 	}
 
-	void setCenteredPosition()
+	/// <summary>
+	/// Установка ортографического размера камеры в пределах игрового поля
+	/// </summary>
+	/// <param name="width">Width.</param>
+	/// <param name="height">Height.</param>
+	/// <param name="tileDeltaPosition">Tile delta position.</param>
+	/// <param name="mainCamera">Main camera.</param>
+	void setOrthographicSize(float width, float height, float tileDeltaPosition, Camera mainCamera)
 	{
-		float newPosX = width / 2 - 0.5f;
-		float newPosY = height / 2 - 0.5f - deltaPositionYForGUI;
-		transform.position = new Vector3(newPosX, newPosY, -1);
+		float newCameraOrthographicSize = width >= height ? width : height;
+		newCameraOrthographicSize -= tileDeltaPosition;
+
+		mainCamera.orthographicSize = newCameraOrthographicSize;
 	}
 }

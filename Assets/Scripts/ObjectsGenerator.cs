@@ -27,16 +27,12 @@ public class ObjectsGenerator : MonoBehaviour
 	int mapWidth;
 	float tileDeltaPosition;
 
-	void Awake()
-	{
-		tileDeltaPosition = TileMap.tileDeltaPosition;
-
-		mapHeight = TileMap.mapHeight;
-		mapWidth = TileMap.mapWidht;
-	}
-
 	void Start()
 	{
+		tileDeltaPosition = TileMap.tileDeltaPosition;
+		mapHeight = TileMap.mapHeight;
+		mapWidth = TileMap.mapWidht;
+
 		spawnObjects();
 	}
 
@@ -45,18 +41,19 @@ public class ObjectsGenerator : MonoBehaviour
 	/// </summary>
 	void spawnObjects()
 	{
-		
 		objects = new TileObject[mapWidth, mapHeight];
 
-		for (int i = 0; i < mapWidth; i++)
+		float posX = 0.0f;
+		for (int i = 0; i < mapWidth; i++, posX += tileDeltaPosition)
 		{
-			for (int j = 0; j < mapHeight; j++)
+			float posY = 0.0f;
+			for (int j = 0; j < mapHeight; j++, posY += tileDeltaPosition)
 			{
 				TileObject temp = Instantiate(tileObjectPrefab, Vector3.zero, Quaternion.identity);
 				temp.transform.parent = transform;
 
 				var color = colors[Random.Range(0, colors.Length)];
-				var position = new Vector2(i, j);
+				var position = new Vector2(posX, posY);
 				temp.setTileObjectParametrs(position, color);
 
 				objects[i, j] = temp;

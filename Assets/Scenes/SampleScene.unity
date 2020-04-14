@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -146,7 +147,20 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
+  m_Enabled: 0
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33be014edfa7ff749883445203b132e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deltaPositionYForGUI: 0.7
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -198,49 +212,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 2, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1936032322 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1097477367159461950, guid: cfcda84048679d54cb5fc6522e04f494,
-    type: 3}
-  m_PrefabInstance: {fileID: 1097477366880901756}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1936032325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1936032322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f37676c30ab8a934aa9b55d57cbac388, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tileObjectPrefab: {fileID: -5382547251341648874, guid: 230c4a889e23c2b479087de14462b23f,
-    type: 3}
-  colors:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 1, g: 1, b: 0, a: 1}
---- !u!114 &1936032326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1936032322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d49ac775173e93d46b87cc04ae551246, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1097477366880901756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -310,28 +287,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1097477367159461951, guid: cfcda84048679d54cb5fc6522e04f494,
         type: 3}
-      propertyPath: widht
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1097477367159461951, guid: cfcda84048679d54cb5fc6522e04f494,
-        type: 3}
-      propertyPath: hieght
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1097477367159461951, guid: cfcda84048679d54cb5fc6522e04f494,
-        type: 3}
-      propertyPath: mapWidht
+      propertyPath: _mapWidht
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1097477367159461951, guid: cfcda84048679d54cb5fc6522e04f494,
         type: 3}
-      propertyPath: mapHeight
-      value: 6
+      propertyPath: _mapHeight
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1097477367159461951, guid: cfcda84048679d54cb5fc6522e04f494,
         type: 3}
-      propertyPath: tileSize
-      value: 6
+      propertyPath: _tileSize
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfcda84048679d54cb5fc6522e04f494, type: 3}
