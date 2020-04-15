@@ -6,15 +6,15 @@ public class TileMap : MonoBehaviour
 	/// <summary>
 	/// Ширина сетки тайлов
 	/// </summary>
-	int _mapWidht = 10;
-	public static int mapWidht { get; private set; } = 6;
+	int _gridWidht = 10;
+	public static int gridWidht { get; private set; } = 6;
 
 	[SerializeField]
 	/// <summary>
 	/// Высота сетки тайлов
 	/// </summary>
-	int _mapHeight = 10;
-	public static int mapHeight { get; private set; } = 6;
+	int _gridHeight = 10;
+	public static int gridHeight { get; private set; } = 6;
 
 	[SerializeField]
 	/// <summary>
@@ -30,8 +30,8 @@ public class TileMap : MonoBehaviour
 
 	void OnValidate()
 	{
-		if (mapWidht < 3) mapWidht = 3;
-		if (mapHeight < 3) mapHeight = 3;
+		if (gridWidht < 3) gridWidht = 3;
+		if (gridHeight < 3) gridHeight = 3;
 
 		if (_tileSize < 1f) _tileSize = 1f;
 	}
@@ -41,7 +41,7 @@ public class TileMap : MonoBehaviour
 		tileSize = _tileSize;
 		tileDeltaPosition = tileSize / 6.25f;
 
-		mapWidht = _mapWidht;
-		mapHeight = _mapHeight;
+		gridWidht = _gridWidht;
+		gridHeight = _gridHeight;
 	}
 }

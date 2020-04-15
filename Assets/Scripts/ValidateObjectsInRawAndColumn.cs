@@ -7,14 +7,15 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 {
 	static ObjectsGenerator objectsGenerator;
 	static float tileDeltaPosition;
-	static int mapWidht = TileMap.mapWidht;
-	static int mapHeight = TileMap.mapHeight;
+	static int gridWidht = TileMap.gridWidht;
+	static int gridHeight = TileMap.gridHeight;
 
 	void Start()
 	{
 		tileDeltaPosition = TileMap.tileDeltaPosition;
-		mapWidht = TileMap.mapWidht;
-		mapHeight = TileMap.mapHeight;
+		gridWidht = TileMap.gridWidht;
+		gridHeight = TileMap.gridHeight;
+
 		objectsGenerator = GetComponent<ObjectsGenerator>();
 	}
 
@@ -68,7 +69,7 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 		Vector2 checkPosition = checkHorizontalLine ? new Vector2(newX, objPosition.y) : new Vector2(objPosition.x, newY);
 
 		//Количество объектов в линии
-		int objectsInLineCount = checkHorizontalLine ? mapWidht : mapHeight;
+		int objectsInLineCount = checkHorizontalLine ? gridWidht : gridHeight;
 		//Инкремент для цикла
 		Vector2 delta = checkHorizontalLine ? Vector2.right : Vector2.up;
 		delta *= tileDeltaPosition;

@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c3e8795f16b4b74bbcc7f422aa1d3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapWidht: 6
-  mapHeight: 6
+  _gridWidht: 6
+  _gridHeight: 8
   _tileSize: 6
 --- !u!114 &1936032325
 MonoBehaviour:
