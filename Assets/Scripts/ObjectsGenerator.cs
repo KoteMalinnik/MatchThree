@@ -47,16 +47,16 @@ public class ObjectsGenerator : MonoBehaviour
 				TileObject tile = Instantiate(tileObjectPrefab, Vector3.zero, Quaternion.identity);
 				tile.transform.parent = transform;
 
-				TileObject nearTile_Left = null;
-				TileObject nearTile_Bottom = null;
+				TileObject leftTile = null;
+				TileObject bottomTile = null;
 
-				if (i > 0) nearTile_Left = tiles[i - 1, j];
-				if (j > 0) nearTile_Bottom = tiles[i, j - 1];
+				if (i > 0) leftTile = tiles[i - 1, j];
+				if (j > 0) bottomTile = tiles[i, j - 1];
 
 				var position = new Vector2(posX, posY);
-				var color = setTileObjectColor(nearTile_Left, nearTile_Bottom);
+				var color = setTileObjectColor(leftTile, bottomTile);
 
-				tile.setTileObjectParametrs(position, color, nearTile_Left, nearTile_Bottom);
+				tile.setTileObjectParametrs(position, color);
 				tiles[i, j] = tile;
 			}
 		}
@@ -86,5 +86,10 @@ public class ObjectsGenerator : MonoBehaviour
 
 		resultColor = availableColors[Random.Range(0, availableColors.Count)];
 		return resultColor;
+	}
+
+	void createTileAtPpsition()
+	{
+		
 	}
 }

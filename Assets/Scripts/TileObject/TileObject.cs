@@ -19,12 +19,6 @@ public class TileObject : MonoBehaviour
 
 	SpriteRenderer spriteRenderer;
 
-	public TileObject nearTile_Left { get; private set; } = null;
-	public void setNearTile_Left(TileObject newNearTile_Left) { nearTile_Left = newNearTile_Left; }
-
-	public TileObject nearTile_Bottom { get; private set; } = null;
-	public void setNearTile_Bottom(TileObject newNearTile_Bottom) { nearTile_Bottom = newNearTile_Bottom; }
-
 	void Awake()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
@@ -38,15 +32,12 @@ public class TileObject : MonoBehaviour
 	/// </summary>
 	/// <param name="newPosition">New position.</param>
 	/// <param name="newColor">New color.</param>
-	public void setTileObjectParametrs(Vector2 newPosition, Color newColor, TileObject newNearTile_Left, TileObject newNearTile_Bottom)
+	public void setTileObjectParametrs(Vector2 newPosition, Color newColor)
 	{
 		color = newColor;
 		if (spriteRenderer != null) spriteRenderer.color = color;
 
 		setPosition(newPosition);
-
-		setNearTile_Left(newNearTile_Left);
-		setNearTile_Bottom(newNearTile_Bottom);
 
 		gameObject.name = position.ToString();
 	}

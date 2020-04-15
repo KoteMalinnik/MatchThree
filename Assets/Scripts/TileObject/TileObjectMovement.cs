@@ -92,15 +92,10 @@ public static class TileObjectMovement
 	static void replaceTiles()
 	{
 		var newTargetPosition = sourceTile.position;
-		var newTargetNearTile_Left = sourceTile.nearTile_Left;
-		var newTargetNearTile_Bottom = sourceTile.nearTile_Bottom;
-
 		var newSourcePosition = targetTile.position;
-		var newSourceNearTile_Left = targetTile.nearTile_Left;
-		var newSourceNearTile_Bottom = targetTile.nearTile_Bottom;
 
-		sourceTile.setTileObjectParametrs(newSourcePosition, sourceTile.color, newSourceNearTile_Left, newSourceNearTile_Bottom);
-		targetTile.setTileObjectParametrs(newTargetPosition, targetTile.color, newTargetNearTile_Left, newTargetNearTile_Bottom);
+		sourceTile.setTileObjectParametrs(newSourcePosition, sourceTile.color);
+		targetTile.setTileObjectParametrs(newTargetPosition, targetTile.color);
 	}
 
 	static string colorToString(Color color)

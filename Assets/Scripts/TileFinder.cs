@@ -5,24 +5,20 @@
 /// </summary>
 public static class TileFinder
 {
-	static readonly int gridWidth = TileMap.gridWidth;
-	static readonly int gridHeight = TileMap.gridHeight;
-	static readonly float tileDeltaPosition = TileMap.tileDeltaPosition;
-
     /// <summary>
 	/// Возвращает TileObject в позиции position. Если в этой позиции нет объекта, возвращает null
 	/// </summary>
 	/// <returns>The tile object by position.</returns>
 	/// <param name="position">Position.</param>
-	public static TileObject getTileObjectByPosition(Vector2 position)
+	public static TileObject getTileAtPosition(Vector2 position)
 	{
-		if (position.x > gridWidth || position.x < 0) return null;
-		if (position.y > gridHeight || position.y < 0) return null;
+		if (position.x > TileMap.gridWidth || position.x < 0) return null;
+		if (position.y > TileMap.gridHeight || position.y < 0) return null;
 
 		TileObject[,] tiles = ObjectsGenerator.tiles;
 
-		for (int i = 0; i < gridWidth; i++)
-			for (int j = 0; j < gridHeight; j++)
+		for (int i = 0; i < TileMap.gridWidth; i++)
+			for (int j = 0; j < TileMap.gridHeight; j++)
 				if (tiles[i, j].position == position)
 					return tiles[i, j];
 
@@ -41,56 +37,37 @@ public static class TileFinder
 			return null;
 		}
 
-		direction *= tileDeltaPosition;
+		direction *= TileMap.tileDeltaPosition;
 		var targetTilePosition = tile.position + direction;
 
-		return getTileObjectByPosition(targetTilePosition);
+		return getTileAtPosition(targetTilePosition);
 	}
 
 	/// <summary>
 	/// Возвращает столбец, содержащий tile
 	/// </summary>
 	/// <param name="tile">Tile.</param>
-	public static TileObject[] getColoumn(TileObject tile)
+	/// <param name="param">"C" для столбца, "R" для ряда.</param>
+	public static TileObject[] getLine(TileObject tile, string param)
 	{
-		TileObject[] tilesInColoumn = new TileObject[gridHeight];
+		int arraySize = param == "C" ? TileMap.gridHeight : TileMap.gridWidth;
+		TileObject[] tilesInLine = new TileObject[arraySize];
 
-		TileObject bottomestTileInTheGrid = tile;
-		for (int i = 0; i < tilesInColoumn.Length && bottomestTileInTheGrid.nearTile_Bottom != null; i++)
-			bottomestTileInTheGrid = bottomestTileInTheGrid.nearTile_Bottom;
+		Vector2 direction = param == "C" ? Vector2.down : Vector2.left;
 
-		TileObject checkingTile = bottomestTileInTheGrid;
-		for (int i = 0; i < tilesInColoumn.Length; i++)
+		TileObject checkingTile = tile;
+		//Нахождение самого левого/нижнего тайла в линии
+		for (int i = 0; i < tilesInLine.Length && getNearestTile(checkingTile, direction) != null; i++)
+			checkingTile = getNearestTile(checkingTile, direction);
+
+		direction *= -1;
+		for (int i = 0; i < tilesInLine.Length; i++)
 		{
-			tilesInColoumn[i] = checkingTile;
-			checkingTile = getNearestTile(checkingTile, Vector2.up);
+			tilesInLine[i] = checkingTile;
+			checkingTile = getNearestTile(checkingTile, direction);
 			if (checkingTile == null) break;
 		}
 
-		return tilesInColoumn;
-	}
-
-	/// <summary>
-	/// Возвращает строку, в которой находится tile
-	/// </summary>
-	/// <returns>The raw.</returns>
-	/// <param name="tile">Tile.</param>
-	public static TileObject[] getRaw(TileObject tile)
-	{
-		TileObject[] tilesInRaw = new TileObject[gridWidth];
-
-		TileObject leftestTileInTheGrid = tile;
-		for (int i = 0; i < tilesInRaw.Length && leftestTileInTheGrid.nearTile_Left != null; i++)
-			leftestTileInTheGrid = leftestTileInTheGrid.nearTile_Left;
-
-		TileObject checkingTile = leftestTileInTheGrid;
-		for (int i = 0; i < tilesInRaw.Length; i++)
-		{
-			tilesInRaw[i] = checkingTile;
-			checkingTile = getNearestTile(checkingTile, Vector2.right);
-			if (checkingTile == null) break;
-		}
-
-		return tilesInRaw;
+		return tilesInLine;
 	}
 }

@@ -46,6 +46,8 @@ public static class ValidateObjectsInRawAndColumn
 		result = matchedTilesToDestroy.Length >= 3;
 		Debug.Log("Результат: " + result);
 
+		if (result) MathesDestroyer.destroyMatches(matchedTilesToDestroy);
+
 		return result;
 	}
 
@@ -66,14 +68,7 @@ public static class ValidateObjectsInRawAndColumn
 	/// </summary>
 	static TileObject[] checkLineForMatches(TileObject tile, string param)
 	{
-		TileObject[] line;
-		if (param == "C") line = TileFinder.getColoumn(tile);
-		else if (param == "R") line = TileFinder.getRaw(tile);
-		else
-		{
-			Debug.LogError("Неверный параметр: " + param);
-			return null;
-		}
+		TileObject[] line = TileFinder.getLine(tile, param);
 		
 		var mathedTiles = new List<TileObject>();
 
