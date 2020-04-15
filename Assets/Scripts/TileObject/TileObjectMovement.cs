@@ -94,8 +94,8 @@ public static class TileObjectMovement
 		var newTargetPosition = sourceTile.position;
 		var newSourcePosition = targetTile.position;
 
-		sourceTile.setTileObjectParametrs(newSourcePosition, sourceTile.color);
-		targetTile.setTileObjectParametrs(newTargetPosition, targetTile.color);
+		sourceTile.setTileParametrs(newSourcePosition, sourceTile.color);
+		targetTile.setTileParametrs(newTargetPosition, targetTile.color);
 	}
 
 	static string colorToString(Color color)

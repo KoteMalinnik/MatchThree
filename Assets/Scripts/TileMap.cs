@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public static class TileMap
 {
@@ -21,4 +22,26 @@ public static class TileMap
 	/// Разница позиций соседних тайлов. При tileSize = 1 => tileDeltaPosition = 0.16
 	/// </summary>
 	public static readonly float tileDeltaPosition = tileSize / 6.25f;
+
+	/// <summary>
+	/// Двумерный массив тайлов
+	/// </summary>
+	static TileObject[,] tilesGrid = new TileObject[gridWidth, gridHeight];
+
+	/// <summary>
+	/// Возвращает grid
+	/// </summary>
+	/// <returns>The tiles grid.</returns>
+	public static TileObject[,] getTilesGrid() { return tilesGrid;}
+
+	/// <summary>
+	/// Устанавливает grid
+	/// </summary>
+	/// <param name="newGrid">New grid.</param>
+	public static void setTileInGrid(TileObject newTile)
+	{
+		var index_x = (int)newTile.gridID.x;
+		var index_y = (int)newTile.gridID.y;
+		tilesGrid[index_x, index_y] = newTile;
+	}
 }

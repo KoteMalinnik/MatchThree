@@ -5,11 +5,13 @@
 /// </summary>
 public class TileObject : MonoBehaviour
 {
+	public Vector2 gridID { get; private set; } = new Vector2 (0, 0);
+
 	/// <summary>
 	/// Позиция объекта в сетке tileMap
 	/// </summary>
 	/// <value>The position.</value>
-	public Vector2 position { get; private set; } = new Vector2 (-1, -1);
+	public Vector2 position { get; private set; } = new Vector2 (0, 0);
 
 	/// <summary>
 	/// Цвет объекта
@@ -32,19 +34,31 @@ public class TileObject : MonoBehaviour
 	/// </summary>
 	/// <param name="newPosition">New position.</param>
 	/// <param name="newColor">New color.</param>
-	public void setTileObjectParametrs(Vector2 newPosition, Color newColor)
+	public void setTileParametrs(Vector2 newPosition, Color newColor)
 	{
-		color = newColor;
-		if (spriteRenderer != null) spriteRenderer.color = color;
-
 		setPosition(newPosition);
+		setGridID();
+		setColor(newColor);
 
-		gameObject.name = position.ToString();
+		gameObject.name = $"{(int)gridID.x}-{(int)gridID.y}";
+
+		TileMap.setTileInGrid(this);
 	}
 
-	void setPosition(Vector2 newPosition)
+	public void setPosition(Vector2 newPosition)
 	{
 		position = newPosition;
 		transform.position = newPosition;
+	}
+
+	public void setGridID()
+	{
+		gridID = new Vector2(position.x, position.y) / TileMap.tileDeltaPosition;
+	}
+
+	public void setColor(Color newColor)
+	{
+		color = newColor;
+		if (spriteRenderer != null) spriteRenderer.color = color;
 	}
 }

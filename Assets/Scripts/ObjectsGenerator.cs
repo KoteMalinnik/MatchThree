@@ -1,20 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 /// <summary>
-/// Генератор объектов сетки TileObject
+/// Генератор тайлов
 /// </summary>
 public class ObjectsGenerator : MonoBehaviour
 {
 	[SerializeField]
 	TileObject tileObjectPrefab;
-
-	/// <summary>
-	/// Двумерный массив объектов в сетке. Нумерация по позиции в сетке
-	/// </summary>
-	public static TileObject[,] tiles { get; private set; }
 
 	[SerializeField]
 	/// <summary>
@@ -22,50 +15,48 @@ public class ObjectsGenerator : MonoBehaviour
 	/// </summary>
 	Color[] colors;
 
-	float tileDeltaPosition = TileMap.tileDeltaPosition;
-	int gridHeight = TileMap.gridHeight;
-	int gridWidth = TileMap.gridWidth;
-
 	void Start()
 	{
-		spawnObjects();
+		spawnTiles();
 	}
 
 	/// <summary>
 	/// Создание объектов в узлах сетки
 	/// </summary>
-	void spawnObjects()
+	void spawnTiles()
 	{
-		tiles = new TileObject[gridWidth, gridHeight];
-
 		float posX = 0.0f;
-		for (int i = 0; i < gridWidth; i++, posX += tileDeltaPosition)
+		for (int i = 0; i < TileMap.gridWidth; i++, posX += TileMap.tileDeltaPosition)
 		{
 			float posY = 0.0f;
-			for (int j = 0; j < gridHeight; j++, posY += tileDeltaPosition)
+			for (int j = 0; j < TileMap.gridHeight; j++, posY += TileMap.tileDeltaPosition)
 			{
-				TileObject tile = Instantiate(tileObjectPrefab, Vector3.zero, Quaternion.identity);
-				tile.transform.parent = transform;
-
-				TileObject leftTile = null;
-				TileObject bottomTile = null;
-
-				if (i > 0) leftTile = tiles[i - 1, j];
-				if (j > 0) bottomTile = tiles[i, j - 1];
-
 				var position = new Vector2(posX, posY);
-				var color = setTileObjectColor(leftTile, bottomTile);
-
-				tile.setTileObjectParametrs(position, color);
-				tiles[i, j] = tile;
+				createTileAtPosition(position);
 			}
 		}
+	}
+
+	void createTileAtPosition(Vector2 position)
+	{
+		TileObject tile = Instantiate(tileObjectPrefab, Vector3.zero, Quaternion.identity);
+		tile.transform.parent = transform;
+
+		var leftTileID = TileFinder.getIDByPosition(position) + Vector2.left;
+		TileObject leftTile = TileFinder.getTileAtID(leftTileID.x, leftTileID.y);
+
+		var bottomTileID = TileFinder.getIDByPosition(position) + Vector2.down;
+		TileObject bottomTile = TileFinder.getTileAtID(bottomTileID.x, bottomTileID.y);
+
+		var color = setTileColor(leftTile, bottomTile);
+
+		tile.setTileParametrs(position, color);
 	}
 
 	/// <summary>
 	/// Возвращает цвет, который не имеют соседние тайлы
 	/// </summary>
-	Color setTileObjectColor(TileObject leftTile, TileObject bottomTile)
+	Color setTileColor(TileObject leftTile, TileObject bottomTile)
 	{
 		var resultColor = new Color();
 
@@ -88,8 +79,4 @@ public class ObjectsGenerator : MonoBehaviour
 		return resultColor;
 	}
 
-	void createTileAtPpsition()
-	{
-		
-	}
 }

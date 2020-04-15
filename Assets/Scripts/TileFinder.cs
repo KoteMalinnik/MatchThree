@@ -5,42 +5,31 @@
 /// </summary>
 public static class TileFinder
 {
-    /// <summary>
-	/// Возвращает TileObject в позиции position. Если в этой позиции нет объекта, возвращает null
+	/// <summary>
+	/// Возвращает TileObject по ID. Если тайла с таким ID нет, то возвращает null
 	/// </summary>
-	/// <returns>The tile object by position.</returns>
-	/// <param name="position">Position.</param>
-	public static TileObject getTileAtPosition(Vector2 position)
+	public static TileObject getTileAtID(float rawIndex, float coloumnIndex)
 	{
-		if (position.x > TileMap.gridWidth || position.x < 0) return null;
-		if (position.y > TileMap.gridHeight || position.y < 0) return null;
+		var i = (int)rawIndex;
+		if (i < 0 || i > TileMap.gridWidth) return null;
 
-		TileObject[,] tiles = ObjectsGenerator.tiles;
+		var j = (int)coloumnIndex;
+		if (j < 0 || j > TileMap.gridHeight) return null;
 
-		for (int i = 0; i < TileMap.gridWidth; i++)
-			for (int j = 0; j < TileMap.gridHeight; j++)
-				if (tiles[i, j].position == position)
-					return tiles[i, j];
-
-		return null;
+		TileObject targetTile = TileMap.getTilesGrid()[i, j] ?? null;
+		return targetTile;
 	}
 
 	/// <summary>
-	///Возвращает соседний тайл в направлении direction
+	///Возвращает соседний тайл, который находится на расстоянии rawDelta тайлов по горизонтали и coloumnDelta тайлов по вертикали
 	/// </summary>
-	/// <param name="direction">Vector2.(up, down, left, right).</param>
-	public static TileObject getNearestTile(TileObject tile, Vector2 direction)
+	public static TileObject getNearestTile(TileObject tile, int rawDelta = 0, int coloumnDelta = 0)
 	{
-		if (direction != Vector2.up && direction != Vector2.down && direction != Vector2.left && direction != Vector2.right)
-		{
-			Debug.LogError("getNearestTile: Неверное направление");
-			return null;
-		}
+		var i = (int)tile.gridID.x;
+		var j = (int)tile.gridID.y;
+		TileObject targetTile = getTileAtID(i + rawDelta, j + coloumnDelta);
 
-		direction *= TileMap.tileDeltaPosition;
-		var targetTilePosition = tile.position + direction;
-
-		return getTileAtPosition(targetTilePosition);
+		return targetTile;
 	}
 
 	/// <summary>
@@ -53,21 +42,26 @@ public static class TileFinder
 		int arraySize = param == "C" ? TileMap.gridHeight : TileMap.gridWidth;
 		TileObject[] tilesInLine = new TileObject[arraySize];
 
-		Vector2 direction = param == "C" ? Vector2.down : Vector2.left;
-
-		TileObject checkingTile = tile;
-		//Нахождение самого левого/нижнего тайла в линии
-		for (int i = 0; i < tilesInLine.Length && getNearestTile(checkingTile, direction) != null; i++)
-			checkingTile = getNearestTile(checkingTile, direction);
-
-		direction *= -1;
+		TileObject temp = null;
 		for (int i = 0; i < tilesInLine.Length; i++)
 		{
-			tilesInLine[i] = checkingTile;
-			checkingTile = getNearestTile(checkingTile, direction);
-			if (checkingTile == null) break;
+			temp = param == "C" ? getTileAtID(tile.gridID.x, i) : getTileAtID(i, tile.gridID.y);
+			if (temp == null) break;
+			tilesInLine[i] = temp;
 		}
 
 		return tilesInLine;
+	}
+
+	public static Vector2 getIDByPosition(Vector2 position)
+	{
+		if  (position.x < 0 || position.x > TileMap.gridWidth || position.y < 0 || position.y > TileMap.gridHeight)
+		{
+			Debug.LogError("Error");
+			return new Vector2(-1, -1);
+		}
+
+		var ID = new Vector2(position.x, position.y) / TileMap.tileDeltaPosition;
+		return ID;
 	}
 }
