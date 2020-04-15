@@ -47,6 +47,8 @@ public class TileObject : MonoBehaviour
 
 		setNearTile_Left(newNearTile_Left);
 		setNearTile_Bottom(newNearTile_Bottom);
+
+		gameObject.name = position.ToString();
 	}
 
 	void setPosition(Vector2 newPosition)
