@@ -43,14 +43,20 @@ public class ObjectsGenerator : MonoBehaviour
 			float posY = 0.0f;
 			for (int j = 0; j < mapHeight; j++, posY += tileDeltaPosition)
 			{
-				TileObject temp = Instantiate(tileObjectPrefab, Vector3.zero, Quaternion.identity);
-				temp.transform.parent = transform;
+				TileObject tile = Instantiate(tileObjectPrefab, Vector3.zero, Quaternion.identity);
+				tile.transform.parent = transform;
+
+				TileObject nearTile_Left = null;
+				TileObject nearTile_Bottom = null;
+
+				if (i > 0) nearTile_Left = objects[i - 1, j];
+				if (j > 0) nearTile_Bottom = objects[i, j - 1];
 
 				var position = new Vector2(posX, posY);
-				var color = setTileObjectColor(position, tileDeltaPosition);
+				var color = setTileObjectColor(nearTile_Left, nearTile_Bottom);
 
-				temp.setTileObjectParametrs(position, color);
-				objects[i, j] = temp;
+				tile.setTileObjectParametrs(position, color, nearTile_Left, nearTile_Bottom);
+				objects[i, j] = tile;
 			}
 		}
 	}
@@ -58,46 +64,28 @@ public class ObjectsGenerator : MonoBehaviour
 	/// <summary>
 	/// Возвращает цвет, который не имеют соседние тайлы
 	/// </summary>
-	/// <returns>The nearest tile objects for color match.</returns>
-	Color setTileObjectColor(Vector2 sourceObjectPosition, float tileDeltaPosition)
+	Color setTileObjectColor(TileObject leftTile, TileObject bottomTile)
 	{
-		//Надо анализировать цвет объектов, которые находятся левее и ниже исходного
-		int index = Random.Range(0, colors.Length);
-		Color resultColor = colors[index];
+		var resultColor = new Color();
 
 		var availableColors = new List<Color>(colors.Length);
 		for (int i = 0; i < colors.Length; i++) availableColors.Add(colors[i]);
 
-		checkTileColor(ref availableColors, ref resultColor, sourceObjectPosition, deltaPositionX: tileDeltaPosition);
-		checkTileColor(ref availableColors, ref resultColor, sourceObjectPosition, deltaPositionY: tileDeltaPosition);
+		if(leftTile != null)
+		{
+			Color leftTileColor = leftTile.color;
+			if (availableColors.Contains(leftTileColor)) availableColors.Remove(leftTileColor);
+		}
 
+		if (bottomTile != null)
+		{
+			Color bottomTileColor = bottomTile.color;
+			if (availableColors.Contains(bottomTileColor)) availableColors.Remove(bottomTileColor);
+		}
+
+		resultColor = availableColors[Random.Range(0, availableColors.Count)];
 		return resultColor;
 	}
-
-	/// <summary>
-	/// Проверка на совпадение цвета с соседним объектом
-	/// </summary>
-	/// <param name="availableColors">Available colors.</param>
-	/// <param name="resultColor">Result color.</param>
-	/// <param name="sourceObjectPosition">Source object position.</param>
-	/// <param name="deltaPositionX">Delta position x. tileDeltaPosition</param>
-	/// <param name="deltaPositionY">Delta position y. tileDeltaPosition</param>
-	void checkTileColor(ref List<Color> availableColors, ref Color resultColor, Vector2 sourceObjectPosition, float deltaPositionX = 0, float deltaPositionY = 0)
-	{
-		var checkPosition = new Vector2(sourceObjectPosition.x - deltaPositionX, sourceObjectPosition.y - deltaPositionY);
-
-		if (getTileObjectByPosition(checkPosition) != null)
-		{
-			Color tileColor = getTileObjectByPosition(checkPosition).color;
-
-			if (tileColor == resultColor)
-			{
-				availableColors.Remove(tileColor);
-				resultColor = availableColors[Random.Range(0, availableColors.Count)];
-			}
-		}
-	}
-
 
 	/// <summary>
 	/// Возвращает TileObject в позиции position. Если в этой позиции нет объекта, возвращает null
@@ -119,4 +107,9 @@ public class ObjectsGenerator : MonoBehaviour
 
 		return null;
 	}
+
+	//public TileObject[] getColoumn(TileObject tile)
+	//{
+		
+	//}
 }

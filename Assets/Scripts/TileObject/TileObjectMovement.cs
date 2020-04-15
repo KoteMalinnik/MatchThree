@@ -8,69 +8,69 @@ public static class TileObjectMovement
 	/// <summary>
 	/// Объект, который надо поменять местами
 	/// </summary>
-	static TileObject sourceObject;
+	static TileObject sourceTile;
 	/// <summary>
 	/// Объект, с которым надо поменять местами
 	/// </summary>
-	static TileObject targetObject;
+	static TileObject targetTile;
 
 	/// <summary>
 	/// Первый вызов метода - установка currentObject.
 	/// Второй вызов метода - установка targetObject. 
 	/// </summary>
-	/// <param name="obj">Object.</param>
-	public static void setObject(TileObject obj)
+	/// <param name="tile">Object.</param>
+	public static void setTiles(TileObject tile)
 	{
-		if (sourceObject == null)
+		if (sourceTile == null)
 		{
-			setSourceTileObject(obj);
+			setSourceTile(tile);
 			return;
 		}
 
-		if (obj == sourceObject)
+		if (tile == sourceTile)
 		{
 			Debug.Log("Один и тот же объект");
 			return;
 		}
 
-		setTargetTileObject(obj);
+		setTargetTile(tile);
 
-		sourceObject.transform.localScale /= 0.8f;
-		ReplaceTileObjects();
+		sourceTile.transform.localScale /= 0.8f;
+		replaceTilesIfPossible();
 	}
 
 	/// <summary>
 	/// Установка перемещаемого объекта
 	/// </summary>
-	/// <param name="obj">Object.</param>
-	static void setSourceTileObject(TileObject obj)
+	/// <param name="tile">Object.</param>
+	static void setSourceTile(TileObject tile)
 	{
-		Debug.Log($"Исходный объект. Позиция: {obj.position}. Цвет: {colorToString(obj.color)}");
-		sourceObject = obj;
-		sourceObject.transform.localScale *= 0.8f;
+		Debug.Log($"Исходный объект. Позиция: {tile.position}. Цвет: {colorToString(tile.color)}");
+		sourceTile = tile;
+		sourceTile.transform.localScale *= 0.8f;
 	}
 
 
 	/// <summary>
 	/// Установка объекта, с которым требуется поменять местами перемещаемый объект
 	/// </summary>
-	/// <param name="obj">Object.</param>
-	static void setTargetTileObject(TileObject obj)
+	/// <param name="tile">Object.</param>
+	static void setTargetTile(TileObject tile)
 	{
-		Debug.Log($"Целевой объект. Позиция: {obj.position}. Цвет: {colorToString(obj.color)}");
-		targetObject = obj;
+		Debug.Log($"Целевой объект. Позиция: {tile.position}. Цвет: {colorToString(tile.color)}");
+		targetTile = tile;
 	}
 
 	/// <summary>
 	/// Перемещает currentObject на место targetObject и наоборот, если есть совпадения в столбце или строке
 	/// </summary>
-	static void ReplaceTileObjects()
+	static void replaceTilesIfPossible()
 	{
 		Debug.Log("<color=yellow>Перемещение объектов</color>");
 
-		replaceObjects();
+		replaceTiles();
 
-		bool canReplaceTileObjects = ValidateObjectsInRawAndColumn.canReplaceTileObjects(sourceObject, targetObject);
+		bool canReplaceTileObjects = ValidateObjectsInRawAndColumn.couldReplaceTiles(sourceTile, targetTile);
 		if (canReplaceTileObjects)
 		{
 			Debug.Log("<color=green>Перемещение объектов разрешено</color>");
@@ -79,21 +79,28 @@ public static class TileObjectMovement
 		else
 		{
 			Debug.Log("<color=red>Перемещение объектов невозможно. Возвращение в исходное состояние</color>");
-			replaceObjects();
+			replaceTiles();
 		}
 
-		targetObject = null;
-		sourceObject = null;
+		targetTile = null;
+		sourceTile = null;
 	}
 
 	/// <summary>
 	/// Меняет местами в сетке targetObject и currentObject
 	/// </summary>
-	static void replaceObjects()
+	static void replaceTiles()
 	{
-		var newTargetPosition = sourceObject.position;
-		sourceObject.setTileObjectParametrs(targetObject.position, sourceObject.color);
-		targetObject.setTileObjectParametrs(newTargetPosition, targetObject.color);
+		var newTargetPosition = sourceTile.position;
+		var newTargetNearTile_Left = sourceTile.nearTile_Left;
+		var newTargetNearTile_Bottom = sourceTile.nearTile_Bottom;
+
+		var newSourcePosition = targetTile.position;
+		var newSourceNearTile_Left = targetTile.nearTile_Left;
+		var newSourceNearTile_Bottom = targetTile.nearTile_Bottom;
+
+		sourceTile.setTileObjectParametrs(newSourcePosition, sourceTile.color, newSourceNearTile_Left, newSourceNearTile_Bottom);
+		targetTile.setTileObjectParametrs(newTargetPosition, targetTile.color, newTargetNearTile_Left, newTargetNearTile_Bottom);
 	}
 
 	static string colorToString(Color color)

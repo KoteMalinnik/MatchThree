@@ -22,29 +22,29 @@ public class ValidateObjectsInRawAndColumn : MonoBehaviour
 	/// Возвращает true, если first и second можно поменять местами
 	/// </summary>
 	/// <returns><c>true</c>, if replace tile objects was caned, <c>false</c> otherwise.</returns>
-	/// <param name="first">First.</param>
-	/// <param name="second">Second.</param>
-	public static bool canReplaceTileObjects(TileObject first, TileObject second)
+	/// <param name="firstTile">First.</param>
+	/// <param name="secondTile">Second.</param>
+	public static bool couldReplaceTiles(TileObject firstTile, TileObject secondTile)
 	{
-		Vector2 firstPos = first.position;
-		Vector2 secondPos = second.position;
+		Vector2 firstTilePosition = firstTile.position;
+		Vector2 secondTilePosition = secondTile.position;
 
 		//Нет необходимости что-либо проверять, если второй объект на в пределах одного объекта по горизонтали или вертикали
-		bool inRangeOfOneUnit = (firstPos - secondPos).magnitude < tileDeltaPosition + 0.1f;
-		if (!inRangeOfOneUnit) return false;
+		bool inRangeOfOneTile = (firstTilePosition - secondTilePosition).magnitude < tileDeltaPosition + 0.1f;
+		if (!inRangeOfOneTile) return false;
 		Debug.Log("В пределах одного тайла");
 
 		//Нет необходимости проверять, если они одного цвета
-		bool areNotSimilarColors = first.color != second.color;
-		if (!areNotSimilarColors) return false;
+		bool colorsAreDifferent = firstTile.color != secondTile.color;
+		if (!colorsAreDifferent) return false;
 		Debug.Log("Разные цвета тайлов");
 
 		//Если у нас будет хотя бы одно совпадение в одном из четырех случаев, то будет возвращено true, а иначе будет возвращено false
-		bool haveMatches = checkLineForMatches(first, true);
-		if (!haveMatches) haveMatches = checkLineForMatches(first, false);
-		if (!haveMatches) haveMatches = checkLineForMatches(first, true);
-		if (!haveMatches) haveMatches = checkLineForMatches(second, false);
-		if (!haveMatches) haveMatches = checkLineForMatches(second, true);
+		bool haveMatches = checkLineForMatches(firstTile, true);
+		if (!haveMatches) haveMatches = checkLineForMatches(firstTile, false);
+		if (!haveMatches) haveMatches = checkLineForMatches(firstTile, true);
+		if (!haveMatches) haveMatches = checkLineForMatches(secondTile, false);
+		if (!haveMatches) haveMatches = checkLineForMatches(secondTile, true);
 		Debug.Log("Проверка на совпадения завершена с результатом: " + haveMatches);
 
 		return haveMatches;
