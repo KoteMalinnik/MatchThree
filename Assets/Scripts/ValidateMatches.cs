@@ -7,8 +7,8 @@ using System.Collections.Generic;
 public static class ValidateMatches
 {
 	//Содержит совпавшие тайлы, которые надо будет уничтожить
-	static TileObject[] matchedTiles = new TileObject[0];
-	public static TileObject[] getMatchedTiles() { return matchedTiles;}
+	static Tile[] matchedTiles = new Tile[0];
+	public static Tile[] getMatchedTiles() { return matchedTiles;}
 
 	/// <summary>
 	/// Возвращает true, если first и second можно поменять местами
@@ -16,7 +16,7 @@ public static class ValidateMatches
 	/// <returns><c>true</c>, if replace tile objects was caned, <c>false</c> otherwise.</returns>
 	/// <param name="firstTile">First.</param>
 	/// <param name="secondTile">Second.</param>
-	public static bool couldReplaceTiles(TileObject secondTile, TileObject firstTile)
+	public static bool couldReplaceTiles(Tile secondTile, Tile firstTile)
 	{
 		//Debug.Log("Проверка тайлов на возможность перемещения");
 		bool result = false;
@@ -32,7 +32,7 @@ public static class ValidateMatches
 
 
 		//Debug.Log("Проверка на совпадения");
-		matchedTiles = new TileObject[0];
+		matchedTiles = new Tile[0];
 
 		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(firstTile, "C"));
 		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(firstTile, "R"));
@@ -52,11 +52,11 @@ public static class ValidateMatches
 		return result;
 	}
 
-	static TileObject[] addArrayToArray(TileObject[] sourceArray, TileObject[] addingArray)
+	static Tile[] addArrayToArray(Tile[] sourceArray, Tile[] addingArray)
 	{
 		if (addingArray == null) return sourceArray;
 
-		TileObject[] newArray = new TileObject[sourceArray.Length + addingArray.Length];
+		Tile[] newArray = new Tile[sourceArray.Length + addingArray.Length];
 
 		for (int i = 0; i < sourceArray.Length; i++) newArray[i] = sourceArray[i];
 		for (int i = 0; i < addingArray.Length; i++) newArray[i + sourceArray.Length] = addingArray[i];
@@ -67,11 +67,11 @@ public static class ValidateMatches
 	/// <summary>
 	/// Возвращает массив тайлов, с которыми произошло совпадение и при этом среди них есть tile.
 	/// </summary>
-	static TileObject[] checkLineForMatches(TileObject tile, string param)
+	static Tile[] checkLineForMatches(Tile tile, string param)
 	{
-		TileObject[] line = TileFinder.getLine(tile, param);
+		Tile[] line = TilesFinder.getLine(tile, param);
 		
-		var mathedTiles = new List<TileObject>();
+		var mathedTiles = new List<Tile>();
 
 		//Цикл добавляет последовательно идущие элементы в список
 		for (int i = 0; i < line.Length && line[i] != null; i++)

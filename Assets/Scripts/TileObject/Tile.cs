@@ -3,7 +3,7 @@
 /// <summary>
 /// Объект сетки
 /// </summary>
-public class TileObject : MonoBehaviour
+public class Tile : MonoBehaviour
 {
 	/// <summary>
 	/// Идентификатор тайла в сетке.

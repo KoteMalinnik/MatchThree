@@ -3,31 +3,31 @@
 /// <summary>
 /// Содержит функции поиска TileObject
 /// </summary>
-public static class TileFinder
+public static class TilesFinder
 {
 	/// <summary>
 	/// Возвращает TileObject по ID. Если тайла с таким ID нет, то возвращает null
 	/// </summary>
-	public static TileObject getTileAtID(float rawIndex, float coloumnIndex)
+	public static Tile getTileAtID(float rawIndex, float coloumnIndex)
 	{
 		var i = (int)rawIndex;
-		if (i < 0 || i > TileMap.gridWidth) return null;
+		if (i < 0 || i > TileMap.gridWidth-1) return null;
 
 		var j = (int)coloumnIndex;
-		if (j < 0 || j > TileMap.gridHeight) return null;
+		if (j < 0 || j > TileMap.gridHeight-1) return null;
 
-		TileObject targetTile = TileMap.getTilesGrid()[i, j] ?? null;
+		Tile targetTile = TileMap.getTilesGrid()[i, j] ?? null;
 		return targetTile;
 	}
 
 	/// <summary>
 	///Возвращает соседний тайл, который находится на расстоянии rawDelta тайлов по горизонтали и coloumnDelta тайлов по вертикали
 	/// </summary>
-	public static TileObject getNearestTile(TileObject tile, int rawDelta = 0, int coloumnDelta = 0)
+	public static Tile getNearestTile(Tile tile, int rawDelta = 0, int coloumnDelta = 0)
 	{
 		var i = (int)tile.gridID.x;
 		var j = (int)tile.gridID.y;
-		TileObject targetTile = getTileAtID(i + rawDelta, j + coloumnDelta);
+		Tile targetTile = getTileAtID(i + rawDelta, j + coloumnDelta);
 
 		return targetTile;
 	}
@@ -37,12 +37,12 @@ public static class TileFinder
 	/// </summary>
 	/// <param name="tile">Tile.</param>
 	/// <param name="param">"C" для столбца, "R" для ряда.</param>
-	public static TileObject[] getLine(TileObject tile, string param)
+	public static Tile[] getLine(Tile tile, string param)
 	{
 		int arraySize = param == "C" ? TileMap.gridHeight : TileMap.gridWidth;
-		TileObject[] tilesInLine = new TileObject[arraySize];
+		Tile[] tilesInLine = new Tile[arraySize];
 
-		TileObject temp = null;
+		Tile temp = null;
 		for (int i = 0; i < tilesInLine.Length; i++)
 		{
 			temp = param == "C" ? getTileAtID(tile.gridID.x, i) : getTileAtID(i, tile.gridID.y);

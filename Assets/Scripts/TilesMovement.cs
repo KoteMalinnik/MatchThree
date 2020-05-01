@@ -3,23 +3,23 @@
 /// <summary>
 /// Класс перемещения двух объектов TileObject
 /// </summary>
-public static class TileObjectMovement
+public static class TilesMovement
 {
 	/// <summary>
 	/// Объект, который надо поменять местами
 	/// </summary>
-	static TileObject sourceTile;
+	static Tile sourceTile;
 	/// <summary>
 	/// Объект, с которым надо поменять местами
 	/// </summary>
-	static TileObject targetTile;
+	static Tile targetTile;
 
 	/// <summary>
 	/// Первый вызов метода - установка currentObject.
 	/// Второй вызов метода - установка targetObject. 
 	/// </summary>
 	/// <param name="tile">Object.</param>
-	public static void setTiles(TileObject tile)
+	public static void setTiles(Tile tile)
 	{
 		if (sourceTile == null)
 		{
@@ -43,7 +43,7 @@ public static class TileObjectMovement
 	/// Установка перемещаемого объекта
 	/// </summary>
 	/// <param name="tile">Object.</param>
-	static void setSourceTile(TileObject tile)
+	static void setSourceTile(Tile tile)
 	{
 		Debug.Log($"Исходный объект. ID: {tile.gridID}. Цвет: {colorToString(tile.color)}");
 		sourceTile = tile;
@@ -55,7 +55,7 @@ public static class TileObjectMovement
 	/// Установка объекта, с которым требуется поменять местами перемещаемый объект
 	/// </summary>
 	/// <param name="tile">Object.</param>
-	static void setTargetTile(TileObject tile)
+	static void setTargetTile(Tile tile)
 	{
 		Debug.Log($"Целевой объект. ID: {tile.gridID}. Цвет: {colorToString(tile.color)}");
 		targetTile = tile;
@@ -64,7 +64,7 @@ public static class TileObjectMovement
 	/// <summary>
 	/// Перемещает currentObject на место targetObject и наоборот, если есть совпадения в столбце или строке
 	/// </summary>
-	static void replaceTilesIfPossible(ref TileObject tile1, ref TileObject tile2)
+	static void replaceTilesIfPossible(ref Tile tile1, ref Tile tile2)
 	{
 		//Debug.Log("<color=yellow>Перемещение объектов</color>");
 
@@ -90,10 +90,10 @@ public static class TileObjectMovement
 	/// <summary>
 	/// Меняет местами в сетке.
 	/// </summary>
-	public static void replaceTiles(TileObject tile1, TileObject tile2)
+	public static void replaceTiles(Tile tile1, Tile tile2)
 	{
-		var newTile2Position = tile1.position;
 		var newTile1Position = tile2.position;
+		var newTile2Position = tile1.position;
 
 		tile1.setTileParametrs(newTile1Position, tile1.color);
 		tile2.setTileParametrs(newTile2Position, tile2.color);

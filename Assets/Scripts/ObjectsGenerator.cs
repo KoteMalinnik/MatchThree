@@ -28,7 +28,7 @@ public class ObjectsGenerator : MonoBehaviour
 	/// <summary>
 	/// Префаб тайла.
 	/// </summary>
-	TileObject tileObjectPrefab = null;
+	Tile tileObjectPrefab = null;
 
 	[SerializeField]
 	/// <summary>
@@ -64,14 +64,14 @@ public class ObjectsGenerator : MonoBehaviour
 	/// <param name="position">Position.</param>
 	public static void createTileAtPosition(Vector2 position)
 	{
-		TileObject tile = Instantiate(Instance.tileObjectPrefab, Vector3.zero, Quaternion.identity);
+		Tile tile = Instantiate(Instance.tileObjectPrefab, Vector3.zero, Quaternion.identity);
 		tile.transform.parent = Instance.transform;
 
-		var leftTileID = TileFinder.getIDByPosition(position) + Vector2.left;
-		TileObject leftTile = TileFinder.getTileAtID(leftTileID.x, leftTileID.y);
+		var leftTileID = TilesFinder.getIDByPosition(position) + Vector2.left;
+		Tile leftTile = TilesFinder.getTileAtID(leftTileID.x, leftTileID.y);
 
-		var bottomTileID = TileFinder.getIDByPosition(position) + Vector2.down;
-		TileObject bottomTile = TileFinder.getTileAtID(bottomTileID.x, bottomTileID.y);
+		var bottomTileID = TilesFinder.getIDByPosition(position) + Vector2.down;
+		Tile bottomTile = TilesFinder.getTileAtID(bottomTileID.x, bottomTileID.y);
 
 		var color = Instance.getUniqueColor(leftTile, bottomTile);
 
@@ -81,7 +81,7 @@ public class ObjectsGenerator : MonoBehaviour
 	/// <summary>
 	/// Возвращает цвет, который не имеют соседние тайлы
 	/// </summary>
-	Color getUniqueColor(TileObject leftTile, TileObject bottomTile)
+	Color getUniqueColor(Tile leftTile, Tile bottomTile)
 	{
 		var resultColor = new Color();
 

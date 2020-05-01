@@ -26,19 +26,19 @@ public static class TileMap
 	/// <summary>
 	/// Двумерный массив тайлов
 	/// </summary>
-	static TileObject[,] tilesGrid = new TileObject[gridWidth, gridHeight];
+	static Tile[,] tilesGrid = new Tile[gridWidth, gridHeight];
 
 	/// <summary>
 	/// Возвращает grid
 	/// </summary>
 	/// <returns>The tiles grid.</returns>
-	public static TileObject[,] getTilesGrid() { return tilesGrid;}
+	public static Tile[,] getTilesGrid() { return tilesGrid;}
 
 	/// <summary>
 	/// Устанавливает grid
 	/// </summary>
 	/// <param name="newTile">New tile.</param>
-	public static void setTileInGrid(TileObject newTile)
+	public static void setTileInGrid(Tile newTile)
 	{
 		var index_x = (int)newTile.gridID.x;
 		var index_y = (int)newTile.gridID.y;

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -5382547251341648874}
   - component: {fileID: 501619563923561278}
   m_Layer: 0
-  m_Name: TileObject
+  m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1536726083860810872}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01e0107ec7152d34ea1dd3bcd9959cfb, type: 3}
+  m_Script: {fileID: 11500000, guid: d9da3b0551f1f3f49a3e9ca83b057208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &501619563923561278
@@ -104,6 +104,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1536726083860810872}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1af3ad2a1ace68e4694f1253b13b5853, type: 3}
+  m_Script: {fileID: 11500000, guid: 39ffe58c001dc3448a5f139f7b34b7bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
