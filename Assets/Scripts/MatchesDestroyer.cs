@@ -21,7 +21,7 @@ public class MatchesDestroyer : MonoBehaviour
 
 			Destroy(tilesToDestroy[i].gameObject);
 
-			//ObjectsGenerator.createTileAtPosition(positionToCreateTile);
+			ObjectsGenerator.createTileAtPosition(positionToCreateTile);
 		}
 	}
 
