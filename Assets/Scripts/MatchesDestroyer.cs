@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Уничтожение совпавших тайлов.
+/// </summary>
 public class MatchesDestroyer : MonoBehaviour
 {
 	public static void destroyMatches(TileObject[] tilesToDestroy)
@@ -12,7 +15,5 @@ public class MatchesDestroyer : MonoBehaviour
 			Destroy(tilesToDestroy[i].gameObject, 0.5f);
 			ObjectsGenerator.createTileAtPosition(positionToCreateTile);
 		}
-
-
 	}
 }

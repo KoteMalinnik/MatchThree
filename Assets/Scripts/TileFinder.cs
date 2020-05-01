@@ -53,6 +53,10 @@ public static class TileFinder
 		return tilesInLine;
 	}
 
+	/// <summary>
+	/// Вернет идентификатор тайла в позиции.
+	/// </summary>
+	/// <param name="position">Position.</param>
 	public static Vector2 getIDByPosition(Vector2 position)
 	{
 		if  (position.x < 0 || position.x > TileMap.gridWidth || position.y < 0 || position.y > TileMap.gridHeight)

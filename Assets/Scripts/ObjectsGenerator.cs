@@ -6,6 +6,9 @@ using UnityEngine;
 /// </summary>
 public class ObjectsGenerator : MonoBehaviour
 {
+	/// <summary>
+	/// Экзмемпляр класса.
+	/// </summary>
 	static ObjectsGenerator _instance = null;
 
 	public static ObjectsGenerator Instance
@@ -22,6 +25,9 @@ public class ObjectsGenerator : MonoBehaviour
 	}
 
 	[SerializeField]
+	/// <summary>
+	/// Префаб тайла.
+	/// </summary>
 	TileObject tileObjectPrefab = null;
 
 	[SerializeField]
@@ -52,6 +58,10 @@ public class ObjectsGenerator : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Создать тайл в позиции.
+	/// </summary>
+	/// <param name="position">Position.</param>
 	public static void createTileAtPosition(Vector2 position)
 	{
 		TileObject tile = Instantiate(Instance.tileObjectPrefab, Vector3.zero, Quaternion.identity);
