@@ -37,7 +37,7 @@ public static class TileMap
 	/// <summary>
 	/// Устанавливает grid
 	/// </summary>
-	/// <param name="newGrid">New grid.</param>
+	/// <param name="newTile">New tile.</param>
 	public static void setTileInGrid(TileObject newTile)
 	{
 		var index_x = (int)newTile.gridID.x;

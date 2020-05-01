@@ -46,7 +46,7 @@ public static class ValidateObjectsInRawAndColumn
 		result = matchedTilesToDestroy.Length >= 3;
 		Debug.Log("Результат: " + result);
 
-		if (result) MathesDestroyer.destroyMatches(matchedTilesToDestroy);
+		if (result) MatchesDestroyer.destroyMatches(matchedTilesToDestroy);
 
 		return result;
 	}

@@ -6,14 +6,29 @@ using UnityEngine;
 /// </summary>
 public class ObjectsGenerator : MonoBehaviour
 {
+	static ObjectsGenerator _instance = null;
+
+	public static ObjectsGenerator Instance
+		{ get { return _instance ?? new GameObject("ObjectsGenerator").AddComponent<ObjectsGenerator>();} }
+
+	void Awake()
+	{
+		_instance = this;
+	}
+
+	void OnDestroy()
+	{
+		_instance = null;
+	}
+
 	[SerializeField]
-	TileObject tileObjectPrefab;
+	TileObject tileObjectPrefab = null;
 
 	[SerializeField]
 	/// <summary>
 	/// Массив цветов генерируемых объектов
 	/// </summary>
-	Color[] colors;
+	Color[] colors = null;
 
 	void Start()
 	{
@@ -37,10 +52,10 @@ public class ObjectsGenerator : MonoBehaviour
 		}
 	}
 
-	void createTileAtPosition(Vector2 position)
+	public static void createTileAtPosition(Vector2 position)
 	{
-		TileObject tile = Instantiate(tileObjectPrefab, Vector3.zero, Quaternion.identity);
-		tile.transform.parent = transform;
+		TileObject tile = Instantiate(Instance.tileObjectPrefab, Vector3.zero, Quaternion.identity);
+		tile.transform.parent = Instance.transform;
 
 		var leftTileID = TileFinder.getIDByPosition(position) + Vector2.left;
 		TileObject leftTile = TileFinder.getTileAtID(leftTileID.x, leftTileID.y);
@@ -48,7 +63,7 @@ public class ObjectsGenerator : MonoBehaviour
 		var bottomTileID = TileFinder.getIDByPosition(position) + Vector2.down;
 		TileObject bottomTile = TileFinder.getTileAtID(bottomTileID.x, bottomTileID.y);
 
-		var color = setTileColor(leftTile, bottomTile);
+		var color = Instance.getUniqueColor(leftTile, bottomTile);
 
 		tile.setTileParametrs(position, color);
 	}
@@ -56,7 +71,7 @@ public class ObjectsGenerator : MonoBehaviour
 	/// <summary>
 	/// Возвращает цвет, который не имеют соседние тайлы
 	/// </summary>
-	Color setTileColor(TileObject leftTile, TileObject bottomTile)
+	Color getUniqueColor(TileObject leftTile, TileObject bottomTile)
 	{
 		var resultColor = new Color();
 

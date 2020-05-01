@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(TileObject))]
 public class TileObjectInteractivity : MonoBehaviour
 {
 	TileObject tileObject;
