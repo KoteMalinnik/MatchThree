@@ -4,7 +4,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Класс проверки на совпадение объектов в строке или столбце
 /// </summary>
-public static class ValidateObjectsInRawAndColumn
+public static class ValidateMatches
 {
 	/// <summary>
 	/// Возвращает true, если first и second можно поменять местами

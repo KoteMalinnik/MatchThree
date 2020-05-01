@@ -70,7 +70,7 @@ public static class TileObjectMovement
 
 		replaceTiles();
 
-		bool canReplaceTileObjects = ValidateObjectsInRawAndColumn.couldReplaceTiles(sourceTile, targetTile);
+		bool canReplaceTileObjects = ValidateMatches.couldReplaceTiles(sourceTile, targetTile);
 		if (canReplaceTileObjects)
 		{
 			Debug.Log("<color=green>Перемещение объектов разрешено</color>");
