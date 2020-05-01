@@ -36,7 +36,7 @@ public static class TileObjectMovement
 		setTargetTile(tile);
 
 		sourceTile.transform.localScale /= 0.8f;
-		replaceTilesIfPossible();
+		replaceTilesIfPossible(ref sourceTile, ref targetTile);
 	}
 
 	/// <summary>
@@ -45,7 +45,7 @@ public static class TileObjectMovement
 	/// <param name="tile">Object.</param>
 	static void setSourceTile(TileObject tile)
 	{
-		Debug.Log($"Исходный объект. Позиция: {tile.position}. Цвет: {colorToString(tile.color)}");
+		Debug.Log($"Исходный объект. ID: {tile.gridID}. Цвет: {colorToString(tile.color)}");
 		sourceTile = tile;
 		sourceTile.transform.localScale *= 0.8f;
 	}
@@ -57,45 +57,46 @@ public static class TileObjectMovement
 	/// <param name="tile">Object.</param>
 	static void setTargetTile(TileObject tile)
 	{
-		Debug.Log($"Целевой объект. Позиция: {tile.position}. Цвет: {colorToString(tile.color)}");
+		Debug.Log($"Целевой объект. ID: {tile.gridID}. Цвет: {colorToString(tile.color)}");
 		targetTile = tile;
 	}
 
 	/// <summary>
 	/// Перемещает currentObject на место targetObject и наоборот, если есть совпадения в столбце или строке
 	/// </summary>
-	static void replaceTilesIfPossible()
+	static void replaceTilesIfPossible(ref TileObject tile1, ref TileObject tile2)
 	{
-		Debug.Log("<color=yellow>Перемещение объектов</color>");
+		//Debug.Log("<color=yellow>Перемещение объектов</color>");
 
-		replaceTiles();
+		replaceTiles(tile1, tile2);
 
 		bool canReplaceTileObjects = ValidateMatches.couldReplaceTiles(sourceTile, targetTile);
 		if (canReplaceTileObjects)
 		{
 			Debug.Log("<color=green>Перемещение объектов разрешено</color>");
+			MatchesDestroyer.destroyMatches(ValidateMatches.getMatchedTiles());
 			//Вызываю функцию проверки совпадений по всему ряду/столбцу для уничтожения объектов совпадения
 		}
 		else
 		{
 			Debug.Log("<color=red>Перемещение объектов невозможно. Возвращение в исходное состояние</color>");
-			replaceTiles();
+			replaceTiles(tile1, tile2);
 		}
 
-		targetTile = null;
-		sourceTile = null;
+		tile1 = null;
+		tile2 = null;
 	}
 
 	/// <summary>
-	/// Меняет местами в сетке targetObject и currentObject
+	/// Меняет местами в сетке.
 	/// </summary>
-	static void replaceTiles()
+	public static void replaceTiles(TileObject tile1, TileObject tile2)
 	{
-		var newTargetPosition = sourceTile.position;
-		var newSourcePosition = targetTile.position;
+		var newTile2Position = tile1.position;
+		var newTile1Position = tile2.position;
 
-		sourceTile.setTileParametrs(newSourcePosition, sourceTile.color);
-		targetTile.setTileParametrs(newTargetPosition, targetTile.color);
+		tile1.setTileParametrs(newTile1Position, tile1.color);
+		tile2.setTileParametrs(newTile2Position, tile2.color);
 	}
 
 	static string colorToString(Color color)

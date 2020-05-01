@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 
 /// <summary>
-/// Класс проверки на совпадение объектов в строке или столбце
+/// Поверка совпадений тайлов в строке или столбце
 /// </summary>
 public static class ValidateMatches
 {
+	//Содержит совпавшие тайлы, которые надо будет уничтожить
+	static TileObject[] matchedTiles = new TileObject[0];
+	public static TileObject[] getMatchedTiles() { return matchedTiles;}
+
 	/// <summary>
 	/// Возвращает true, если first и second можно поменять местами
 	/// </summary>
@@ -14,39 +18,36 @@ public static class ValidateMatches
 	/// <param name="secondTile">Second.</param>
 	public static bool couldReplaceTiles(TileObject secondTile, TileObject firstTile)
 	{
-		Debug.Log("Проверка тайлов на возможность перемещения");
+		//Debug.Log("Проверка тайлов на возможность перемещения");
 		bool result = false;
 		//Нет необходимости что-либо проверять, если второй объект на в пределах одного объекта по горизонтали или вертикали
 		result = (firstTile.position - secondTile.position).magnitude < TileMap.tileDeltaPosition + 0.1f;
 		if (!result) return false;
-		Debug.Log("В пределах одного тайла");
+		//Debug.Log("В пределах одного тайла");
 
 		//Нет необходимости проверять, если они одного цвета
 		result = firstTile.color != secondTile.color;
 		if (!result) return false;
-		Debug.Log("Разные цвета тайлов");
+		//Debug.Log("Разные цвета тайлов");
 
 
-		Debug.Log("Проверка на совпадения");
-		//Содержит совпавшие тайлы, которые надо будет уничтожить
-		TileObject[] matchedTilesToDestroy = new TileObject[0];
+		//Debug.Log("Проверка на совпадения");
+		matchedTiles = new TileObject[0];
 
-		matchedTilesToDestroy = addArrayToArray(matchedTilesToDestroy, checkLineForMatches(firstTile, "C"));
-		matchedTilesToDestroy = addArrayToArray(matchedTilesToDestroy, checkLineForMatches(firstTile, "R"));
+		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(firstTile, "C"));
+		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(firstTile, "R"));
 
 		//Исключаем необходимость лишней проверки
 		if (Mathf.Abs(firstTile.position.x - secondTile.position.x) < 0.01f) //Если оба тайла в одном столбце
-			matchedTilesToDestroy = addArrayToArray(matchedTilesToDestroy, checkLineForMatches(secondTile, "R"));
+			matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(secondTile, "R"));
 
 		if (Mathf.Abs(firstTile.position.y - secondTile.position.y) < 0.01f) //Если оба тайла в одном ряду
-			matchedTilesToDestroy = addArrayToArray(matchedTilesToDestroy, checkLineForMatches(secondTile, "C"));
+			matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(secondTile, "C"));
 		
-		Debug.Log("Проверка на совпадения завершена");
+		//Debug.Log("Проверка на совпадения завершена");
 
-		result = matchedTilesToDestroy.Length >= 3;
-		Debug.Log("Результат: " + result);
-
-		if (result) MatchesDestroyer.destroyMatches(matchedTilesToDestroy);
+		result = matchedTiles.Length >= 3;
+		//Debug.Log("Результат: " + result);
 
 		return result;
 	}
