@@ -26,7 +26,7 @@ public class TilesReplacer
 		{
 			yield return new WaitForEndOfFrame();
 
-			while (tile1.position != newTile1Position || T > 1)
+			while (tile1.position != newTile1Position || T < 1)
 			{
 				tile1.setPosition(Vector2.Lerp(tile1.position, newTile1Position, T));
 				tile2.setPosition(Vector2.Lerp(tile2.position, newTile2Position, T));

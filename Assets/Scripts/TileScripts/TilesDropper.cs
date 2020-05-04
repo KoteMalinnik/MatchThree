@@ -24,7 +24,7 @@ public class TilesDropper
 		var replacer = new TilesReplacer();
 		while (upperTile != null)
 		{
-			replacer.replaceTiles(upperTile, tile, false, 10f);
+			replacer.replaceTiles(upperTile, tile, false, 30f);
 			yield return new WaitWhile(() => replacer.routine != null);
 
 			upperTile = TilesFinder.getNearestTile(tile, 0, 1);
