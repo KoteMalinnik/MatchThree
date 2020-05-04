@@ -42,12 +42,33 @@ public static class TilesFinder
 	public static Tile[] getLine(Tile tile, string param)
 	{
 		var tilesInLine = new List<Tile>();
-		int arraySize = param == "C" ? TilesMap.gridHeight : TilesMap.gridWidth;
+		int lineLength = param == "C" ? TilesMap.gridHeight : TilesMap.gridWidth;
 
 		Tile temp = null;
-		for (int i = 0; i < arraySize; i++)
+		for (int i = 0; i < lineLength; i++)
 		{
 			temp = param == "C" ? getTileAtID(tile.gridID.x, i) : getTileAtID(i, tile.gridID.y);
+			if (temp == null) continue;
+			tilesInLine.Add(temp);
+		}
+
+		return tilesInLine.ToArray();
+	}
+
+	/// <summary>
+	/// Возвращает строку или столбец (в зависимости от параметра param) по индексу в сетке тайлов.
+	/// </summary>
+	/// <param name="lineNumber">Номер столбца или строки. Нумерация начинается с 0 снизу вверх справа налево.</param>
+	/// <param name="param">"C" для столбца, "R" для ряда.</param>
+	public static Tile[] getLine(int lineNumber, string param)
+	{
+		var tilesInLine = new List<Tile>();
+		int lineLength = param == "C" ? TilesMap.gridHeight : TilesMap.gridWidth;
+
+		Tile temp = null;
+		for (int i = 0; i < lineLength; i++)
+		{
+			temp = param == "C" ? getTileAtID(lineNumber, i) : getTileAtID(i, lineNumber);
 			if (temp == null) continue;
 			tilesInLine.Add(temp);
 		}

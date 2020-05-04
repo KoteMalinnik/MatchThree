@@ -12,32 +12,50 @@ public class TilesDropper
 	public TilesDropper()
 	{
 		calculate();
-		run();
 	}
 
 	/// <summary>
-	/// Рассчитывает
+	/// Рассчитывает дырки и запускает их обработку.
 	/// </summary>
 	public void calculate()
 	{
 		Debug.Log("[TilesDropper] Рассчет дырок.");
 		for (int i = 0; i < TilesMap.gridWidth; i++)
 		{
-			var downerTile = TilesFinder.getTileAtID(i, 0);
-			var line = TilesFinder.getLine(downerTile, "C");
-			var count = line.Length;
-			Debug.Log($"Столбец {i}. Количество элементов: {count}");
+			var line = TilesFinder.getLine(i, "C");
+			//Пропускаем полный столбец.
+			if (line.Length == TilesMap.gridHeight) continue;
 
-			for (int j = 0; j < count; j++)
+			var count = line.Length;
+			Debug.Log($"[TilesDropper] Столбец {i}. Количество элементов: {count}");
+
+			var higtherTileIDy = (int)line[count-1].gridID.y;
+			var lowerTileIDy = (int)line[0].gridID.y;
+
+			//Поиск дырки наверху столбца
+			if (higtherTileIDy < TilesMap.gridHeight - 1) holeProcessing(TilesMap.gridHeight - 1, higtherTileIDy+1);
+
+			//Поиск дырок в середине столбца
+			for (int j = count - 1; j > 0; j--)
 			{
-				Debug.Log(line[j].gridID);
+				higtherTileIDy = (int)line[j].gridID.y;
+				lowerTileIDy = (int)line[j-1].gridID.y;
+
+				if(higtherTileIDy - lowerTileIDy > 1)
+				{
+					holeProcessing(higtherTileIDy-1, lowerTileIDy+1);
+				}
 			}
+
+			//Поиск дырки внизу столбца
+			if (lowerTileIDy > 0) holeProcessing(lowerTileIDy-1, 0);
 		}
 	}
 
-	public void run()
+	public void holeProcessing(int higtherTileIDy, int lowerTileIDy)
 	{
-		Debug.Log("[TilesDropper] Запуск.");
+		Debug.Log($"[TilesDropper] Обнаружена дырка: {higtherTileIDy} - {lowerTileIDy}. " +
+							  $"Длина дырки: {higtherTileIDy - lowerTileIDy + 1}");
 	}
 
 	/// <summary>
