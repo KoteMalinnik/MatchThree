@@ -68,8 +68,6 @@ public static class MatchesDestroyer
 
 		//Debug.Log($"[MatchesDestroyer] Время ожидания: {debugTime}");
 
-		//var dropper = new TilesDropper(0);
-
 		for (int coloumn = 0; coloumn < TilesMap.gridWidth; coloumn++)
 		{
 			var dropper = new TilesDropper(coloumn);

@@ -22,14 +22,20 @@ public class TilesDropper
 		//Debug.Log($"[TilesDropper] Рассчет дырок в столбце {coloumn}.");
 
 		var line = TilesFinder.getLine(coloumn, "C");
+		var count = line.Length;
+
 		//Пропускаем полный столбец.
-		if (line.Length == TilesMap.gridHeight) 
+		if (count == TilesMap.gridHeight) 
 		{
 			//Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
 			return;
 		}
 
-		var count = line.Length;
+		//пропускаем пустой столбец
+		if(count == 0)
+		{
+			return;
+		}
 
 		//Поиск дырки внизу столбца
 		if ((int)line[0].gridID.y > 0)
@@ -76,10 +82,6 @@ public class TilesDropper
 
 		while (tileOverTheHole != null)
 		{
-			Debug.Log($"[TilesDropper] tileOverTheHole: {tileOverTheHole}.\n" +
-			          $"holeLowerPosition: {holeLowerPosition}.\n" +
-				  	  $"Столбец: {coloumn}.");
-
 			replacer.replaceTiles(tileOverTheHole, holeLowerPosition, animationSpeed: 10);
 			yield return new WaitWhile(() => replacer.routine != null);
 
