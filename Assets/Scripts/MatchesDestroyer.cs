@@ -30,7 +30,7 @@ public static class MatchesDestroyer
 	static IEnumerator destroyTileAnimation(Tile tileToDestroy)
 	{
 		string tileName = tileToDestroy.name;
-		Debug.Log($"[MatchesDestroyer] Начало анимации уничтожения тайла {tileName}");
+		//Debug.Log($"[MatchesDestroyer] Начало анимации уничтожения тайла {tileName}");
 
 		var transform = tileToDestroy.transform;
 		var animationSpeed = 30f;
@@ -50,7 +50,7 @@ public static class MatchesDestroyer
 		}
 
 		MonoBehaviour.Destroy(tileToDestroy.gameObject);
-		Debug.Log($"[MatchesDestroyer] Конец анимации уничтожения. Тайл {tileName} уничтожен за время {debugTime}");
+		//Debug.Log($"[MatchesDestroyer] Конец анимации уничтожения. Тайл {tileName} уничтожен за время {debugTime}");
 	}
 
 	/// <summary>
@@ -58,7 +58,7 @@ public static class MatchesDestroyer
 	/// </summary>
 	static IEnumerator delayForDestroyingAllMatches()
 	{
-		Debug.Log("[MatchesDestroyer] Начало ожидания.");
+		//Debug.Log("[MatchesDestroyer] Начало ожидания.");
 
 		float debugTime = 0;
 		for (int i = 0; i < 20; i++, debugTime += Time.fixedDeltaTime)
@@ -66,8 +66,13 @@ public static class MatchesDestroyer
 			yield return new WaitForFixedUpdate();
 		}
 
-		Debug.Log($"[MatchesDestroyer] Время ожидания: {debugTime}");
+		//Debug.Log($"[MatchesDestroyer] Время ожидания: {debugTime}");
 
-		var dropper = new TilesDropper();
+		//var dropper = new TilesDropper(0);
+
+		for (int coloumn = 0; coloumn < TilesMap.gridWidth; coloumn++)
+		{
+			var dropper = new TilesDropper(coloumn);
+		}
 	}
 }

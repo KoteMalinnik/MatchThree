@@ -9,12 +9,9 @@ public class TilesDropper
 	/// <summary>
 	/// Инициализация объекта класса TilesDropper. Рассчет дырок и спуск тайлов.
 	/// </summary>
-	public TilesDropper()
+	public TilesDropper(int coloumn)
 	{
-		for (int coloumn = 0; coloumn < TilesMap.gridWidth; coloumn++)
-		{
-			calculateHoles(coloumn);
-		}
+		calculateHoles(coloumn);
 	}
 
 	/// <summary>
@@ -22,13 +19,13 @@ public class TilesDropper
 	/// </summary>
 	public void calculateHoles(int coloumn)
 	{
-		Debug.Log($"[TilesDropper] Рассчет дырок в столбце {coloumn}.");
+		//Debug.Log($"[TilesDropper] Рассчет дырок в столбце {coloumn}.");
 
 		var line = TilesFinder.getLine(coloumn, "C");
 		//Пропускаем полный столбец.
 		if (line.Length == TilesMap.gridHeight) 
 		{
-			Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
+			//Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
 			return;
 		}
 
@@ -54,7 +51,7 @@ public class TilesDropper
 			}
 		}
 
-		Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
+		//Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
 	}
 
 	public void holeProcessing(int coloumn, int holeLowerIDy, int holeHighterIDy)
@@ -79,13 +76,15 @@ public class TilesDropper
 
 		while (tileOverTheHole != null)
 		{
-			Debug.Log($"[TilesDropper] holeLowerPosition: {holeLowerPosition}");
+			Debug.Log($"[TilesDropper] tileOverTheHole: {tileOverTheHole}.\n" +
+			          $"holeLowerPosition: {holeLowerPosition}.\n" +
+				  	  $"Столбец: {coloumn}.");
 
 			replacer.replaceTiles(tileOverTheHole, holeLowerPosition, animationSpeed: 10);
 			yield return new WaitWhile(() => replacer.routine != null);
 
 			tileOverTheHole = TilesFinder.getNearestTile(tileOverTheHole, 0, holeLength+1);
-			holeLowerPosition.y += TilesMap.tileDeltaPosition;
+			holeLowerPosition.y++;
 		}
 
 		Debug.Log($"[TilesDropper] <color=green>Спуск тайлов в столбце {coloumn} завершен.</color>");

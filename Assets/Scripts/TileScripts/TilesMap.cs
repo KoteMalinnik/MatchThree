@@ -52,11 +52,22 @@ public class TilesMap : MonoBehaviour
 	/// <summary>
 	/// Устанавливает тайл в сетке тайлов.
 	/// </summary>
-	/// <param name="newTile">New tile.</param>
-	public static void setTileInGrid(Tile newTile)
+	/// <param name="tile">Tile.</param>
+	public static void setTileInGrid(Tile tile)
 	{
-		var index_x = (int)newTile.gridID.x;
-		var index_y = (int)newTile.gridID.y;
-		tilesGrid[index_x, index_y] = newTile;
+		var index_x = (int)tile.gridID.x;
+		var index_y = (int)tile.gridID.y;
+		tilesGrid[index_x, index_y] = tile;
+	}
+
+	/// <summary>
+	/// Удаляет тайл из сетки тайлов.
+	/// </summary>
+	/// <param name="tile">Tile.</param>
+	public static void removeTileFromGrid(Tile tile)
+	{
+		var index_x = (int)tile.gridID.x;
+		var index_y = (int)tile.gridID.y;
+		tilesGrid[index_x, index_y] = null;
 	}
 }

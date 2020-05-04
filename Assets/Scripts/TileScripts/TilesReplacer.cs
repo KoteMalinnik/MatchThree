@@ -17,6 +17,8 @@ public class TilesReplacer
 	public Coroutine routine { get; private set; } = null;
 	IEnumerator movementAnimation(Tile tile, Vector2 targetPosition, bool immediately = false, float animationSpeed = 5f)
 	{
+		TilesMap.removeTileFromGrid(tile);
+
 		float T = 0;
 
 		if (!immediately)
