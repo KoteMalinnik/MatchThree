@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 /// <summary>
 /// Ход игрока для перемещения двух тайлов.
@@ -9,14 +10,10 @@ public static class PlayerMove
 	/// Первый нажатый тайл.
 	/// </summary>
 	static Tile firstTile;
-	/// <summary>
-	/// Второй нажатый тайл.
-	/// </summary>
-	static Tile secondTile;
 
 	/// <summary>
-	/// Первый вызов метода - установка sourceTile.
-	/// Второй вызов метода - установка targetTile. 
+	/// Первый вызов метода - установка первого тайла.
+	/// Второй вызов метода - установка второго тайла и запуск обработки. 
 	/// </summary>
 	/// <param name="tile">Тайл.</param>
 	public static void setTilesForMove(Tile tile)
@@ -33,10 +30,11 @@ public static class PlayerMove
 			return;
 		}
 
-		setSecondTile(tile);
-
+		Debug.Log("Установка второго объекта завершена");
 		firstTile.transform.localScale /= 0.8f;
-		TilesReplacer.replaceTiles(firstTile, secondTile);
+
+		moveTiles(firstTile, tile);
+		firstTile = null;
 	}
 
 	/// <summary>
@@ -49,16 +47,6 @@ public static class PlayerMove
 		firstTile.transform.localScale *= 0.8f;
 	}
 
-
-	/// <summary>
-	/// Установка второго тайла.
-	/// </summary>
-	/// <param name="tile">Тайл.</param>
-	static void setSecondTile(Tile tile)
-	{
-		secondTile = tile;
-	}
-
 	/// <summary>
 	/// Перемещает tile1 на место tile2.
 	/// Если есть совпадения в столбце или строке после перемещения, то оставляет тайлы на этих местах.
@@ -66,20 +54,19 @@ public static class PlayerMove
 	/// </summary>
 	static void moveTiles(Tile tile1, Tile tile2)
 	{
-		bool canReplaceTileObjects = MatchesValidator.couldReplaceTiles(firstTile, secondTile);
+		Debug.Log("[PlayerMove] <color=yellow>Перемещение объектов</color>");
+
+		TilesReplacer.replaceTiles(tile1, tile2);
+
+		bool canReplaceTileObjects = MatchesValidator.couldReplaceTiles(tile1, tile2);
 		if (canReplaceTileObjects)
 		{
 			Debug.Log("[PlayerMove] <color=green>Перемещение объектов разрешено</color>");
-			MatchesDestroyer.destroyMatches(MatchesValidator.getMatchedTiles());
-			//Вызываю функцию проверки совпадений по всему ряду/столбцу для уничтожения объектов совпадения
-		}
-		else
-		{
-			Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно. Возвращение в исходное состояние</color>");
-			TilesReplacer.replaceTiles(tile1, tile2);
+			MatchesDestroyer.destroyMatches(MatchesValidator.getMatchedTiles().ToArray());
+			return;
 		}
 
-		tile1 = null;
-		tile2 = null;
+		Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно. Возвращение в исходное состояние</color>");
+		TilesReplacer.replaceTiles(tile1, tile2);
 	}
 }

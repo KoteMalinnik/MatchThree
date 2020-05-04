@@ -7,9 +7,8 @@ using System.Collections.Generic;
 public static class MatchesValidator
 {
 	//Содержит совпавшие тайлы, которые надо будет уничтожить
-	static Tile[] matchedTiles = new Tile[0];
-	public static Tile[] getMatchedTiles() { return matchedTiles; }
-	public static void clearMatchedTile() { matchedTiles = new Tile[0]; }
+	static List<Tile> matchedTiles = new List<Tile>(0);
+	public static List<Tile> getMatchedTiles() { return matchedTiles; }
 
 	/// <summary>
 	/// Возвращает true, если first и second можно поменять местами.
@@ -18,26 +17,30 @@ public static class MatchesValidator
 	/// <param name="tile1">Second.</param>
 	public static bool couldReplaceTiles(Tile tile1, Tile tile2)
 	{
-		Debug.Log("[MatchesValidator] Проверка тайлов на возможность перемещения");
+		//Debug.Log("[MatchesValidator] Проверка тайлов на возможность перемещения");
 		bool result = false;
-		//Нет необходимости что-либо проверять, если второй объект на в пределах одного объекта по горизонтали или вертикали
+		//Нет необходимости что-либо проверять, если второй объект не в пределах одного объекта по горизонтали или вертикали
 		result = (tile2.position - tile1.position).magnitude < TilesMap.tileDeltaPosition + 0.1f;
 		if (!result) return false;
-		Debug.Log("[MatchesValidator] В пределах одного тайла");
+		//Debug.Log("[MatchesValidator] В пределах одного тайла");
 
 		//Нет необходимости проверять, если они одного цвета
 		result = tile2.color != tile1.color;
 		if (!result) return false;
-		Debug.Log("[MatchesValidator] Разные цвета тайлов");
+		//Debug.Log("[MatchesValidator] Разные цвета тайлов");
 
-		Debug.Log("[MatchesValidator] Проверка на совпадения");
-		clearMatchedTile();
-		checkTile(tile1);
-		checkTile(tile2);
-		Debug.Log("[MatchesValidator] Проверка на совпадения завершена");
+		//Debug.Log("[MatchesValidator] Проверка на совпадения");
+		matchedTiles.Clear();
 
-		result = matchedTiles.Length >= 3;
-		Debug.Log("[MatchesValidator] Результат: " + result);
+		checkTile(tile1, "C");
+		checkTile(tile1, "R");
+
+		checkTile(tile2, "C");
+		checkTile(tile2, "R");
+		//Debug.Log("[MatchesValidator] Проверка на совпадения завершена");
+
+		result = matchedTiles.Count >= 3;
+		//Debug.Log("[MatchesValidator] Результат: " + result);
 
 		return result;
 	}
@@ -46,28 +49,15 @@ public static class MatchesValidator
 	/// Поиск совпадений в столбце и строке для тайла tile и запись совпадений в массив matchedTiles[].
 	/// </summary>
 	/// <param name="tile">Tile.</param>
-	public static void checkTile(Tile tile)
+	public static void checkTile(Tile tile, string param)
 	{
-		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(tile, "R"));
-		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(tile, "C"));
-	}
-
-	/// <summary>
-	/// Склеивает два массива тайлов в один и возвращает его.
-	/// </summary>
-	/// <returns>The array to array.</returns>
-	/// <param name="sourceArray">Source array.</param>
-	/// <param name="addingArray">Adding array.</param>
-	static Tile[] addArrayToArray(Tile[] sourceArray, Tile[] addingArray)
-	{
-		if (addingArray == null) return sourceArray;
-
-		Tile[] newArray = new Tile[sourceArray.Length + addingArray.Length];
-
-		for (int i = 0; i < sourceArray.Length; i++) newArray[i] = sourceArray[i];
-		for (int i = 0; i < addingArray.Length; i++) newArray[i + sourceArray.Length] = addingArray[i];
-
-		return newArray;
+		var temp = checkLineForMatches(tile, param);
+		if (temp != null)
+			foreach(Tile t in temp)
+			{
+				if (matchedTiles.Contains(t)) continue;
+				matchedTiles.Add(t);
+			}
 	}
 
 	/// <summary>
@@ -131,7 +121,7 @@ public static class MatchesValidator
 	public static void checkAllTileMapForMatches()
 	{
 		Debug.Log("[MatchesValidator] Проверка сетки тайлов на совпадения.");
-		clearMatchedTile();
+		matchedTiles.Clear();
 
 		var tilesGrid = TilesMap.getTilesGrid();
 
@@ -139,17 +129,18 @@ public static class MatchesValidator
 		{
 			for (int j = 0; j < TilesMap.gridHeight; j++)
 			{
-				checkTile(tilesGrid[i,j]);
+				checkTile(tilesGrid[i, j], "C");
+				checkTile(tilesGrid[i, j], "R");
 			}
 		}
 
-		if (getMatchedTiles().Length == 0)
+		if (getMatchedTiles().Count == 0)
 		{
 			Debug.Log("[MatchesValidator] <color=yellow>Новых совпадений не найдено.</color>");
 			return;
 		}
 
 		Debug.Log("[MatchesValidator]  <color=yellow>Обнаружены новые совпадения.</color>");
-		MatchesDestroyer.destroyMatches(getMatchedTiles());
+		MatchesDestroyer.destroyMatches(matchedTiles.ToArray());
 	}
 }

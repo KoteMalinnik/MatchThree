@@ -12,7 +12,7 @@ public static class MatchesDestroyer
 	/// <param name="tilesToDestroy">Tiles to destroy.</param>
 	public static void destroyMatches(Tile[] tilesToDestroy)
 	{
-		Debug.Log("[MatchesDestroyer] Удаление совпавших тайлов");
+		Debug.Log("[MatchesDestroyer] Удаление совпавших тайлов: " + tilesToDestroy.Length);
 
 		for (int i = 0; i < tilesToDestroy.Length; i++)
 		{
