@@ -96,5 +96,6 @@ public static class PlayerMove
 		yield return new WaitWhile(() => replacer2.routine != null);
 
 		Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно.</color>");
+		TilesReplacer.setReplacePremission(true);
 	}
 }

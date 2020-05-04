@@ -48,13 +48,14 @@ public static class TileCreator
 		var newScale = Vector2.zero;
 		transform.localScale = newScale;
 
-		for (; transform.localScale.x < TilesMap.tileSize ; debugTime += Time.deltaTime)
+		for (; transform.localScale.x < TilesMap.tileSize && debugTime < 0.4f; debugTime += Time.deltaTime)
 		{
 			var deltaScale = animationSpeed * Time.deltaTime;
 			newScale.x += deltaScale;
 			newScale.y += deltaScale;
 
 			transform.localScale = newScale;
+
 			yield return new WaitForEndOfFrame();
 		}
 

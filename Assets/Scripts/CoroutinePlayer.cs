@@ -11,7 +11,7 @@ public class CoroutinePlayer : MonoBehaviour
 	static CoroutinePlayer _instance = null;
 
 	public static CoroutinePlayer Instance
-	{ get { return _instance ?? new GameObject("ObjectsGenerator").AddComponent<CoroutinePlayer>(); } }
+	{ get { return _instance ?? new GameObject("CoroutinePlayer").AddComponent<CoroutinePlayer>(); } }
 
 	void Awake()
 	{

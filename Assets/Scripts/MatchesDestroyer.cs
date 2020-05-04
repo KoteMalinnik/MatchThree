@@ -77,6 +77,7 @@ public static class MatchesDestroyer
 		//Debug.Log("[MatchesDestroyer] Начало ожидания проверки всей карты.");
 
 		yield return new WaitWhile(() => TilesDropper.CoroutinesInProcessCount > 0);
+		yield return new WaitForSeconds(0.5f);
 
 		MatchesValidator.checkAllTileMapForMatches();
 		//Debug.Log("[MatchesDestroyer] Конец ожидания проверки всей карты.");

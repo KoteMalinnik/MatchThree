@@ -128,6 +128,7 @@ public static class MatchesValidator
 		if (getMatchedTiles().Count == 0)
 		{
 			Debug.Log("[MatchesValidator] <color=yellow>Новых совпадений не найдено.</color>");
+			TilesReplacer.setReplacePremission(true);
 			return;
 		}
 

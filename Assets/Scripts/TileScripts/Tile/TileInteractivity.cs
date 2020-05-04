@@ -18,6 +18,6 @@ public class TileInteractivity : MonoBehaviour
 
 	void OnMouseDown()
 	{
-		PlayerMove.setTilesForMove(tileObject);
+		if(TilesReplacer.replacePremission)	PlayerMove.setTilesForMove(tileObject);
 	}
 }
