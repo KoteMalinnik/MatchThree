@@ -7,37 +7,32 @@ using UnityEngine;
 public class TilesReplacer
 {
 	/// <summary>
-	/// Меняет местами тайлы в сетке с анимацией, если immediately установлен в true.
+	/// Перемещает тайл в сетке на указанную позицию с анимацией, если immediately установлен в true.
 	/// </summary>
-	public void replaceTiles(Tile tile1, Tile tile2, bool immediately = true, float animationSpeed = 5f)
+	public void replaceTiles(Tile tile, Vector2 targetPosition, bool immediately = false, float animationSpeed = 5f)
 	{
-		routine = CoroutinePlayer.Instance.StartCoroutine(movementAnimation(tile1, tile2, immediately, animationSpeed));
+		routine = CoroutinePlayer.Instance.StartCoroutine(movementAnimation(tile, targetPosition, immediately, animationSpeed));
 	}
 
 	public Coroutine routine { get; private set; } = null;
-	IEnumerator movementAnimation(Tile tile1, Tile tile2, bool immediately = true, float animationSpeed = 5f)
+	IEnumerator movementAnimation(Tile tile, Vector2 targetPosition, bool immediately = false, float animationSpeed = 5f)
 	{
-		var newTile1Position = tile2.position;
-		var newTile2Position = tile1.position;
-
 		float T = 0;
 
-		if(!immediately)
+		if (!immediately)
 		{
 			yield return new WaitForEndOfFrame();
 
-			while (tile1.position != newTile1Position && T < 1)
+			while (tile.position != targetPosition && T < 1)
 			{
-				tile1.setPosition(Vector2.Lerp(tile1.position, newTile1Position, T));
-				tile2.setPosition(Vector2.Lerp(tile2.position, newTile2Position, T));
+				tile.setPosition(Vector2.Lerp(tile.position, targetPosition, T));
 
 				T += animationSpeed * Time.deltaTime;
 				yield return new WaitForEndOfFrame();
 			}
 		}
 
-		tile1.setTileParametrs(newTile1Position, tile1.color);
-		tile2.setTileParametrs(newTile2Position, tile2.color);
+		tile.setTileParametrs(targetPosition, tile.color);
 
 		routine = null;
 	}

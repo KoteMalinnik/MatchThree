@@ -31,7 +31,7 @@ public class TilesMap : MonoBehaviour
 	/// <summary>
 	/// Размер тайла.
 	/// </summary>
-	public static readonly float tileSize = 6f;
+	public static readonly float tileSize = 6.25f;
 
 	/// <summary>
 	/// Разница позиций соседних тайлов. При tileSize = 1 => tileDeltaPosition = 0.16

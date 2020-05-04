@@ -67,9 +67,18 @@ public static class PlayerMove
 		if (!result) yield break;
 		//Debug.Log("[PlayerMove] Разные цвета тайлов");
 
-		var replacer = new TilesReplacer();
-		replacer.replaceTiles(tile1, tile2, false);
-		yield return new WaitWhile(() => replacer.routine != null);
+
+		var tile1Position = tile1.position;
+		var tile2Position = tile2.position;
+
+		var replacer1 = new TilesReplacer();
+		var replacer2 = new TilesReplacer();
+
+		replacer1.replaceTiles(tile1, tile2Position);
+		replacer2.replaceTiles(tile2, tile1Position);
+
+		yield return new WaitWhile(() => replacer1.routine != null);
+		yield return new WaitWhile(() => replacer2.routine != null);
 
 		bool canReplaceTileObjects = MatchesValidator.couldReplaceTiles(tile1, tile2);
 
@@ -80,9 +89,12 @@ public static class PlayerMove
 			yield break;
 		}
 
-		Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно.</color>");
+		replacer1.replaceTiles(tile1, tile1Position);
+		replacer2.replaceTiles(tile2, tile2Position);
 
-		replacer.replaceTiles(tile1, tile2, false);
-		yield return new WaitWhile(() => replacer.routine != null);
+		yield return new WaitWhile(() => replacer1.routine != null);
+		yield return new WaitWhile(() => replacer2.routine != null);
+
+		Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно.</color>");
 	}
 }

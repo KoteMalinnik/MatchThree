@@ -2,102 +2,93 @@
 using UnityEngine;
 
 /// <summary>
-/// Опускание тайлов на свободные места.
+/// Спуск тайлов на свободные места.
 /// </summary>
 public class TilesDropper
 {
 	/// <summary>
-	/// Инициализация объекта класса TilesDropper. Рассчет дырок и запуск опускания тайлов.
+	/// Инициализация объекта класса TilesDropper. Рассчет дырок и спуск тайлов.
 	/// </summary>
 	public TilesDropper()
 	{
-		calculate();
-	}
-
-	/// <summary>
-	/// Рассчитывает дырки и запускает их обработку.
-	/// </summary>
-	public void calculate()
-	{
-		Debug.Log("[TilesDropper] Рассчет дырок.");
-		for (int i = 0; i < TilesMap.gridWidth; i++)
+		for (int coloumn = 0; coloumn < TilesMap.gridWidth; coloumn++)
 		{
-			var line = TilesFinder.getLine(i, "C");
-			//Пропускаем полный столбец.
-			if (line.Length == TilesMap.gridHeight) continue;
-
-			var count = line.Length;
-			Debug.Log($"[TilesDropper] Столбец {i}. Количество элементов: {count}");
-
-			var higtherTileIDy = (int)line[count-1].gridID.y;
-			var lowerTileIDy = (int)line[0].gridID.y;
-
-			//Поиск дырки наверху столбца
-			if (higtherTileIDy < TilesMap.gridHeight - 1) holeProcessing(TilesMap.gridHeight - 1, higtherTileIDy+1);
-
-			//Поиск дырок в середине столбца
-			for (int j = count - 1; j > 0; j--)
-			{
-				higtherTileIDy = (int)line[j].gridID.y;
-				lowerTileIDy = (int)line[j-1].gridID.y;
-
-				if(higtherTileIDy - lowerTileIDy > 1)
-				{
-					holeProcessing(higtherTileIDy-1, lowerTileIDy+1);
-				}
-			}
-
-			//Поиск дырки внизу столбца
-			if (lowerTileIDy > 0) holeProcessing(lowerTileIDy-1, 0);
+			calculateHoles(coloumn);
 		}
 	}
 
-	public void holeProcessing(int higtherTileIDy, int lowerTileIDy)
-	{
-		Debug.Log($"[TilesDropper] Обнаружена дырка: {higtherTileIDy} - {lowerTileIDy}. " +
-							  $"Длина дырки: {higtherTileIDy - lowerTileIDy + 1}");
-	}
-
 	/// <summary>
-	/// Опускает все тайлы выше tile в столбце, а tile помещает на вершину столбца.
+	/// Рассчитывает дырки и спускает тайлы выше дырок.
 	/// </summary>
-	/// <param name="tile">Tile.</param>
-	public void dropUpperTiles(Tile tile)
+	public void calculateHoles(int coloumn)
 	{
-		routine = CoroutinePlayer.Instance.StartCoroutine(droppingTiles(tile));
+		Debug.Log($"[TilesDropper] Рассчет дырок в столбце {coloumn}.");
+
+		var line = TilesFinder.getLine(coloumn, "C");
+		//Пропускаем полный столбец.
+		if (line.Length == TilesMap.gridHeight) 
+		{
+			Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
+			return;
+		}
+
+		var count = line.Length;
+
+		//Поиск дырки внизу столбца
+		if ((int)line[0].gridID.y > 0)
+		{
+			holeProcessing(coloumn, 0, (int)line[0].gridID.y - 1);
+			return;
+		}
+		    
+		//Поиск дырок в середине столбца
+		for (int raw = 0; raw < count - 1; raw++)
+		{
+			var highterTileIDy = (int)line[raw+1].gridID.y;
+			var lowerTileIDy = (int)line[raw].gridID.y;
+
+			if(highterTileIDy - lowerTileIDy > 1)
+			{
+				holeProcessing(coloumn, lowerTileIDy + 1, highterTileIDy - 1);
+				return;
+			}
+		}
+
+		Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
 	}
 
-	public Coroutine routine { get; private set; } = null;
-	IEnumerator droppingTiles(Tile tile)
+	public void holeProcessing(int coloumn, int holeLowerIDy, int holeHighterIDy)
 	{
-		Debug.Log("[TilesDropper] <color=red>Падение тайлов.</color>");
+		var holeLenth = holeHighterIDy - holeLowerIDy + 1;
 
-		var upperTile = findUpperTileInColoumn(tile);
+		Debug.Log($"[TilesDropper] Обнаружена дырка: {holeHighterIDy} - {holeLowerIDy} " +
+		          $"в столбце {coloumn}. " +
+		          $"Длина дырки: {holeLenth}");
+
+		var tileOverTheHole = TilesFinder.getTileAtID(coloumn, holeHighterIDy + 1);
+		var holeLowerPosition = new Vector2(coloumn, holeLowerIDy);
+
+		CoroutinePlayer.Instance.StartCoroutine(droppingTiles(coloumn, tileOverTheHole, holeLowerPosition, holeLenth));
+	}
+
+	IEnumerator droppingTiles(int coloumn, Tile tileOverTheHole, Vector2 holeLowerPosition, int holeLength)
+	{
+		Debug.Log($"[TilesDropper] <color=yellow>Спуск тайлов в столбце {coloumn}.</color>");
+
 		var replacer = new TilesReplacer();
 
-		while (upperTile != null)
+		while (tileOverTheHole != null)
 		{
-			replacer.replaceTiles(upperTile, tile, false, 30f);
+			Debug.Log($"[TilesDropper] holeLowerPosition: {holeLowerPosition}");
+
+			replacer.replaceTiles(tileOverTheHole, holeLowerPosition, animationSpeed: 10);
 			yield return new WaitWhile(() => replacer.routine != null);
 
-			upperTile = TilesFinder.getNearestTile(tile, 0, 1);
-		}
-		Debug.Log("[TilesDropper] <color=red>Падение тайлов завершено.</color>");
-		routine = null;
-		yield break;
-	}
-
-	Tile findUpperTileInColoumn(Tile downerTile)
-	{
-		var tilesInColoumn = TilesMap.gridHeight;
-
-		var upperTile = new Tile();
-		for (int i = 1; i < tilesInColoumn - (int)downerTile.gridID.y; i++)
-		{
-			upperTile = TilesFinder.getNearestTile(downerTile, 0, i);
-			if (upperTile != null) break;
+			tileOverTheHole = TilesFinder.getNearestTile(tileOverTheHole, 0, holeLength+1);
+			holeLowerPosition.y += TilesMap.tileDeltaPosition;
 		}
 
-		return upperTile;
+		Debug.Log($"[TilesDropper] <color=green>Спуск тайлов в столбце {coloumn} завершен.</color>");
+		calculateHoles(coloumn);
 	}
 }
