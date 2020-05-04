@@ -6,16 +6,13 @@ using System.Collections.Generic;
 /// </summary>
 public static class MatchesDestroyer
 {
-	static List<Tile> generatedTiles = new List<Tile>(); //вынести в другой класс
-
 	/// <summary>
 	/// Уничтожает совпадения.
 	/// </summary>
 	/// <param name="tilesToDestroy">Tiles to destroy.</param>
 	public static void destroyMatches(Tile[] tilesToDestroy)
 	{
-		Debug.Log("Удаление совпавших тайлов");
-		generatedTiles.Clear();
+		Debug.Log("[MatchesDestroyer] Удаление совпавших тайлов");
 
 		for (int i = 0; i < tilesToDestroy.Length; i++)
 		{
@@ -24,11 +21,9 @@ public static class MatchesDestroyer
 
 			MonoBehaviour.Destroy(tilesToDestroy[i].gameObject);
 
-			//вынести в другой класс
-			var newTile = TilesGenerator.createTileAtPosition(positionToCreateTile);
-			generatedTiles.Add(newTile);
+			TilesGenerator.createTileAtPosition(positionToCreateTile);
 		}
+
+		MatchesValidator.checkAllTileMapForMatches();
 	}
-
-
 }

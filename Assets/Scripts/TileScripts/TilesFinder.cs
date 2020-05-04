@@ -63,7 +63,7 @@ public static class TilesFinder
 	{
 		if  (position.x < 0 || position.x > TilesMap.gridWidth || position.y < 0 || position.y > TilesMap.gridHeight)
 		{
-			Debug.LogError("Error");
+			Debug.LogError("[TilesFinder] Error");
 			return new Vector2(-1, -1);
 		}
 

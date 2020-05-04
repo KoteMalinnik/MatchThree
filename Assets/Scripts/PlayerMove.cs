@@ -29,7 +29,7 @@ public static class PlayerMove
 
 		if (tile == firstTile)
 		{
-			Debug.Log("Один и тот же объект");
+			Debug.Log("[PlayerMove] Один и тот же объект");
 			return;
 		}
 
@@ -73,13 +73,13 @@ public static class PlayerMove
 		bool canReplaceTileObjects = MatchesValidator.couldReplaceTiles(firstTile, secondTile);
 		if (canReplaceTileObjects)
 		{
-			Debug.Log("<color=green>Перемещение объектов разрешено</color>");
+			Debug.Log("[PlayerMove] <color=green>Перемещение объектов разрешено</color>");
 			MatchesDestroyer.destroyMatches(MatchesValidator.getMatchedTiles());
 			//Вызываю функцию проверки совпадений по всему ряду/столбцу для уничтожения объектов совпадения
 		}
 		else
 		{
-			Debug.Log("<color=red>Перемещение объектов невозможно. Возвращение в исходное состояние</color>");
+			Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно. Возвращение в исходное состояние</color>");
 			TilesReplacer.replaceTiles(tile1, tile2);
 		}
 
