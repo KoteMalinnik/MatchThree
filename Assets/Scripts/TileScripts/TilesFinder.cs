@@ -1,4 +1,4 @@
-﻿
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -41,18 +41,18 @@ public static class TilesFinder
 	/// <param name="param">"C" для столбца, "R" для ряда.</param>
 	public static Tile[] getLine(Tile tile, string param)
 	{
+		var tilesInLine = new List<Tile>();
 		int arraySize = param == "C" ? TilesMap.gridHeight : TilesMap.gridWidth;
-		Tile[] tilesInLine = new Tile[arraySize];
 
 		Tile temp = null;
-		for (int i = 0; i < tilesInLine.Length; i++)
+		for (int i = 0; i < arraySize; i++)
 		{
 			temp = param == "C" ? getTileAtID(tile.gridID.x, i) : getTileAtID(i, tile.gridID.y);
-			if (temp == null) break;
-			tilesInLine[i] = temp;
+			if (temp == null) continue;
+			tilesInLine.Add(temp);
 		}
 
-		return tilesInLine;
+		return tilesInLine.ToArray();
 	}
 
 	/// <summary>

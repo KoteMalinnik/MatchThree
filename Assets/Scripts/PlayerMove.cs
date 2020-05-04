@@ -56,7 +56,7 @@ public static class PlayerMove
 	{
 		Debug.Log("[PlayerMove] <color=yellow>Перемещение объектов</color>");
 
-		TilesReplacer replacer = new TilesReplacer();
+		var replacer = new TilesReplacer();
 		replacer.replaceTiles(tile1, tile2, false);
 		yield return new WaitWhile(() => replacer.routine != null);
 
