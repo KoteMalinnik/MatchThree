@@ -7,37 +7,19 @@ using UnityEngine;
 public static class TilesReplacer
 {
 	/// <summary>
-	/// Опусткает все тайлы выше tile в столбце, а tile помещает на вершину столбца.
+	/// Меняет местами тайлы в сетке с анимацией, если immediately установлен в true.
 	/// </summary>
-	/// <param name="tile">Tile.</param>
-	public static void dropUpperTiles(Tile tile)
+	public static void replaceTiles(Tile tile1, Tile tile2, bool immediately = true, float animationSpeed = 5f)
 	{
-		var upperTile = TilesFinder.getNearestTile(tile, 0, 1);
-		while (upperTile != null)
-		{
-			replaceTiles(tile, upperTile);
-			upperTile = TilesFinder.getNearestTile(tile, 0, 1);
-		}
+		routine = CoroutinePlayer.Instance.StartCoroutine(movementAnimation(tile1, tile2, immediately, animationSpeed));
 	}
 
-	/// <summary>
-	/// Меняет местами тайлы в сетке.
-	/// </summary>
-	public static void replaceTiles(Tile tile1, Tile tile2)
+	public static Coroutine routine { get; private set; } = null;
+	static IEnumerator movementAnimation(Tile tile1, Tile tile2, bool immediately = true, float animationSpeed = 5f)
 	{
 		var newTile1Position = tile2.position;
 		var newTile2Position = tile1.position;
 
-		tile1.setTileParametrs(newTile1Position, tile1.color);
-		tile2.setTileParametrs(newTile2Position, tile2.color);
-	}
-
-	static IEnumerator movementAnimation(Tile tile1, Tile tile2, bool immediately = true)
-	{
-		var newTile1Position = tile2.position;
-		var newTile2Position = tile1.position;
-
-		float animationSpeed = 5f;
 		float T = 0;
 
 		if(!immediately)
@@ -57,6 +39,7 @@ public static class TilesReplacer
 		tile1.setTileParametrs(newTile1Position, tile1.color);
 		tile2.setTileParametrs(newTile2Position, tile2.color);
 
+		routine = null;
 		yield return null;
 	}
 }

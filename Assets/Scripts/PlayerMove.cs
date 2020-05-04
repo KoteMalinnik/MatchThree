@@ -33,7 +33,7 @@ public static class PlayerMove
 		Debug.Log("Установка второго объекта завершена");
 		firstTile.transform.localScale /= 0.8f;
 
-		moveTiles(firstTile, tile);
+		CoroutinePlayer.Instance.StartCoroutine(moveTiles(firstTile, tile));
 		firstTile = null;
 	}
 
@@ -52,21 +52,25 @@ public static class PlayerMove
 	/// Если есть совпадения в столбце или строке после перемещения, то оставляет тайлы на этих местах.
 	/// В противном случае снова перемещает тайлы.
 	/// </summary>
-	static void moveTiles(Tile tile1, Tile tile2)
+	static IEnumerator moveTiles(Tile tile1, Tile tile2)
 	{
 		Debug.Log("[PlayerMove] <color=yellow>Перемещение объектов</color>");
 
-		TilesReplacer.replaceTiles(tile1, tile2);
+		TilesReplacer.replaceTiles(tile1, tile2, false);
+		yield return new WaitWhile(() => TilesReplacer.routine != null);
 
 		bool canReplaceTileObjects = MatchesValidator.couldReplaceTiles(tile1, tile2);
+
 		if (canReplaceTileObjects)
 		{
 			Debug.Log("[PlayerMove] <color=green>Перемещение объектов разрешено</color>");
 			MatchesDestroyer.destroyMatches(MatchesValidator.getMatchedTiles().ToArray());
-			return;
+			yield break;
 		}
 
-		Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно. Возвращение в исходное состояние</color>");
-		TilesReplacer.replaceTiles(tile1, tile2);
+		Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно.</color>");
+
+		TilesReplacer.replaceTiles(tile1, tile2, false);
+		yield return new WaitWhile(() => TilesReplacer.routine != null);
 	}
 }

@@ -16,12 +16,13 @@ public static class MatchesDestroyer
 
 		for (int i = 0; i < tilesToDestroy.Length; i++)
 		{
-			TilesReplacer.dropUpperTiles(tilesToDestroy[i]);
 			var positionToCreateTile = tilesToDestroy[i].position;
 
+			Debug.Log("[MatchesDestroyer] <color=red>Тут должна быть анимация уничтожения тайла.</color>");
 			MonoBehaviour.Destroy(tilesToDestroy[i].gameObject);
 
-			TilesGenerator.createTileAtPosition(positionToCreateTile);
+			var newTile = TilesGenerator.createTileAtPosition(positionToCreateTile);
+			TilesDropper.dropUpperTiles(newTile);
 		}
 
 		MatchesValidator.checkAllTileMapForMatches();

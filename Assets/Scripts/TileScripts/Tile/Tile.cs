@@ -74,7 +74,7 @@ public class Tile : MonoBehaviour
 	/// Устанавливает цвет.
 	/// </summary>
 	/// <param name="newColor">New color.</param>
-	void setColor(Color newColor)
+	public void setColor(Color newColor)
 	{
 		color = newColor;
 		if (spriteRenderer != null) spriteRenderer.color = color;
