@@ -6,24 +6,15 @@ using UnityEngine;
 /// </summary>
 public class TilesDropper
 {
-	/// <summary>
-	/// Опускает все тайлы выше tile в столбце, а tile помещает на вершину столбца.
-	/// </summary>
-	/// <param name="tile">Tile.</param>
-	public void dropUpperTiles(Tile tile)
+	public TilesDropper()
 	{
-		routine = CoroutinePlayer.Instance.StartCoroutine(droppingTiles(tile));
+		calculate();
+		run();
 	}
 
-	public void startTemp()
+	public void calculate()
 	{
-		CoroutinePlayer.Instance.StartCoroutine(temp());
-	}
-
-	IEnumerator temp()
-	{
-		yield return new WaitForSeconds(1);
-
+		Debug.Log("[TilesDropper] Рассчет.");
 		for (int i = 0; i < TilesMap.gridWidth; i++)
 		{
 			var downerTile = TilesFinder.getTileAtID(i, 0);
@@ -32,8 +23,25 @@ public class TilesDropper
 			Debug.Log($"Столбец {i}. Количество элементов: {count}");
 
 			for (int j = 0; j < count; j++)
+			{
+				
+			}
 				Debug.Log(line[j].gridID);
 		}
+	}
+
+	public void run()
+	{
+		Debug.Log("[TilesDropper] Запуск.");
+	}
+
+	/// <summary>
+	/// Опускает все тайлы выше tile в столбце, а tile помещает на вершину столбца.
+	/// </summary>
+	/// <param name="tile">Tile.</param>
+	public void dropUpperTiles(Tile tile)
+	{
+		routine = CoroutinePlayer.Instance.StartCoroutine(droppingTiles(tile));
 	}
 
 	public Coroutine routine { get; private set; } = null;
