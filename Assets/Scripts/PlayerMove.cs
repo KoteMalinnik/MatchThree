@@ -56,8 +56,9 @@ public static class PlayerMove
 	{
 		Debug.Log("[PlayerMove] <color=yellow>Перемещение объектов</color>");
 
-		TilesReplacer.replaceTiles(tile1, tile2, false);
-		yield return new WaitWhile(() => TilesReplacer.routine != null);
+		TilesReplacer replacer = new TilesReplacer();
+		replacer.replaceTiles(tile1, tile2, false);
+		yield return new WaitWhile(() => replacer.routine != null);
 
 		bool canReplaceTileObjects = MatchesValidator.couldReplaceTiles(tile1, tile2);
 
@@ -70,7 +71,7 @@ public static class PlayerMove
 
 		Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно.</color>");
 
-		TilesReplacer.replaceTiles(tile1, tile2, false);
-		yield return new WaitWhile(() => TilesReplacer.routine != null);
+		replacer.replaceTiles(tile1, tile2, false);
+		yield return new WaitWhile(() => replacer.routine != null);
 	}
 }

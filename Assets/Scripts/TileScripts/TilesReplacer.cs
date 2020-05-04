@@ -4,18 +4,18 @@ using UnityEngine;
 /// <summary>
 /// Перемещение тайлов.
 /// </summary>
-public static class TilesReplacer
+public class TilesReplacer
 {
 	/// <summary>
 	/// Меняет местами тайлы в сетке с анимацией, если immediately установлен в true.
 	/// </summary>
-	public static void replaceTiles(Tile tile1, Tile tile2, bool immediately = true, float animationSpeed = 5f)
+	public void replaceTiles(Tile tile1, Tile tile2, bool immediately = true, float animationSpeed = 5f)
 	{
 		routine = CoroutinePlayer.Instance.StartCoroutine(movementAnimation(tile1, tile2, immediately, animationSpeed));
 	}
 
-	public static Coroutine routine { get; private set; } = null;
-	static IEnumerator movementAnimation(Tile tile1, Tile tile2, bool immediately = true, float animationSpeed = 5f)
+	public Coroutine routine { get; private set; } = null;
+	IEnumerator movementAnimation(Tile tile1, Tile tile2, bool immediately = true, float animationSpeed = 5f)
 	{
 		var newTile1Position = tile2.position;
 		var newTile2Position = tile1.position;

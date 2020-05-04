@@ -4,34 +4,33 @@ using UnityEngine;
 /// <summary>
 /// Перемещение тайлов.
 /// </summary>
-public static class TilesDropper
+public class TilesDropper
 {
 	/// <summary>
-	/// Опусткает все тайлы выше tile в столбце, а tile помещает на вершину столбца.
+	/// Опускает все тайлы выше tile в столбце, а tile помещает на вершину столбца.
 	/// </summary>
 	/// <param name="tile">Tile.</param>
-	public static void dropUpperTiles(Tile tile)
+	public void dropUpperTiles(Tile tile)
 	{
-		CoroutinePlayer.Instance.StartCoroutine(droppingTiles(tile));
+		routine = CoroutinePlayer.Instance.StartCoroutine(droppingTiles(tile));
 	}
 
-	static IEnumerator droppingTiles(Tile tile)
+	public Coroutine routine { get; private set; } = null;
+	IEnumerator droppingTiles(Tile tile)
 	{
-		var tileColor = tile.color;
-		tileColor.a = 0;
+		Debug.Log("[TilesDropper] <color=red>Падение тайлов.</color>");
 
 		var upperTile = TilesFinder.getNearestTile(tile, 0, 1);
+		var replacer = new TilesReplacer();
 		while (upperTile != null)
 		{
-			TilesReplacer.replaceTiles(tile, upperTile);
-			//yield return new WaitWhile(() => TilesReplacer.routine != null);
+			replacer.replaceTiles(upperTile, tile, false, 10f);
+			yield return new WaitWhile(() => replacer.routine != null);
 
 			upperTile = TilesFinder.getNearestTile(tile, 0, 1);
 		}
-
-		Debug.Log("[TileRaplacer] <color=red>Тут должна быть анимация появления тайла.</color>");
-		tileColor.a = 1;
-
+		Debug.Log("[TilesDropper] <color=red>Падение тайлов завершено.</color>");
+		routine = null;
 		yield return null;
 	}
 }
