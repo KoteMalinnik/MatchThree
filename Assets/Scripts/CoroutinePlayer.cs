@@ -1,19 +1,25 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Синглтон для запуска корутин из статических классов.
+/// </summary>
 public class CoroutinePlayer : MonoBehaviour
 {
+	/// <summary>
+	/// Экзмемпляр класса.
+	/// </summary>
 	static CoroutinePlayer _instance = null;
 
 	public static CoroutinePlayer Instance
-	{
-		get
-		{
-			if(_instance == null)
-			{
-				_instance = Camera.main.gameObject.AddComponent<CoroutinePlayer>();
-			}
+	{ get { return _instance ?? new GameObject("ObjectsGenerator").AddComponent<CoroutinePlayer>(); } }
 
-			return _instance;
-		}
+	void Awake()
+	{
+		_instance = this;
+	}
+
+	void OnDestroy()
+	{
+		_instance = null;
 	}
 }
