@@ -6,19 +6,19 @@
 public class Tile : MonoBehaviour
 {
 	/// <summary>
-	/// Идентификатор тайла в сетке.
+	/// Идентификатор тайла в сетке тайлов.
 	/// </summary>
 	/// <value>The grid identifier.</value>
 	public Vector2 gridID { get; private set; } = new Vector2 (0, 0);
 
 	/// <summary>
-	/// Позиция объекта в сетке tileMap
+	/// Позиция объекта в сетке тайлов.
 	/// </summary>
 	/// <value>The position.</value>
 	public Vector2 position { get; private set; } = new Vector2 (0, 0);
 
 	/// <summary>
-	/// Цвет объекта
+	/// Цвет тайла.
 	/// </summary>
 	/// <value>The color.</value>
 	public Color color { get; private set; }

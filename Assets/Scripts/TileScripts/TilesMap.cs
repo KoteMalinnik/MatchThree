@@ -1,17 +1,32 @@
-﻿/// <summary>
+﻿using UnityEngine;
+
+/// <summary>
 /// Карта тайлов.
 /// </summary>
-public static class TilesMap
+public class TilesMap : MonoBehaviour
 {
+	[SerializeField]
+	int _gridWidth = 1;
+
+	[SerializeField]
+	int _gridHeight = 1;
+
+	void Awake()
+	{
+		gridWidth = _gridWidth;
+		gridHeight = _gridHeight;
+		Destroy(this);
+	}
+
 	/// <summary>
 	/// Ширина сетки тайлов.
 	/// </summary>
-	public static readonly int gridWidth = 6;
+	public static int gridWidth = 6;
 
 	/// <summary>
 	/// Высота сетки тайлов.
 	/// </summary>
-	public static readonly int gridHeight = 8;
+	public static int gridHeight = 8;
 
 	/// <summary>
 	/// Размер тайла.
