@@ -6,6 +6,9 @@ using UnityEngine;
 /// </summary>
 public class TilesDropper
 {
+	public static int CoroutinesInProcessCount { get; private set; } = 0;
+
+
 	/// <summary>
 	/// Инициализация объекта класса TilesDropper. Рассчет дырок и спуск тайлов.
 	/// </summary>
@@ -50,7 +53,7 @@ public class TilesDropper
 			}
 		}
 
-		//Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
+		Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
 
 		TilesGenerator.Instance.spawnTilesInColoumn(coloumn, TilesMap.getTilesGrid());
 	}
@@ -77,6 +80,7 @@ public class TilesDropper
 	/// </summary>
 	IEnumerator droppingTiles(int coloumn, Tile tileOverTheHole, Vector2 holeLowerPosition, int holeLength)
 	{
+		CoroutinesInProcessCount++;
 		//Debug.Log($"[TilesDropper] <color=yellow>Спуск тайлов в столбце {coloumn}.</color>");
 
 		var replacer = new TilesReplacer();
@@ -92,5 +96,6 @@ public class TilesDropper
 
 		//Debug.Log($"[TilesDropper] <color=green>Спуск тайлов в столбце {coloumn} завершен.</color>");
 		calculateHoles(coloumn);
+		CoroutinesInProcessCount--;
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.ComponentModel;
 
 /// <summary>
 /// Уничтожение совпавших тайлов.
@@ -58,19 +57,28 @@ public static class MatchesDestroyer
 	/// </summary>
 	static IEnumerator delayForDestroyingAllMatches()
 	{
-		//Debug.Log("[MatchesDestroyer] Начало ожидания.");
+		//Debug.Log("[MatchesDestroyer] Начало ожидания спуска.");
 
-		float debugTime = 0;
-		for (int i = 0; i < 20; i++, debugTime += Time.fixedDeltaTime)
-		{
-			yield return new WaitForFixedUpdate();
-		}
-
-		//Debug.Log($"[MatchesDestroyer] Время ожидания: {debugTime}");
+		yield return new WaitForSeconds(0.4f);
 
 		for (int coloumn = 0; coloumn < TilesMap.gridWidth; coloumn++)
 		{
 			var dropper = new TilesDropper(coloumn);
 		}
+
+		CoroutinePlayer.Instance.StartCoroutine(delayForAppearingAllTiles());
+	}
+
+	/// <summary>
+	/// Задержка перед вызовом метода MatchesValidator.checkAllTileMapForMatches().
+	/// </summary>
+	static IEnumerator delayForAppearingAllTiles()
+	{
+		//Debug.Log("[MatchesDestroyer] Начало ожидания проверки всей карты.");
+
+		yield return new WaitWhile(() => TilesDropper.CoroutinesInProcessCount > 0);
+
+		MatchesValidator.checkAllTileMapForMatches();
+		//Debug.Log("[MatchesDestroyer] Конец ожидания проверки всей карты.");
 	}
 }

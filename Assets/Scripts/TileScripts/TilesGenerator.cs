@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 /// <summary>
 /// Генератор тайлов.
@@ -66,7 +67,7 @@ public class TilesGenerator : MonoBehaviour
 		{
 			if (tilesGrid[coloumn, raw] != null)
 			{
-				Debug.Log($"[TilesGenerator] Узел сетки ({coloumn},{raw}) занят.");
+				//Debug.Log($"[TilesGenerator] Узел сетки ({coloumn},{raw}) занят.");
 				continue;
 			}
 
