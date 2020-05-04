@@ -15,27 +15,20 @@ public class TilesDropper
 	}
 
 	/// <summary>
-	/// Рассчитывает дырки и спускает тайлы выше дырок.
+	/// Ищет дырки в столбце.
 	/// </summary>
 	public void calculateHoles(int coloumn)
 	{
-		//Debug.Log($"[TilesDropper] Рассчет дырок в столбце {coloumn}.");
-
 		var line = TilesFinder.getLine(coloumn, "C");
 		var count = line.Length;
 
 		//Пропускаем полный столбец.
-		if (count == TilesMap.gridHeight) 
-		{
-			//Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
-			return;
-		}
+		if (count == TilesMap.gridHeight) return;
 
 		//пропускаем пустой столбец
-		if(count == 0)
-		{
-			return;
-		}
+		if(count == 0) return;
+
+		//Debug.Log($"[TilesDropper] Поиск дырок в столбце {coloumn}.");
 
 		//Поиск дырки внизу столбца
 		if ((int)line[0].gridID.y > 0)
@@ -58,15 +51,20 @@ public class TilesDropper
 		}
 
 		//Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
+
+		TilesGenerator.Instance.spawnTilesInColoumn(coloumn, TilesMap.getTilesGrid());
 	}
 
+	/// <summary>
+	/// Обработка дырки.
+	/// </summary>
 	public void holeProcessing(int coloumn, int holeLowerIDy, int holeHighterIDy)
 	{
 		var holeLenth = holeHighterIDy - holeLowerIDy + 1;
 
-		Debug.Log($"[TilesDropper] Обнаружена дырка: {holeHighterIDy} - {holeLowerIDy} " +
-		          $"в столбце {coloumn}. " +
-		          $"Длина дырки: {holeLenth}");
+		//Debug.Log($"[TilesDropper] Обнаружена дырка: {holeHighterIDy} - {holeLowerIDy} " +
+		//          $"в столбце {coloumn}. " +
+		//          $"Длина дырки: {holeLenth}");
 
 		var tileOverTheHole = TilesFinder.getTileAtID(coloumn, holeHighterIDy + 1);
 		var holeLowerPosition = new Vector2(coloumn, holeLowerIDy);
@@ -74,9 +72,12 @@ public class TilesDropper
 		CoroutinePlayer.Instance.StartCoroutine(droppingTiles(coloumn, tileOverTheHole, holeLowerPosition, holeLenth));
 	}
 
+	/// <summary>
+	/// Спуск тайлов над дыркой.
+	/// </summary>
 	IEnumerator droppingTiles(int coloumn, Tile tileOverTheHole, Vector2 holeLowerPosition, int holeLength)
 	{
-		Debug.Log($"[TilesDropper] <color=yellow>Спуск тайлов в столбце {coloumn}.</color>");
+		//Debug.Log($"[TilesDropper] <color=yellow>Спуск тайлов в столбце {coloumn}.</color>");
 
 		var replacer = new TilesReplacer();
 
@@ -89,7 +90,7 @@ public class TilesDropper
 			holeLowerPosition.y++;
 		}
 
-		Debug.Log($"[TilesDropper] <color=green>Спуск тайлов в столбце {coloumn} завершен.</color>");
+		//Debug.Log($"[TilesDropper] <color=green>Спуск тайлов в столбце {coloumn} завершен.</color>");
 		calculateHoles(coloumn);
 	}
 }

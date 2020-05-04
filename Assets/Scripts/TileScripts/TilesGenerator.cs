@@ -44,19 +44,34 @@ public class TilesGenerator : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Генерирует объекты в сетке тайлов.
+	/// Генерирует тайлы в сетке тайлов.
 	/// </summary>
 	void spawnTiles()
 	{
-		float posX = 0.0f;
-		for (int i = 0; i < TilesMap.gridWidth; i++, posX += TilesMap.tileDeltaPosition)
+		var tilesGrid = TilesMap.getTilesGrid();
+
+		for (int coloumn = 0; coloumn < TilesMap.gridWidth; coloumn++)
 		{
-			float posY = 0.0f;
-			for (int j = 0; j < TilesMap.gridHeight; j++, posY += TilesMap.tileDeltaPosition)
+			spawnTilesInColoumn(coloumn, tilesGrid);
+		}
+	}
+
+	/// <summary>
+	/// Генерирует тайлы в столбце.
+	/// </summary>
+	/// <param name="coloumn">Coloumn.</param>
+	public void spawnTilesInColoumn(int coloumn, Tile[,] tilesGrid)
+	{
+		for (int raw = 0; raw < TilesMap.gridHeight; raw++)
+		{
+			if (tilesGrid[coloumn, raw] != null)
 			{
-				var position = new Vector2(posX, posY);
-				TileCreator.createTileAtPosition(tilePrefab, position, cachedTransform, colors);
+				Debug.Log($"[TilesGenerator] Узел сетки ({coloumn},{raw}) занят.");
+				continue;
 			}
+
+			var position = new Vector2(coloumn, raw);
+			TileCreator.createTileAtPosition(tilePrefab, position, cachedTransform, colors);
 		}
 	}
 }
