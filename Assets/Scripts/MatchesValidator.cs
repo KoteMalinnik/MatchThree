@@ -19,15 +19,6 @@ public static class MatchesValidator
 	{
 		//Debug.Log("[MatchesValidator] Проверка тайлов на возможность перемещения");
 		bool result = false;
-		//Нет необходимости что-либо проверять, если второй объект не в пределах одного объекта по горизонтали или вертикали
-		result = (tile2.position - tile1.position).magnitude < TilesMap.tileDeltaPosition + 0.1f;
-		if (!result) return false;
-		//Debug.Log("[MatchesValidator] В пределах одного тайла");
-
-		//Нет необходимости проверять, если они одного цвета
-		result = tile2.color != tile1.color;
-		if (!result) return false;
-		//Debug.Log("[MatchesValidator] Разные цвета тайлов");
 
 		//Debug.Log("[MatchesValidator] Проверка на совпадения");
 		matchedTiles.Clear();

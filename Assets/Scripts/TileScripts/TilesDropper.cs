@@ -2,19 +2,25 @@
 using UnityEngine;
 
 /// <summary>
-/// Перемещение тайлов.
+/// Опускание тайлов на свободные места.
 /// </summary>
 public class TilesDropper
 {
+	/// <summary>
+	/// Инициализация объекта класса TilesDropper. Рассчет дырок и запуск опускания тайлов.
+	/// </summary>
 	public TilesDropper()
 	{
 		calculate();
 		run();
 	}
 
+	/// <summary>
+	/// Рассчитывает
+	/// </summary>
 	public void calculate()
 	{
-		Debug.Log("[TilesDropper] Рассчет.");
+		Debug.Log("[TilesDropper] Рассчет дырок.");
 		for (int i = 0; i < TilesMap.gridWidth; i++)
 		{
 			var downerTile = TilesFinder.getTileAtID(i, 0);
@@ -24,9 +30,8 @@ public class TilesDropper
 
 			for (int j = 0; j < count; j++)
 			{
-				
-			}
 				Debug.Log(line[j].gridID);
+			}
 		}
 	}
 

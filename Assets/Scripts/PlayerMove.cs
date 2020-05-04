@@ -30,7 +30,7 @@ public static class PlayerMove
 			return;
 		}
 
-		Debug.Log("Установка второго объекта завершена");
+		Debug.Log("[PlayerMove] Установка второго объекта завершена");
 		firstTile.transform.localScale /= 0.8f;
 
 		CoroutinePlayer.Instance.StartCoroutine(moveTiles(firstTile, tile));
@@ -55,6 +55,17 @@ public static class PlayerMove
 	static IEnumerator moveTiles(Tile tile1, Tile tile2)
 	{
 		Debug.Log("[PlayerMove] <color=yellow>Перемещение объектов</color>");
+
+		bool result = false;
+		//Нет необходимости что-либо проверять, если второй объект не в пределах одного объекта по горизонтали или вертикали
+		result = (tile2.position - tile1.position).magnitude < TilesMap.tileDeltaPosition + 0.1f;
+		if (!result) yield break;
+		//Debug.Log("[PlayerMove] В пределах одного тайла");
+
+		//Нет необходимости проверять, если они одного цвета
+		result = tile2.color != tile1.color;
+		if (!result) yield break;
+		//Debug.Log("[PlayerMove] Разные цвета тайлов");
 
 		var replacer = new TilesReplacer();
 		replacer.replaceTiles(tile1, tile2, false);
