@@ -11,22 +11,21 @@ public static class MatchesValidator
 	public static Tile[] getMatchedTiles() { return matchedTiles;}
 
 	/// <summary>
-	/// Возвращает true, если first и second можно поменять местами
+	/// Возвращает true, если first и second можно поменять местами.
 	/// </summary>
-	/// <returns><c>true</c>, if replace tile objects was caned, <c>false</c> otherwise.</returns>
-	/// <param name="firstTile">First.</param>
-	/// <param name="secondTile">Second.</param>
-	public static bool couldReplaceTiles(Tile secondTile, Tile firstTile)
+	/// <param name="tile2">First.</param>
+	/// <param name="tile1">Second.</param>
+	public static bool couldReplaceTiles(Tile tile1, Tile tile2)
 	{
 		Debug.Log("Проверка тайлов на возможность перемещения");
 		bool result = false;
 		//Нет необходимости что-либо проверять, если второй объект на в пределах одного объекта по горизонтали или вертикали
-		result = (firstTile.position - secondTile.position).magnitude < TilesMap.tileDeltaPosition + 0.1f;
+		result = (tile2.position - tile1.position).magnitude < TilesMap.tileDeltaPosition + 0.1f;
 		if (!result) return false;
 		Debug.Log("В пределах одного тайла");
 
 		//Нет необходимости проверять, если они одного цвета
-		result = firstTile.color != secondTile.color;
+		result = tile2.color != tile1.color;
 		if (!result) return false;
 		Debug.Log("Разные цвета тайлов");
 
@@ -34,16 +33,12 @@ public static class MatchesValidator
 		Debug.Log("Проверка на совпадения");
 		matchedTiles = new Tile[0];
 
-		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(firstTile, "C"));
-		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(firstTile, "R"));
+		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(tile1, "R"));
+		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(tile2, "R"));
 
-		//Исключаем необходимость лишней проверки
-		if (Mathf.Abs(firstTile.position.x - secondTile.position.x) < 0.01f) //Если оба тайла в одном столбце
-			matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(secondTile, "R"));
+		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(tile1, "C"));
+		matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(tile2, "C"));
 
-		if (Mathf.Abs(firstTile.position.y - secondTile.position.y) < 0.01f) //Если оба тайла в одном ряду
-			matchedTiles = addArrayToArray(matchedTiles, checkLineForMatches(secondTile, "C"));
-		
 		Debug.Log("Проверка на совпадения завершена");
 
 		result = matchedTiles.Length >= 3;
@@ -53,7 +48,7 @@ public static class MatchesValidator
 	}
 
 	/// <summary>
-	/// Склеивает два массива в один и возвращает его.
+	/// Склеивает два массива тайлов в один и возвращает его.
 	/// </summary>
 	/// <returns>The array to array.</returns>
 	/// <param name="sourceArray">Source array.</param>
@@ -71,57 +66,57 @@ public static class MatchesValidator
 	}
 
 	/// <summary>
-	/// Возвращает массив тайлов, с которыми произошло совпадение и при этом среди них есть tile.
+	/// Возвращает массив тайлов, которые совпали в линии.
 	/// </summary>
 	static Tile[] checkLineForMatches(Tile tile, string param)
 	{
-		// !!!РАБОТАЕТ НЕКОРРЕКТНО
-
 		Tile[] line = TilesFinder.getLine(tile, param);
 		
-		var mathedTiles = new List<Tile>();
+		var matchedTilesInLine = new List<Tile>(0);
+
+		/*
+		 *	Алгоритм поиска совпадений 
+		 * 
+		 * 	Находим первый элемент, который совпал с цветом тайла.
+		 * 	Добавляем его в список, если этого элемента там нет
+		 * 	
+		 * 	При несовпадении тайлов, если в список уже добавлены какие-либо элементы,
+		 * 	проверяем количество элементов в списке для нахождения цепочек тайлов
+		 * 	длинной более трех.
+		 * 	Если же цепочка состоит из более трех элементов, то прерываем поиск.
+		 * 
+		 */
 
 		//Цикл добавляет последовательно идущие элементы в список
 		for (int i = 0; i < line.Length && line[i] != null; i++)
 		{
-			//Если прошли почти весь ряд, но не нашли совпадений, то выходим из цикла
-			if (mathedTiles.Count == 0 && line.Length - i < 3) break;
-
 			//Если цвета тайлов совпадают, то добавляем в список
+			//Если в списке уже содержится этот тайл, то пропускаем.
 			if (tile.color == line[i].color)
 			{
-				mathedTiles.Add(line[i]);
+				if(!matchedTilesInLine.Contains(line[i])) matchedTilesInLine.Add(line[i]);
 				continue;
 			}
 
 			//Если цвета тайлов не совпадают
 
 			//Если еще ничего не добавили в список, то смотрим на следующий тайл
-			if (mathedTiles.Count == 0) continue;
+			if (matchedTilesInLine.Count == 0) continue;
 
 			//Если количество элементов списка меньше минимального, то очищаем список
-			if (mathedTiles.Count < 3)
+			if (matchedTilesInLine.Count < 3)
 			{
-				mathedTiles.Clear();
+				matchedTilesInLine.Clear();
 				continue;
 			}
 
-			//Если список содержит исходный тайл, то заканчиваем поиск
-			if(mathedTiles.Contains(tile))
-			{
-				break;
-			}
-
-			//В противном случае очищаем список
-			mathedTiles.Clear();
+			break;
 		}
 		
 		//Если меньше трех совпадений, то проверка не пройдена
-		if (mathedTiles.Count < 3) return null;
+		if (matchedTilesInLine.Count < 3) return null;
 
-		//Если массив содержит исходный объект, то проверка пройдена
-		if (mathedTiles.Contains(tile)) return mathedTiles.ToArray();
-
-		return null;
+		//Если есть совпадения. Проверка пройдена
+		return matchedTilesInLine.ToArray();
 	}
 }
