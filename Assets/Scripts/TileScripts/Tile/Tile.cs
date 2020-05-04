@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Объект сетки
+/// Объект сетки.
 /// </summary>
 public class Tile : MonoBehaviour
 {
@@ -23,6 +23,9 @@ public class Tile : MonoBehaviour
 	/// <value>The color.</value>
 	public Color color { get; private set; }
 
+	/// <summary>
+	/// Кешированный SpriteRenderer.
+	/// </summary>
 	SpriteRenderer spriteRenderer;
 
 	void Awake()
@@ -30,11 +33,11 @@ public class Tile : MonoBehaviour
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		gameObject.AddComponent<BoxCollider2D>();
 
-		transform.localScale = Vector3.one * TileMap.tileSize;
+		transform.localScale = Vector3.one * TilesMap.tileSize;
 	}
 
 	/// <summary>
-	/// Установка значений объекта
+	/// Устанавливает и рассчитывает параметры.
 	/// </summary>
 	/// <param name="newPosition">New position.</param>
 	/// <param name="newColor">New color.</param>
@@ -46,32 +49,32 @@ public class Tile : MonoBehaviour
 
 		gameObject.name = $"{(int)gridID.x}-{(int)gridID.y}";
 
-		TileMap.setTileInGrid(this);
+		TilesMap.setTileInGrid(this);
 	}
 
 	/// <summary>
-	/// Установить позицию.
+	/// Устанавливает позицю.
 	/// </summary>
 	/// <param name="newPosition">New position.</param>
-	public void setPosition(Vector2 newPosition)
+	void setPosition(Vector2 newPosition)
 	{
 		position = newPosition;
 		transform.position = newPosition;
 	}
 
 	/// <summary>
-	/// Установить идентификатор в сетке.
+	/// Устанавливает идентификатор.
 	/// </summary>
-	public void setGridID(Vector2 newPosition)
+	void setGridID(Vector2 newPosition)
 	{
-		gridID = new Vector2(newPosition.x, newPosition.y) / TileMap.tileDeltaPosition;
+		gridID = new Vector2(newPosition.x, newPosition.y) / TilesMap.tileDeltaPosition;
 	}
 
 	/// <summary>
-	/// Установить цвет.
+	/// Устанавливает цвет.
 	/// </summary>
 	/// <param name="newColor">New color.</param>
-	public void setColor(Color newColor)
+	void setColor(Color newColor)
 	{
 		color = newColor;
 		if (spriteRenderer != null) spriteRenderer.color = color;

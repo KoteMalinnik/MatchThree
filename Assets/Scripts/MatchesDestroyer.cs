@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Уничтожение совпавших тайлов.
 /// </summary>
-public class MatchesDestroyer : MonoBehaviour
+public static class MatchesDestroyer
 {
+	static List<Tile> generatedTiles = new List<Tile>(); //вынести в другой класс
+
 	/// <summary>
 	/// Уничтожает совпадения.
 	/// </summary>
@@ -12,30 +15,20 @@ public class MatchesDestroyer : MonoBehaviour
 	public static void destroyMatches(Tile[] tilesToDestroy)
 	{
 		Debug.Log("Удаление совпавших тайлов");
+		generatedTiles.Clear();
 
 		for (int i = 0; i < tilesToDestroy.Length; i++)
 		{
-			dropUpperTiles(tilesToDestroy[i]);
-
+			TilesReplacer.dropUpperTiles(tilesToDestroy[i]);
 			var positionToCreateTile = tilesToDestroy[i].position;
 
-			Destroy(tilesToDestroy[i].gameObject);
+			MonoBehaviour.Destroy(tilesToDestroy[i].gameObject);
 
-			ObjectsGenerator.createTileAtPosition(positionToCreateTile);
+			//вынести в другой класс
+			var newTile = TilesGenerator.createTileAtPosition(positionToCreateTile);
+			generatedTiles.Add(newTile);
 		}
 	}
 
-	/// <summary>
-	/// Опусткает все тайлы выше tile в столбце, а tile помещает на вершину столбца.
-	/// </summary>
-	/// <param name="tile">Tile.</param>
-	static void dropUpperTiles(Tile tile)
-	{
-		var upperTile = TilesFinder.getNearestTile(tile, 0, 1);
-		while(upperTile != null && !Input.GetKeyDown(KeyCode.Space))
-		{
-			TilesMovement.replaceTiles(tile, upperTile);
-			upperTile = TilesFinder.getNearestTile(tile, 0, 1);
-		}
-	}
+
 }

@@ -6,6 +6,9 @@
 /// </summary>
 public class TileInteractivity : MonoBehaviour
 {
+	/// <summary>
+	/// Прикрепленный компонент Tile.
+	/// </summary>
 	Tile tileObject;
 
 	void Awake()
@@ -15,6 +18,6 @@ public class TileInteractivity : MonoBehaviour
 
 	void OnMouseDown()
 	{
-		TilesMovement.setTiles(tileObject);
+		PlayerMove.setTilesForMove(tileObject);
 	}
 }

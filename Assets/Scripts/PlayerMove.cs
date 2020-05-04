@@ -1,0 +1,89 @@
+﻿using UnityEngine;
+
+/// <summary>
+/// Ход игрока для перемещения двух тайлов.
+/// </summary>
+public static class PlayerMove
+{
+	/// <summary>
+	/// Первый нажатый тайл.
+	/// </summary>
+	static Tile firstTile;
+	/// <summary>
+	/// Второй нажатый тайл.
+	/// </summary>
+	static Tile secondTile;
+
+	/// <summary>
+	/// Первый вызов метода - установка sourceTile.
+	/// Второй вызов метода - установка targetTile. 
+	/// </summary>
+	/// <param name="tile">Тайл.</param>
+	public static void setTilesForMove(Tile tile)
+	{
+		if (firstTile == null)
+		{
+			setFirstTile(tile);
+			return;
+		}
+
+		if (tile == firstTile)
+		{
+			Debug.Log("Один и тот же объект");
+			return;
+		}
+
+		setSecondTile(tile);
+
+		firstTile.transform.localScale /= 0.8f;
+		moveTiles(ref firstTile, ref secondTile);
+	}
+
+	/// <summary>
+	/// Установка первого тайла.
+	/// </summary>
+	/// <param name="tile">Тайл.</param>
+	static void setFirstTile(Tile tile)
+	{
+		firstTile = tile;
+		firstTile.transform.localScale *= 0.8f;
+	}
+
+
+	/// <summary>
+	/// Установка второго тайла.
+	/// </summary>
+	/// <param name="tile">Тайл.</param>
+	static void setSecondTile(Tile tile)
+	{
+		secondTile = tile;
+	}
+
+	/// <summary>
+	/// Перемещает firstTile на место secondTile.
+	/// Если есть совпадения в столбце или строке после перемещения, то оставляет тайлы на этих местах.
+	/// В противном случае снова перемещает тайлы.
+	/// </summary>
+	static void moveTiles(ref Tile tile1, ref Tile tile2)
+	{
+		//Debug.Log("<color=yellow>Перемещение объектов</color>");
+
+		TilesReplacer.replaceTiles(tile1, tile2);
+
+		bool canReplaceTileObjects = MatchesValidator.couldReplaceTiles(firstTile, secondTile);
+		if (canReplaceTileObjects)
+		{
+			Debug.Log("<color=green>Перемещение объектов разрешено</color>");
+			MatchesDestroyer.destroyMatches(MatchesValidator.getMatchedTiles());
+			//Вызываю функцию проверки совпадений по всему ряду/столбцу для уничтожения объектов совпадения
+		}
+		else
+		{
+			Debug.Log("<color=red>Перемещение объектов невозможно. Возвращение в исходное состояние</color>");
+			TilesReplacer.replaceTiles(tile1, tile2);
+		}
+
+		tile1 = null;
+		tile2 = null;
+	}
+}

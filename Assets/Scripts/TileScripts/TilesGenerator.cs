@@ -2,17 +2,17 @@
 using UnityEngine;
 
 /// <summary>
-/// Генератор тайлов
+/// Генератор тайлов.
 /// </summary>
-public class ObjectsGenerator : MonoBehaviour
+public class TilesGenerator : MonoBehaviour
 {
 	/// <summary>
 	/// Экзмемпляр класса.
 	/// </summary>
-	static ObjectsGenerator _instance = null;
+	static TilesGenerator _instance = null;
 
-	public static ObjectsGenerator Instance
-		{ get { return _instance ?? new GameObject("ObjectsGenerator").AddComponent<ObjectsGenerator>();} }
+	public static TilesGenerator Instance
+		{ get { return _instance ?? new GameObject("ObjectsGenerator").AddComponent<TilesGenerator>();} }
 
 	void Awake()
 	{
@@ -28,7 +28,7 @@ public class ObjectsGenerator : MonoBehaviour
 	/// <summary>
 	/// Префаб тайла.
 	/// </summary>
-	Tile tileObjectPrefab = null;
+	Tile tilePrefab = null;
 
 	[SerializeField]
 	/// <summary>
@@ -42,15 +42,15 @@ public class ObjectsGenerator : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Создание объектов в узлах сетки
+	/// Генерирует объекты в сетке тайлов.
 	/// </summary>
 	void spawnTiles()
 	{
 		float posX = 0.0f;
-		for (int i = 0; i < TileMap.gridWidth; i++, posX += TileMap.tileDeltaPosition)
+		for (int i = 0; i < TilesMap.gridWidth; i++, posX += TilesMap.tileDeltaPosition)
 		{
 			float posY = 0.0f;
-			for (int j = 0; j < TileMap.gridHeight; j++, posY += TileMap.tileDeltaPosition)
+			for (int j = 0; j < TilesMap.gridHeight; j++, posY += TilesMap.tileDeltaPosition)
 			{
 				var position = new Vector2(posX, posY);
 				createTileAtPosition(position);
@@ -59,12 +59,12 @@ public class ObjectsGenerator : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Создать тайл в позиции.
+	/// Создает тайл в позиции.
 	/// </summary>
 	/// <param name="position">Position.</param>
-	public static void createTileAtPosition(Vector2 position)
+	public static Tile createTileAtPosition(Vector2 position)
 	{
-		Tile tile = Instantiate(Instance.tileObjectPrefab, Vector3.zero, Quaternion.identity);
+		Tile tile = Instantiate(Instance.tilePrefab, Vector3.zero, Quaternion.identity);
 		tile.transform.parent = Instance.transform;
 
 		var leftTileID = TilesFinder.getIDByPosition(position) + Vector2.left;
@@ -76,6 +76,8 @@ public class ObjectsGenerator : MonoBehaviour
 		var color = Instance.getUniqueColor(leftTile, bottomTile);
 
 		tile.setTileParametrs(position, color);
+
+		return tile;
 	}
 
 	/// <summary>

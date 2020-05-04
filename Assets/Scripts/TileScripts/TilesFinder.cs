@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
 /// <summary>
-/// Содержит функции поиска TileObject
+/// Поиск тайлов в сетке тайлов.
 /// </summary>
 public static class TilesFinder
 {
@@ -11,17 +12,18 @@ public static class TilesFinder
 	public static Tile getTileAtID(float rawIndex, float coloumnIndex)
 	{
 		var i = (int)rawIndex;
-		if (i < 0 || i > TileMap.gridWidth-1) return null;
+		if (i < 0 || i > TilesMap.gridWidth-1) return null;
 
 		var j = (int)coloumnIndex;
-		if (j < 0 || j > TileMap.gridHeight-1) return null;
+		if (j < 0 || j > TilesMap.gridHeight-1) return null;
 
-		Tile targetTile = TileMap.getTilesGrid()[i, j] ?? null;
+		Tile targetTile = TilesMap.getTilesGrid()[i, j] ?? null;
 		return targetTile;
 	}
 
 	/// <summary>
-	///Возвращает соседний тайл, который находится на расстоянии rawDelta тайлов по горизонтали и coloumnDelta тайлов по вертикали
+	/// Возвращает соседний тайл, который находится на расстоянии rawDelta тайлов по горизонтали и coloumnDelta тайлов по вертикали.
+	/// Положительные значения Delta соостветствуют направлениям вправо и вверх.
 	/// </summary>
 	public static Tile getNearestTile(Tile tile, int rawDelta = 0, int coloumnDelta = 0)
 	{
@@ -33,13 +35,13 @@ public static class TilesFinder
 	}
 
 	/// <summary>
-	/// Возвращает столбец, содержащий tile
+	/// Возвращает строку или столбец (в зависимости от параметра param), содержащий tile.
 	/// </summary>
 	/// <param name="tile">Tile.</param>
 	/// <param name="param">"C" для столбца, "R" для ряда.</param>
 	public static Tile[] getLine(Tile tile, string param)
 	{
-		int arraySize = param == "C" ? TileMap.gridHeight : TileMap.gridWidth;
+		int arraySize = param == "C" ? TilesMap.gridHeight : TilesMap.gridWidth;
 		Tile[] tilesInLine = new Tile[arraySize];
 
 		Tile temp = null;
@@ -54,18 +56,18 @@ public static class TilesFinder
 	}
 
 	/// <summary>
-	/// Вернет идентификатор тайла в позиции.
+	/// Возвращает идентификатор тайла в указанной позиции.
 	/// </summary>
 	/// <param name="position">Position.</param>
 	public static Vector2 getIDByPosition(Vector2 position)
 	{
-		if  (position.x < 0 || position.x > TileMap.gridWidth || position.y < 0 || position.y > TileMap.gridHeight)
+		if  (position.x < 0 || position.x > TilesMap.gridWidth || position.y < 0 || position.y > TilesMap.gridHeight)
 		{
 			Debug.LogError("Error");
 			return new Vector2(-1, -1);
 		}
 
-		var ID = new Vector2(position.x, position.y) / TileMap.tileDeltaPosition;
+		var ID = new Vector2(position.x, position.y) / TilesMap.tileDeltaPosition;
 		return ID;
 	}
 }

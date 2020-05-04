@@ -1,20 +1,20 @@
-﻿using UnityEngine;
-using UnityEditorInternal.Profiling.Memory.Experimental;
-
-public static class TileMap
+﻿/// <summary>
+/// Карта тайлов.
+/// </summary>
+public static class TilesMap
 {
 	/// <summary>
-	/// Ширина сетки тайлов
+	/// Ширина сетки тайлов.
 	/// </summary>
 	public static readonly int gridWidth = 6;
 
 	/// <summary>
-	/// Высота сетки тайлов
+	/// Высота сетки тайлов.
 	/// </summary>
 	public static readonly int gridHeight = 8;
 
 	/// <summary>
-	/// Размер тайла
+	/// Размер тайла.
 	/// </summary>
 	public static readonly float tileSize = 6f;
 
@@ -24,18 +24,18 @@ public static class TileMap
 	public static readonly float tileDeltaPosition = tileSize / 6.25f;
 
 	/// <summary>
-	/// Двумерный массив тайлов
+	/// Сетка тайлов.
 	/// </summary>
 	static Tile[,] tilesGrid = new Tile[gridWidth, gridHeight];
 
 	/// <summary>
-	/// Возвращает grid
+	/// Возвращает сетку тайлов.
 	/// </summary>
 	/// <returns>The tiles grid.</returns>
 	public static Tile[,] getTilesGrid() { return tilesGrid;}
 
 	/// <summary>
-	/// Устанавливает grid
+	/// Устанавливает тайл в сетке тайлов.
 	/// </summary>
 	/// <param name="newTile">New tile.</param>
 	public static void setTileInGrid(Tile newTile)
