@@ -202,6 +202,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -931621097248566280, guid: ffb33e05c2d48b247b8ec282faff44d9,
+        type: 3}
+      propertyPath: _gridWidth
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -931621097248566280, guid: ffb33e05c2d48b247b8ec282faff44d9,
+        type: 3}
+      propertyPath: _gridHeight
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3399573273428058520, guid: ffb33e05c2d48b247b8ec282faff44d9,
         type: 3}
       propertyPath: m_Name

@@ -63,5 +63,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a3e710363b16104684be20927af638f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridWidth: 3
-  _gridHeight: 3
+  _gridWidth: 6
+  _gridHeight: 8

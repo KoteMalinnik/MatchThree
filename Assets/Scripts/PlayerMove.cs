@@ -36,7 +36,7 @@ public static class PlayerMove
 		setSecondTile(tile);
 
 		firstTile.transform.localScale /= 0.8f;
-		moveTiles(ref firstTile, ref secondTile);
+		TilesReplacer.replaceTiles(firstTile, secondTile);
 	}
 
 	/// <summary>
@@ -60,16 +60,12 @@ public static class PlayerMove
 	}
 
 	/// <summary>
-	/// Перемещает firstTile на место secondTile.
+	/// Перемещает tile1 на место tile2.
 	/// Если есть совпадения в столбце или строке после перемещения, то оставляет тайлы на этих местах.
 	/// В противном случае снова перемещает тайлы.
 	/// </summary>
-	static void moveTiles(ref Tile tile1, ref Tile tile2)
+	static void moveTiles(Tile tile1, Tile tile2)
 	{
-		//Debug.Log("<color=yellow>Перемещение объектов</color>");
-
-		TilesReplacer.replaceTiles(tile1, tile2);
-
 		bool canReplaceTileObjects = MatchesValidator.couldReplaceTiles(firstTile, secondTile);
 		if (canReplaceTileObjects)
 		{

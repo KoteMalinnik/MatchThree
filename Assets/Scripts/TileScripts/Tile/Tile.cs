@@ -56,7 +56,7 @@ public class Tile : MonoBehaviour
 	/// Устанавливает позицю.
 	/// </summary>
 	/// <param name="newPosition">New position.</param>
-	void setPosition(Vector2 newPosition)
+	public void setPosition(Vector2 newPosition)
 	{
 		position = newPosition;
 		transform.position = newPosition;
