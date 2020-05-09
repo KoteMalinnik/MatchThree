@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TilesCore;
 
 /// <summary>
 /// Ход игрока для перемещения двух тайлов.
@@ -28,11 +29,11 @@ public static class PlayerMove
 
 		if (tile == firstTile)
 		{
-			Debug.Log("[PlayerMove] Один и тот же объект");
+			//Debug.Log("[PlayerMove] Один и тот же объект");
 			return;
 		}
 
-		Debug.Log("[PlayerMove] Установка второго объекта завершена");
+		//Debug.Log("[PlayerMove] Установка второго объекта завершена");
 		firstTile.transform.localScale /= 0.8f;
 
 		CoroutinePlayer.Instance.StartCoroutine(moveTiles(firstTile, tile));
@@ -56,7 +57,7 @@ public static class PlayerMove
 	/// </summary>
 	static IEnumerator moveTiles(Tile tile1, Tile tile2)
 	{
-		Debug.Log("[PlayerMove] <color=yellow>Перемещение объектов</color>");
+		//Debug.Log("[PlayerMove] <color=yellow>Перемещение объектов</color>");
 
 		bool result = false;
 		//Нет необходимости что-либо проверять, если второй объект не в пределах одного объекта по горизонтали или вертикали
@@ -86,7 +87,7 @@ public static class PlayerMove
 
 		if (canReplaceTileObjects)
 		{
-			Debug.Log("[PlayerMove] <color=green>Перемещение объектов разрешено</color>");
+			//Debug.Log("[PlayerMove] <color=green>Перемещение объектов разрешено</color>");
 			GoalsManagment.GoalsManager.ProcessMoves();
 			MatchesDestroyer.destroyMatches(MatchesValidator.getMatchedTiles().ToArray());
 			yield break;
@@ -98,7 +99,7 @@ public static class PlayerMove
 		yield return new WaitWhile(() => replacer1.routine != null);
 		yield return new WaitWhile(() => replacer2.routine != null);
 
-		Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно.</color>");
+		//Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно.</color>");
 		TilesReplacer.setReplacePremission(true);
 	}
 }

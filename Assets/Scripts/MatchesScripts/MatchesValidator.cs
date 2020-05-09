@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TilesCore;
 
 /// <summary>
 /// Поверка совпадений тайлов в строке или столбце.

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using TilesCore;
 
 /// <summary>
 /// Спуск тайлов на свободные места.
@@ -7,7 +8,6 @@ using UnityEngine;
 public class TilesDropper
 {
 	public static int CoroutinesInProcessCount { get; private set; } = 0;
-
 
 	/// <summary>
 	/// Инициализация объекта класса TilesDropper. Рассчет дырок и спуск тайлов.

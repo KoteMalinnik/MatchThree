@@ -1,23 +1,26 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Tile))]
-/// <summary>
-/// Реакция тайла на нажатие мышью.
-/// </summary>
-public class TileInteractivity : MonoBehaviour
+namespace TilesCore
 {
+	[RequireComponent(typeof(Tile))]
 	/// <summary>
-	/// Прикрепленный компонент Tile.
+	/// Реакция тайла на нажатие мышью.
 	/// </summary>
-	Tile tileObject;
-
-	void Awake()
+	public class TileInteractivity : MonoBehaviour
 	{
-		tileObject = GetComponent<Tile>();
-	}
+		/// <summary>
+		/// Прикрепленный компонент Tile.
+		/// </summary>
+		Tile tileObject;
 
-	void OnMouseDown()
-	{
-		if(TilesReplacer.replacePremission)	PlayerMove.setTilesForMove(tileObject);
+		void Awake()
+		{
+			tileObject = GetComponent<Tile>();
+		}
+
+		void OnMouseDown()
+		{
+			if (TilesReplacer.replacePremission) PlayerMove.setTilesForMove(tileObject);
+		}
 	}
 }

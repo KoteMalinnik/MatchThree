@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using TilesCore;
 
 [CustomEditor(typeof(Tile))]
 public class TileRecolorer : Editor

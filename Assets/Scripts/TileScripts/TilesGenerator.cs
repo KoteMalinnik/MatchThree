@@ -1,78 +1,80 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-/// <summary>
-/// Генератор тайлов.
-/// </summary>
-public class TilesGenerator : MonoBehaviour
+namespace TilesCore
 {
 	/// <summary>
-	/// Экзмемпляр класса.
+	/// Генератор тайлов.
 	/// </summary>
-	static TilesGenerator _instance = null;
-
-	public static TilesGenerator Instance
-		{ get { return _instance ?? new GameObject("ObjectsGenerator").AddComponent<TilesGenerator>();} }
-
-	void Awake()
+	public class TilesGenerator : MonoBehaviour
 	{
-		_instance = this;
-	}
+		/// <summary>
+		/// Экзмемпляр класса.
+		/// </summary>
+		static TilesGenerator _instance = null;
 
-	void OnDestroy()
-	{
-		_instance = null;
-	}
+		public static TilesGenerator Instance
+		{ get { return _instance ?? new GameObject("ObjectsGenerator").AddComponent<TilesGenerator>(); } }
 
-	[SerializeField]
-	/// <summary>
-	/// Префаб тайла.
-	/// </summary>
-	Tile tilePrefab = null;
-
-	[SerializeField]
-	/// <summary>
-	/// Массив цветов генерируемых объектов
-	/// </summary>
-	Color[] colors = null;
-
-	Transform cachedTransform = null;
-
-	void Start()
-	{
-		cachedTransform = transform;
-		spawnTiles();
-	}
-
-	/// <summary>
-	/// Генерирует тайлы в сетке тайлов.
-	/// </summary>
-	void spawnTiles()
-	{
-		var tilesGrid = TilesMap.getTilesGrid();
-
-		for (int coloumn = 0; coloumn < TilesMap.gridWidth; coloumn++)
+		void Awake()
 		{
-			spawnTilesInColoumn(coloumn, tilesGrid);
+			_instance = this;
 		}
-	}
 
-	/// <summary>
-	/// Генерирует тайлы в столбце.
-	/// </summary>
-	/// <param name="coloumn">Coloumn.</param>
-	public void spawnTilesInColoumn(int coloumn, Tile[,] tilesGrid)
-	{
-		for (int raw = 0; raw < TilesMap.gridHeight; raw++)
+		void OnDestroy()
 		{
-			if (tilesGrid[coloumn, raw] != null)
-			{
-				//Debug.Log($"[TilesGenerator] Узел сетки ({coloumn},{raw}) занят.");
-				continue;
-			}
+			_instance = null;
+		}
 
-			var position = new Vector2(coloumn, raw);
-			TileCreator.createTileAtPosition(tilePrefab, position, cachedTransform, colors);
+		[SerializeField]
+		/// <summary>
+		/// Префаб тайла.
+		/// </summary>
+		Tile tilePrefab = null;
+
+		[SerializeField]
+		/// <summary>
+		/// Массив цветов генерируемых объектов
+		/// </summary>
+		Color[] colors = null;
+
+		Transform cachedTransform = null;
+
+		void Start()
+		{
+			cachedTransform = transform;
+			spawnTiles();
+		}
+
+		/// <summary>
+		/// Генерирует тайлы в сетке тайлов.
+		/// </summary>
+		void spawnTiles()
+		{
+			var tilesGrid = TilesMap.getTilesGrid();
+
+			for (int coloumn = 0; coloumn < TilesMap.gridWidth; coloumn++)
+			{
+				spawnTilesInColoumn(coloumn, tilesGrid);
+			}
+		}
+
+		/// <summary>
+		/// Генерирует тайлы в столбце.
+		/// </summary>
+		/// <param name="coloumn">Coloumn.</param>
+		public void spawnTilesInColoumn(int coloumn, Tile[,] tilesGrid)
+		{
+			for (int raw = 0; raw < TilesMap.gridHeight; raw++)
+			{
+				if (tilesGrid[coloumn, raw] != null)
+				{
+					//Debug.Log($"[TilesGenerator] Узел сетки ({coloumn},{raw}) занят.");
+					continue;
+				}
+
+				var position = new Vector2(coloumn, raw);
+				TileCreator.createTileAtPosition(tilePrefab, position, cachedTransform, colors);
+			}
 		}
 	}
 }

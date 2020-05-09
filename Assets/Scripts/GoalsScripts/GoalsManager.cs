@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TilesCore;
 using UnityEngine;
 
 namespace GoalsManagment
@@ -47,6 +48,9 @@ namespace GoalsManagment
 
 		void Awake()
 		{
+			GoalAtPlayerLevel.Moves = 999;
+
+			if (goals.Count == 0) return;
 			if (goals.Count < PlayerLevel) return;
 
 			GoalAtPlayerLevel.ID = goals[PlayerLevel].ID;

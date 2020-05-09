@@ -107,6 +107,7 @@ public class GoalsCreator : EditorWindow
 	void CreateNewGoal()
 	{
 		if (tempGoal.Elements.Count == 0) return;
+		if (GoalsManager.CheckIDforExistence(ID)) return;
 
 		tempGoal.ID = ID;
 		tempGoal.Moves = Moves;
