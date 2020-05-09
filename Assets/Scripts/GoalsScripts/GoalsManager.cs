@@ -41,7 +41,6 @@ namespace GoalsManagment
 			}
 		}
 
-
 		public static int PlayerLevel { get; private set; } = 0;
 		public static void PlayerLevelUp() { PlayerLevel++; }
 		public static Goal GoalAtPlayerLevel { get; private set; } = new Goal();

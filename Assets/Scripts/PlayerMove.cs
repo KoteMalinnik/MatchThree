@@ -18,6 +18,8 @@ public static class PlayerMove
 	/// <param name="tile">Тайл.</param>
 	public static void setTilesForMove(Tile tile)
 	{
+		if (GoalsManagment.GoalsManager.GoalAtPlayerLevel.Moves <= 0) return;
+
 		if (firstTile == null)
 		{
 			setFirstTile(tile);
