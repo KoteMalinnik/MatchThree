@@ -18,9 +18,15 @@ public class Goal
 	/// </summary>
 	List<Element> Elements = new List<Element>();
 
-	public Element AddElement(UnityEngine.Color elementColor, int defaultCount)
+	/// <summary>
+	/// Добавляет элемент цели.
+	/// </summary>
+	/// <returns>The element.</returns>
+	/// <param name="elementColor">Element color.</param>
+	/// <param name="count">Default count.</param>
+	public Element AddElement(UnityEngine.Color elementColor, int count)
 	{
-		var newElement = new Element(elementColor, defaultCount);
+		var newElement = new Element(elementColor, count);
 
 		if (!Elements.Contains(newElement)) Elements.Add(newElement);
 		return newElement;
