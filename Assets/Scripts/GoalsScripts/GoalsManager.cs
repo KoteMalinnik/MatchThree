@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GoalsManagment
 {
-	public static class GoalsManager
+	public class GoalsManager : MonoBehaviour
 	{
 		[ExecuteInEditMode]
 		public static List<Goal> goals { get; private set; } = new List<Goal>();
@@ -38,6 +38,51 @@ namespace GoalsManagment
 			{
 				goals.Remove(goal);
 				GoalSerialization.RemoveGoal(goal);
+			}
+		}
+
+
+		public static int PlayerLevel { get; private set; } = 0;
+		public static void PlayerLevelUp() { PlayerLevel++; }
+		public static Goal GoalAtPlayerLevel { get; private set; } = new Goal();
+
+		void Awake()
+		{
+			if (goals.Count < PlayerLevel) return;
+
+			GoalAtPlayerLevel.ID = goals[PlayerLevel].ID;
+			GoalAtPlayerLevel.Moves = goals[PlayerLevel].Moves;
+
+			foreach (Element e in goals[PlayerLevel].Elements) GoalAtPlayerLevel.AddElement(e.color, e.count);
+		}
+
+		public static void ProcessGoal(Tile tile)
+		{
+			var element = GoalAtPlayerLevel.GetElement(tile.color);
+			if (element == null) return;
+			if (element.count == 0) return;
+
+			element.reduceElementCount();
+
+			if (element.count == 0)
+			{
+				Debug.Log("[GoalsManager] Одна из целей достигнута.");
+				GoalAtPlayerLevel.RemoveElement(element);
+			}
+
+			if (GoalAtPlayerLevel.Elements.Count == 0)
+			{
+				Debug.Log("[GoalsManager] Уровень пройден.");
+			}
+		}
+
+		public static void ProcessMoves()
+		{
+			GoalAtPlayerLevel.Moves--;
+
+			if (GoalAtPlayerLevel.Moves == 0)
+			{
+				Debug.Log("[GoalsManager] <color=red>Ходы закончились.</color>");
 			}
 		}
 	}

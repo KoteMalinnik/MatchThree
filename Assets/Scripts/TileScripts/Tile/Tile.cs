@@ -79,4 +79,9 @@ public class Tile : MonoBehaviour
 		color = newColor;
 		if (spriteRenderer != null) spriteRenderer.color = color;
 	}
+
+	void OnDestroy()
+	{
+		GoalsManagment.GoalsManager.ProcessGoal(this);
+	}
 }

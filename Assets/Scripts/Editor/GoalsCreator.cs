@@ -73,7 +73,7 @@ public class GoalsCreator : EditorWindow
 		else
 		{
 			GUILayout.Label("Элементы");
-			foreach (Element e in tempGoal.Elements) DisplayGoalElement(e, tempGoal);
+			foreach (Element e in tempGoal.Elements) DisplayGoalElement(e, tempGoal, true);
 		}
 
 		GUILayout.BeginHorizontal();
@@ -131,16 +131,16 @@ public class GoalsCreator : EditorWindow
 
 		GUILayout.Label($"Ходы: {goal.Moves}.");
 		GUILayout.Label("Элементы:");
-		foreach (Element e in goal.Elements) DisplayGoalElement(e, goal);
+		foreach (Element e in goal.Elements) DisplayGoalElement(e, goal, false);
 
 		GUILayout.Label("-------------");
 	}
 
-	void DisplayGoalElement(Element element, Goal parentGoal)
+	void DisplayGoalElement(Element element, Goal parentGoal, bool displayButton)
 	{
 		GUILayout.BeginHorizontal();
 
-		if (GUILayout.Button("X", GUILayout.Width(30))) parentGoal.RemoveElement(element);
+		if (displayButton && GUILayout.Button("X", GUILayout.Width(30))) parentGoal.RemoveElement(element);
 
 		EditorGUILayout.ColorField(element.color, GUILayout.Width(50));
 		GUILayout.Label($"Количество: {element.count}");

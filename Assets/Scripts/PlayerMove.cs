@@ -85,6 +85,7 @@ public static class PlayerMove
 		if (canReplaceTileObjects)
 		{
 			Debug.Log("[PlayerMove] <color=green>Перемещение объектов разрешено</color>");
+			GoalsManagment.GoalsManager.ProcessMoves();
 			MatchesDestroyer.destroyMatches(MatchesValidator.getMatchedTiles().ToArray());
 			yield break;
 		}

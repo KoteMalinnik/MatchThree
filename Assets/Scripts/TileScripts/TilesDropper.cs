@@ -53,7 +53,7 @@ public class TilesDropper
 			}
 		}
 
-		Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
+		//Debug.Log($"[TilesDropper] <color=green>В столбце {coloumn} дырок не обнаружено.</color>");
 
 		TilesGenerator.Instance.spawnTilesInColoumn(coloumn, TilesMap.getTilesGrid());
 	}

@@ -18,7 +18,7 @@ namespace GoalsManagment
 			}
 			set
 			{
-				if (value <= 0) throw new ArgumentException("Неверное количество ходов.");
+				if (value < 0) throw new ArgumentException("Неверное количество ходов.");
 				moves = value;
 			}
 		}
@@ -35,9 +35,6 @@ namespace GoalsManagment
 			}
 			set
 			{
-				if (GoalsManager.CheckIDforExistence(value))
-					throw new ArgumentException($"Цель с таким ID({value}) уже существует.");
-
 				id = value;
 			}
 		}
@@ -55,7 +52,7 @@ namespace GoalsManagment
 		/// <param name="elementColor">Element color.</param>
 		/// <param name="count">Default count.</param>
 		[ExecuteInEditMode]
-		public Element AddElement(UnityEngine.Color elementColor, int count)
+		public Element AddElement(Color elementColor, int count)
 		{
 			var newElement = new Element(elementColor, count);
 
@@ -74,7 +71,7 @@ namespace GoalsManagment
 		/// </summary>
 		/// <param name="elementColor">Element color.</param>
 		[ExecuteInEditMode]
-		public Element? GetElement(UnityEngine.Color elementColor)
+		public Element GetElement(Color elementColor)
 		{
 			foreach (Element e in Elements)
 				if (e.color == elementColor)

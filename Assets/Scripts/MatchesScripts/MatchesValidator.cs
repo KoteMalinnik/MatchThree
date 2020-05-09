@@ -111,7 +111,7 @@ public static class MatchesValidator
 	/// </summary>
 	public static void checkAllTileMapForMatches()
 	{
-		Debug.Log("[MatchesValidator] Проверка сетки тайлов на совпадения.");
+		//Debug.Log("[MatchesValidator] Проверка сетки тайлов на совпадения.");
 		matchedTiles.Clear();
 
 		var tilesGrid = TilesMap.getTilesGrid();
@@ -127,12 +127,12 @@ public static class MatchesValidator
 
 		if (getMatchedTiles().Count == 0)
 		{
-			Debug.Log("[MatchesValidator] <color=yellow>Новых совпадений не найдено.</color>");
+			//Debug.Log("[MatchesValidator] <color=yellow>Новых совпадений не найдено.</color>");
 			TilesReplacer.setReplacePremission(true);
 			return;
 		}
 
-		Debug.Log("[MatchesValidator]  <color=yellow>Обнаружены новые совпадения.</color>");
+		//Debug.Log("[MatchesValidator]  <color=yellow>Обнаружены новые совпадения.</color>");
 		MatchesDestroyer.destroyMatches(matchedTiles.ToArray());
 	}
 }

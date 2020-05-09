@@ -5,8 +5,10 @@ namespace GoalsManagment
 	/// <summary>
 	/// Элемент цели.
 	/// </summary>
-	public struct Element
+	public class Element
 	{
+		public Element() { }
+
 		public Element(Color color, int count)
 		{
 			this.color = color;
@@ -26,9 +28,9 @@ namespace GoalsManagment
 		/// <summary>
 		/// Декремент количества.
 		/// </summary>
-		public void reduceElementCount(int delta = 1)
+		public void reduceElementCount()
 		{
-			count -= delta;
+			count--;
 			if (count < 0) count = 0;
 		}
 	}
