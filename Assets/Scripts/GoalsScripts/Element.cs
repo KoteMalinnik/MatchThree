@@ -1,30 +1,35 @@
-﻿/// <summary>
-/// Элемент цели.
-/// </summary>
-public struct Element
+﻿using UnityEngine;
+
+namespace GoalsManagment
 {
-	public Element(UnityEngine.Color color, int count)
+	/// <summary>
+	/// Элемент цели.
+	/// </summary>
+	public struct Element
 	{
-		this.color = color;
-		this.count = count;
-	}
+		public Element(Color color, int count)
+		{
+			this.color = color;
+			this.count = count;
+		}
 
-	/// <summary>
-	/// Цвет.
-	/// </summary>
-	public UnityEngine.Color color { get; }
+		/// <summary>
+		/// Цвет.
+		/// </summary>
+		public Color color { get; set;}
 
-	/// <summary>
-	/// Количество.
-	/// </summary>
-	public int count { get; private set; }
+		/// <summary>
+		/// Количество.
+		/// </summary>
+		public int count { get; set; }
 
-	/// <summary>
-	/// Декремент количества.
-	/// </summary>
-	public void reduceElementCount(int delta = 1)
-	{
-		count -= delta;
-		if (count < 0) count = 0;
+		/// <summary>
+		/// Декремент количества.
+		/// </summary>
+		public void reduceElementCount(int delta = 1)
+		{
+			count -= delta;
+			if (count < 0) count = 0;
+		}
 	}
 }
