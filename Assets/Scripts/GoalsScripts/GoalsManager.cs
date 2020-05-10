@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TilesCore;
 using UnityEngine;
+using GUI;
 
 namespace GoalsManagment
 {
@@ -66,11 +67,13 @@ namespace GoalsManagment
 			if (element.count == 0) return;
 
 			element.reduceElementCount();
+			GoalView.updateItem(element.color, element.count);
 
 			if (element.count == 0)
 			{
 				Debug.Log("[GoalsManager] Одна из целей достигнута.");
 				GoalAtPlayerLevel.RemoveElement(element);
+				GoalView.removeItem(element.color);
 			}
 
 			if (GoalAtPlayerLevel.Elements.Count == 0)
@@ -84,6 +87,7 @@ namespace GoalsManagment
 			if (GoalAtPlayerLevel.Elements.Count == 0) return;
 
 			GoalAtPlayerLevel.Moves--;
+			GoalView.updateMoves(GoalAtPlayerLevel.Moves);
 
 			if (GoalAtPlayerLevel.Moves == 0)
 			{
