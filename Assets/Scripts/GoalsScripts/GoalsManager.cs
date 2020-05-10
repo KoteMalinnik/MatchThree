@@ -81,6 +81,8 @@ namespace GoalsManagment
 
 		public static void ProcessMoves()
 		{
+			if (GoalAtPlayerLevel.Elements.Count == 0) return;
+
 			GoalAtPlayerLevel.Moves--;
 
 			if (GoalAtPlayerLevel.Moves == 0)
