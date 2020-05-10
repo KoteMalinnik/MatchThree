@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-namespace TilesCore
+namespace Tiles
 {
 	[RequireComponent(typeof(Tile))]
 	/// <summary>
 	/// Реакция тайла на нажатие мышью.
 	/// </summary>
-	public class TileInteractivity : MonoBehaviour
+	public class Interactivity : MonoBehaviour
 	{
 		/// <summary>
 		/// Прикрепленный компонент Tile.
@@ -20,7 +20,7 @@ namespace TilesCore
 
 		void OnMouseDown()
 		{
-			if (TilesReplacer.replacePremission) PlayerMove.setTilesForMove(tileObject);
+			if (Replacer.replacePremission) PlayerMove.setTilesForMove(tileObject);
 		}
 	}
 }

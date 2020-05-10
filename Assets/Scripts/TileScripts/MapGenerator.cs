@@ -1,19 +1,19 @@
 ﻿using UnityEngine;
 
-namespace TilesCore
+namespace Tiles
 {
 	/// <summary>
 	/// Генератор тайлов.
 	/// </summary>
-	public class TilesGenerator : MonoBehaviour
+	public class MapGenerator : MonoBehaviour
 	{
 		/// <summary>
 		/// Экзмемпляр класса.
 		/// </summary>
-		static TilesGenerator _instance = null;
+		static MapGenerator _instance = null;
 
-		public static TilesGenerator Instance
-		{ get { return _instance ?? new GameObject("ObjectsGenerator").AddComponent<TilesGenerator>(); } }
+		public static MapGenerator Instance
+		{ get { return _instance ?? new GameObject("ObjectsGenerator").AddComponent<MapGenerator>(); } }
 
 		void Awake()
 		{
@@ -50,9 +50,9 @@ namespace TilesCore
 		/// </summary>
 		void spawnTiles()
 		{
-			var tilesGrid = TilesMap.getTilesGrid();
+			var tilesGrid = Map.getTilesGrid();
 
-			for (int coloumn = 0; coloumn < TilesMap.gridWidth; coloumn++)
+			for (int coloumn = 0; coloumn < Map.gridWidth; coloumn++)
 			{
 				spawnTilesInColoumn(coloumn, tilesGrid);
 			}
@@ -64,7 +64,7 @@ namespace TilesCore
 		/// <param name="coloumn">Coloumn.</param>
 		public void spawnTilesInColoumn(int coloumn, Tile[,] tilesGrid)
 		{
-			for (int raw = 0; raw < TilesMap.gridHeight; raw++)
+			for (int raw = 0; raw < Map.gridHeight; raw++)
 			{
 				if (tilesGrid[coloumn, raw] != null)
 				{
@@ -73,7 +73,7 @@ namespace TilesCore
 				}
 
 				var position = new Vector2(coloumn, raw);
-				TileCreator.createTileAtPosition(tilePrefab, position, cachedTransform, colors);
+				Creator.createTileAtPosition(tilePrefab, position, cachedTransform, colors);
 			}
 		}
 	}

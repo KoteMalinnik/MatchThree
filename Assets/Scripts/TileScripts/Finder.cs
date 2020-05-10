@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace TilesCore
+namespace Tiles
 {
 	/// <summary>
 	/// Поиск тайлов в сетке тайлов.
 	/// </summary>
-	public static class TilesFinder
+	public static class Finder
 	{
 		/// <summary>
 		/// Возвращает TileObject по ID. Если тайла с таким ID нет, то возвращает null
@@ -14,12 +14,12 @@ namespace TilesCore
 		public static Tile getTileAtID(float rawIndex, float coloumnIndex)
 		{
 			var i = (int)rawIndex;
-			if (i < 0 || i > TilesMap.gridWidth - 1) return null;
+			if (i < 0 || i > Map.gridWidth - 1) return null;
 
 			var j = (int)coloumnIndex;
-			if (j < 0 || j > TilesMap.gridHeight - 1) return null;
+			if (j < 0 || j > Map.gridHeight - 1) return null;
 
-			Tile targetTile = TilesMap.getTilesGrid()[i, j] ?? null;
+			Tile targetTile = Map.getTilesGrid()[i, j] ?? null;
 			return targetTile;
 		}
 
@@ -44,7 +44,7 @@ namespace TilesCore
 		public static Tile[] getLine(Tile tile, string param)
 		{
 			var tilesInLine = new List<Tile>();
-			int lineLength = param == "C" ? TilesMap.gridHeight : TilesMap.gridWidth;
+			int lineLength = param == "C" ? Map.gridHeight : Map.gridWidth;
 
 			Tile temp = null;
 			for (int i = 0; i < lineLength; i++)
@@ -65,7 +65,7 @@ namespace TilesCore
 		public static Tile[] getLine(int lineNumber, string param)
 		{
 			var tilesInLine = new List<Tile>();
-			int lineLength = param == "C" ? TilesMap.gridHeight : TilesMap.gridWidth;
+			int lineLength = param == "C" ? Map.gridHeight : Map.gridWidth;
 
 			Tile temp = null;
 			for (int i = 0; i < lineLength; i++)
@@ -84,13 +84,13 @@ namespace TilesCore
 		/// <param name="position">Position.</param>
 		public static Vector2 getIDByPosition(Vector2 position)
 		{
-			if (position.x < 0 || position.x > TilesMap.gridWidth || position.y < 0 || position.y > TilesMap.gridHeight)
+			if (position.x < 0 || position.x > Map.gridWidth || position.y < 0 || position.y > Map.gridHeight)
 			{
 				Debug.LogError("[TilesFinder] Error");
 				return new Vector2(-1, -1);
 			}
 
-			var ID = new Vector2(position.x, position.y) / TilesMap.tileDeltaPosition;
+			var ID = new Vector2(position.x, position.y) / Map.tileDeltaPosition;
 			return ID;
 		}
 
@@ -98,9 +98,9 @@ namespace TilesCore
 		{
 			var tiles = new List<Tile>();
 
-			for (int x = 0; x < TilesMap.gridWidth; x ++)
+			for (int x = 0; x < Map.gridWidth; x++)
 			{
-				for (int y = 0; y < TilesMap.gridHeight; y ++)
+				for (int y = 0; y < Map.gridHeight; y++)
 				{
 					var tile = getTileAtID(x, y);
 
@@ -110,5 +110,5 @@ namespace TilesCore
 
 			return tiles.ToArray();
 		}
-	}
+	}	
 }

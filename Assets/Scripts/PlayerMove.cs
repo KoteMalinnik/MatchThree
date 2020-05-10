@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using TilesCore;
+using Tiles;
 
 /// <summary>
 /// Ход игрока для перемещения двух тайлов.
@@ -61,7 +61,7 @@ public static class PlayerMove
 
 		bool result = false;
 		//Нет необходимости что-либо проверять, если второй объект не в пределах одного объекта по горизонтали или вертикали
-		result = (tile2.position - tile1.position).magnitude < TilesMap.tileDeltaPosition + 0.1f;
+		result = (tile2.position - tile1.position).magnitude < Map.tileDeltaPosition + 0.1f;
 		if (!result) yield break;
 		//Debug.Log("[PlayerMove] В пределах одного тайла");
 
@@ -74,8 +74,8 @@ public static class PlayerMove
 		var tile1Position = tile1.position;
 		var tile2Position = tile2.position;
 
-		var replacer1 = new TilesReplacer();
-		var replacer2 = new TilesReplacer();
+		var replacer1 = new Replacer();
+		var replacer2 = new Replacer();
 
 		replacer1.replaceTiles(tile1, tile2Position);
 		replacer2.replaceTiles(tile2, tile1Position);
@@ -83,13 +83,13 @@ public static class PlayerMove
 		yield return new WaitWhile(() => replacer1.routine != null);
 		yield return new WaitWhile(() => replacer2.routine != null);
 
-		bool canReplaceTileObjects = MatchesValidator.couldReplaceTiles(tile1, tile2);
+		bool canReplaceTileObjects = Matches.Validator.couldReplaceTiles(tile1, tile2);
 
 		if (canReplaceTileObjects)
 		{
 			//Debug.Log("[PlayerMove] <color=green>Перемещение объектов разрешено</color>");
 			GoalsManagment.GoalsManager.ProcessMoves();
-			MatchesDestroyer.destroyMatches(MatchesValidator.getMatchedTiles().ToArray());
+			Matches.Destroyer.destroyMatches(Matches.Validator.getMatchedTiles().ToArray());
 			yield break;
 		}
 
@@ -100,6 +100,6 @@ public static class PlayerMove
 		yield return new WaitWhile(() => replacer2.routine != null);
 
 		//Debug.Log("[PlayerMove] <color=red>Перемещение объектов невозможно.</color>");
-		TilesReplacer.setReplacePremission(true);
+		Replacer.setReplacePremission(true);
 	}
 }

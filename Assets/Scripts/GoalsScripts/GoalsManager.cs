@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TilesCore;
+using Tiles;
 using UnityEngine;
 using GUI;
 

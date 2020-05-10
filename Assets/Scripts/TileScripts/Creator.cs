@@ -2,12 +2,12 @@
 using System.Collections;
 using UnityEngine;
 
-namespace TilesCore
+namespace Tiles
 {
 	/// <summary>
 	/// Создание объекта тайла.
 	/// </summary>
-	public static class TileCreator
+	public static class Creator
 	{
 		/// <summary>
 		/// Создает тайл в позиции.
@@ -18,11 +18,11 @@ namespace TilesCore
 			Tile tile = MonoBehaviour.Instantiate(tilePrefab, Vector3.zero, Quaternion.identity);
 			tile.transform.parent = parentTransform;
 
-			var leftTileID = TilesFinder.getIDByPosition(position) + Vector2.left;
-			Tile leftTile = TilesFinder.getTileAtID(leftTileID.x, leftTileID.y);
+			var leftTileID = Finder.getIDByPosition(position) + Vector2.left;
+			Tile leftTile = Finder.getTileAtID(leftTileID.x, leftTileID.y);
 
-			var bottomTileID = TilesFinder.getIDByPosition(position) + Vector2.down;
-			Tile bottomTile = TilesFinder.getTileAtID(bottomTileID.x, bottomTileID.y);
+			var bottomTileID = Finder.getIDByPosition(position) + Vector2.down;
+			Tile bottomTile = Finder.getTileAtID(bottomTileID.x, bottomTileID.y);
 
 			var color = getUniqueColor(leftTile, bottomTile, colors);
 
@@ -50,7 +50,7 @@ namespace TilesCore
 			var newScale = Vector2.zero;
 			transform.localScale = newScale;
 
-			for (; transform.localScale.x < TilesMap.tileSize && debugTime < 0.4f; debugTime += Time.deltaTime)
+			for (; transform.localScale.x < Map.tileSize && debugTime < 0.4f; debugTime += Time.deltaTime)
 			{
 				var deltaScale = animationSpeed * Time.deltaTime;
 				newScale.x += deltaScale;
@@ -61,8 +61,8 @@ namespace TilesCore
 				yield return new WaitForEndOfFrame();
 			}
 
-			newScale.x = TilesMap.tileSize;
-			newScale.y = TilesMap.tileSize;
+			newScale.x = Map.tileSize;
+			newScale.y = Map.tileSize;
 
 			transform.localScale = newScale;
 			//Debug.Log($"[TileCreator] Конец анимации появления. Тайл {tileName} появился за время {debugTime}");

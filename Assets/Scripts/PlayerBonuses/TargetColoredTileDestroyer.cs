@@ -1,4 +1,4 @@
-﻿using TilesCore;
+﻿using Tiles;
 using UnityEngine;
 
 namespace Bonuses
@@ -11,8 +11,8 @@ namespace Bonuses
 
 			Debug.Log("[TargetColoredTileDestroyer] Действие бонуса.");
 
-			var tilesOfTargetColor = TilesFinder.getTilesOfColor(targetTile.color);
-			MatchesDestroyer.destroyMatches(tilesOfTargetColor);
+			var tilesOfTargetColor = Finder.getTilesOfColor(targetTile.color);
+			Matches.Destroyer.destroyMatches(tilesOfTargetColor);
 		}
 
 		Tile targetTile = null;

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TilesCore
+namespace Tiles
 {
 	/// <summary>
 	/// Объект сетки.
@@ -35,7 +35,7 @@ namespace TilesCore
 			spriteRenderer = GetComponent<SpriteRenderer>();
 			gameObject.AddComponent<BoxCollider2D>();
 
-			transform.localScale = Vector3.one * TilesMap.tileSize;
+			transform.localScale = Vector3.one * Map.tileSize;
 		}
 
 		/// <summary>
@@ -51,7 +51,7 @@ namespace TilesCore
 
 			gameObject.name = $"{(int)gridID.x}-{(int)gridID.y}";
 
-			TilesMap.setTileInGrid(this);
+			Map.setTileInGrid(this);
 		}
 
 		/// <summary>
@@ -69,7 +69,7 @@ namespace TilesCore
 		/// </summary>
 		void setGridID(Vector2 newPosition)
 		{
-			gridID = new Vector2(newPosition.x, newPosition.y) / TilesMap.tileDeltaPosition;
+			gridID = new Vector2(newPosition.x, newPosition.y) / Map.tileDeltaPosition;
 		}
 
 		/// <summary>

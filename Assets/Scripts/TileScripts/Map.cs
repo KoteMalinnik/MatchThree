@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-namespace TilesCore
+namespace Tiles
 {
 	/// <summary>
 	/// Карта тайлов.
 	/// </summary>
-	public class TilesMap : MonoBehaviour
+	public class Map : MonoBehaviour
 	{
 		[SerializeField]
 		int _gridWidth = 1;
@@ -23,7 +23,7 @@ namespace TilesCore
 		/// <summary>
 		/// Ширина сетки тайлов.
 		/// </summary>
-		public static int gridWidth = 6;
+		public static int gridWidth = 8;
 
 		/// <summary>
 		/// Высота сетки тайлов.
