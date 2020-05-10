@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<Goal xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="GoalsManagment">
+  <Moves>20</Moves>
+  <ID>0</ID>
+  <Elements>
+    <Element>
+      <color>
+        <r>1</r>
+        <g>1</g>
+        <b>0</b>
+        <a>1</a>
+      </color>
+      <count>20</count>
+    </Element>
+    <Element>
+      <color>
+        <r>1</r>
+        <g>0</g>
+        <b>0</b>
+        <a>1</a>
+      </color>
+      <count>20</count>
+    </Element>
+  </Elements>
+</Goal>

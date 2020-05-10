@@ -93,5 +93,22 @@ namespace TilesCore
 			var ID = new Vector2(position.x, position.y) / TilesMap.tileDeltaPosition;
 			return ID;
 		}
+
+		public static Tile[] getTilesOfColor(Color color)
+		{
+			var tiles = new List<Tile>();
+
+			for (int x = 0; x < TilesMap.gridWidth; x ++)
+			{
+				for (int y = 0; y < TilesMap.gridHeight; y ++)
+				{
+					var tile = getTileAtID(x, y);
+
+					if (tile.color == color) tiles.Add(tile);
+				}
+			}
+
+			return tiles.ToArray();
+		}
 	}
 }

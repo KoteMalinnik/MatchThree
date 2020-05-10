@@ -1,6 +1,6 @@
 ﻿namespace Bonuses
 {
-	public interface BonusAction
+	public interface IBonusAction
 	{
 		void ExecuteBonus();
 	}
